@@ -1,0 +1,10 @@
+# Ignore Backups and lck files
+LD-Driver-backups
+~LD-Driver.kicad_*.lck
+
+# Ignore footprints cache
+fp-info-cache
+
+# Ignore additional symbols' backups
+lib/symbols.bak 
+
