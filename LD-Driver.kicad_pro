@@ -38,8 +38,8 @@
         "other_text_upright": false,
         "pads": {
           "drill": 0.0,
-          "height": 0.875,
-          "width": 0.25
+          "height": 0.5,
+          "width": 0.5
         },
         "silk_line_width": 0.1,
         "silk_text_italic": false,
@@ -432,7 +432,7 @@
     ]
   },
   "meta": {
-    "filename": "High-Power Laser Driver.kicad_pro",
+    "filename": "LD-Driver.kicad_pro",
     "version": 1
   },
   "net_settings": {

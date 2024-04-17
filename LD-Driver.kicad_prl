@@ -1,6 +1,6 @@
 {
   "board": {
-    "active_layer": 0,
+    "active_layer": 44,
     "active_layer_preset": "",
     "auto_track_width": true,
     "hidden_netclasses": [],
@@ -63,7 +63,7 @@
       39,
       40
     ],
-    "visible_layers": "ffc7f10_ffffffff",
+    "visible_layers": "ffc7f30_ffffffff",
     "zone_display_mode": 0
   },
   "git": {
@@ -73,7 +73,7 @@
     "ssh_key": ""
   },
   "meta": {
-    "filename": "High-Power Laser Driver.kicad_prl",
+    "filename": "LD-Driver.kicad_prl",
     "version": 3
   },
   "project": {
