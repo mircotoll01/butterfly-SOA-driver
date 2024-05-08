@@ -842,7 +842,7 @@
 					)
 				)
 			)
-			(pin input line
+			(pin no_connect line
 				(at 0 -43.18 90)
 				(length 2.54) hide
 				(name "NC"
@@ -1022,7 +1022,7 @@
 					)
 				)
 			)
-			(pin input line
+			(pin no_connect line
 				(at 0 -43.18 90)
 				(length 2.54) hide
 				(name "NC"
@@ -1148,7 +1148,7 @@
 					)
 				)
 			)
-			(pin input line
+			(pin no_connect line
 				(at 0 -43.18 90)
 				(length 2.54) hide
 				(name "NC"
@@ -1418,6 +1418,24 @@
 					)
 				)
 			)
+			(pin passive line
+				(at 7.62 -43.18 90)
+				(length 2.54)
+				(name "EP"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "49"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
 			(pin power_in line
 				(at 5.08 -43.18 90)
 				(length 2.54) hide
@@ -1472,7 +1490,7 @@
 					)
 				)
 			)
-			(pin input line
+			(pin no_connect line
 				(at 0 -43.18 90)
 				(length 2.54) hide
 				(name "NC"

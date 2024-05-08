@@ -4139,7 +4139,7 @@
 						)
 					)
 				)
-				(pin input line
+				(pin no_connect line
 					(at 0 -43.18 90)
 					(length 2.54) hide
 					(name "NC"
@@ -4319,7 +4319,7 @@
 						)
 					)
 				)
-				(pin input line
+				(pin no_connect line
 					(at 0 -43.18 90)
 					(length 2.54) hide
 					(name "NC"
@@ -4445,7 +4445,7 @@
 						)
 					)
 				)
-				(pin input line
+				(pin no_connect line
 					(at 0 -43.18 90)
 					(length 2.54) hide
 					(name "NC"
@@ -4715,6 +4715,24 @@
 						)
 					)
 				)
+				(pin passive line
+					(at 7.62 -43.18 90)
+					(length 2.54)
+					(name "EP"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "49"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
 				(pin power_in line
 					(at 5.08 -43.18 90)
 					(length 2.54) hide
@@ -4769,7 +4787,7 @@
 						)
 					)
 				)
-				(pin input line
+				(pin no_connect line
 					(at 0 -43.18 90)
 					(length 2.54) hide
 					(name "NC"
@@ -5065,6 +5083,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "83812551-86eb-43d2-bbd2-f7788b38ea3d")
+	)
+	(junction
+		(at 193.04 142.24)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "8632d73c-d20f-411c-977a-ca6f707ddc6d")
 	)
 	(junction
 		(at 52.07 88.9)
@@ -6288,6 +6312,16 @@
 	)
 	(wire
 		(pts
+			(xy 86.36 186.69) (xy 88.9 186.69)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "62e92c2a-d4ab-4207-b2c3-0785cbfed036")
+	)
+	(wire
+		(pts
 			(xy 144.78 168.91) (xy 144.78 173.99)
 		)
 		(stroke
@@ -6325,6 +6359,16 @@
 			(type default)
 		)
 		(uuid "653a646f-5061-48c0-987f-35175c613868")
+	)
+	(wire
+		(pts
+			(xy 199.39 146.05) (xy 201.93 146.05)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "65673df6-6d42-4b63-a450-b459fb8ca99e")
 	)
 	(wire
 		(pts
@@ -6385,6 +6429,26 @@
 			(type default)
 		)
 		(uuid "6994c5cc-dc7e-4615-90de-ab61cc80a4b3")
+	)
+	(wire
+		(pts
+			(xy 201.93 146.05) (xy 201.93 142.24)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6eb0490f-c6d8-470c-8926-2f45e1fcb034")
+	)
+	(wire
+		(pts
+			(xy 194.31 146.05) (xy 193.04 146.05)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6fc77138-52ba-4b28-83cd-5e7846df8e3f")
 	)
 	(wire
 		(pts
@@ -6535,6 +6599,16 @@
 			(type default)
 		)
 		(uuid "7cfef7ea-bdb2-4615-8c0c-04efa8ef65b3")
+	)
+	(wire
+		(pts
+			(xy 193.04 146.05) (xy 193.04 142.24)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7d5086ba-8344-4fed-abae-7691edb14409")
 	)
 	(wire
 		(pts
@@ -7728,6 +7802,16 @@
 	)
 	(wire
 		(pts
+			(xy 193.04 142.24) (xy 194.31 142.24)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ea1d710e-ceb5-46b5-b4d4-f5b48c754799")
+	)
+	(wire
+		(pts
 			(xy 90.17 121.92) (xy 95.25 121.92)
 		)
 		(stroke
@@ -7868,7 +7952,7 @@
 	)
 	(wire
 		(pts
-			(xy 194.31 142.24) (xy 190.5 142.24)
+			(xy 190.5 142.24) (xy 193.04 142.24)
 		)
 		(stroke
 			(width 0)
@@ -8093,7 +8177,7 @@
 		)
 		(uuid "dcbfb311-375c-4c5b-a37e-2f6bf27ac6be")
 	)
-	(text "TODO: \n- Introduce butterfly socket footprint\n- Start assigning footprints\n"
+	(text "\n"
 		(exclude_from_sim no)
 		(at 204.724 171.704 0)
 		(effects
@@ -9554,7 +9638,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
 			(at 261.62 165.1 0)
 			(effects
 				(font
@@ -9573,6 +9657,41 @@
 			)
 		)
 		(property "Description" "test point"
+			(at 261.62 160.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Voltage Rating" ""
+			(at 261.62 160.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Store Link" ""
+			(at 261.62 160.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Dielectric (capacitors)" ""
+			(at 261.62 160.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "PN" ""
 			(at 261.62 160.02 0)
 			(effects
 				(font
@@ -10734,6 +10853,41 @@
 				(hide yes)
 			)
 		)
+		(property "Voltage Rating" ""
+			(at 261.62 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Store Link" ""
+			(at 261.62 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Dielectric (capacitors)" ""
+			(at 261.62 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "PN" ""
+			(at 261.62 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "c0d3f947-eeb5-468f-8188-01ff5c99d268")
 		)
@@ -10922,7 +11076,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
 			(at 261.62 127 0)
 			(effects
 				(font
@@ -10941,6 +11095,41 @@
 			)
 		)
 		(property "Description" "test point"
+			(at 261.62 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Voltage Rating" ""
+			(at 261.62 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Store Link" ""
+			(at 261.62 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Dielectric (capacitors)" ""
+			(at 261.62 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "PN" ""
 			(at 261.62 121.92 0)
 			(effects
 				(font
@@ -14795,6 +14984,109 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:NetTie_2")
+		(at 196.85 146.05 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(uuid "9f23f705-52f1-4dee-912f-14062de23441")
+		(property "Reference" "NT3"
+			(at 196.85 148.082 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "NetTie_2"
+			(at 196.85 148.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" "NetTie:NetTie-2_SMD_Pad0.5mm"
+			(at 196.85 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 196.85 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Net tie, 2 pins"
+			(at 196.85 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Voltage Rating" ""
+			(at 196.85 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Store Link" ""
+			(at 196.85 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Dielectric (capacitors)" ""
+			(at 196.85 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "PN" ""
+			(at 196.85 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "361c7707-c349-4654-a296-fb09dfc11a65")
+		)
+		(pin "2"
+			(uuid "a2e5a76d-fc0f-4da4-8bec-fbbc4b1aa811")
+		)
+		(instances
+			(project "LD-Driver"
+				(path "/aef12ca3-3d60-44eb-99b6-8bdd18a4b35c/07610737-0881-4cf5-871c-717695af83a2"
+					(reference "NT3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "PCM_Transistor_MOSFET_AKL:Q_NMOS-E_Generic_SSSGDDDD")
 		(at 80.01 45.72 0)
 		(unit 1)
@@ -15286,6 +15578,7 @@
 	(symbol
 		(lib_id "Device:R_Small")
 		(at 152.4 127 0)
+		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -15293,7 +15586,7 @@
 		(dnp no)
 		(uuid "b14000a0-f17a-4ff8-b4a1-f36e01dc9c3e")
 		(property "Reference" "R17"
-			(at 153.67 126.492 0)
+			(at 151.13 126.492 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15302,7 +15595,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 153.67 129.032 0)
+			(at 151.13 129.032 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16085,6 +16378,9 @@
 		)
 		(pin "20"
 			(uuid "5402f5a8-1251-4887-9db1-c2aa37afd829")
+		)
+		(pin "49"
+			(uuid "0f9d7e86-7cec-4c05-a4e6-f6291bf47e18")
 		)
 		(instances
 			(project "LD-Driver"
