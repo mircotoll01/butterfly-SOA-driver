@@ -1904,6 +1904,33 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Device" ""
+			(at 171.45 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 171.45 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 171.45 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "8"
 			(uuid "2eb9ce44-c923-4f83-8075-a9af8f1c7dcf")
 		)
@@ -1970,7 +1997,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 164.7952 58.42 0)
 			(effects
 				(font
@@ -1997,7 +2024,34 @@
 				(hide yes)
 			)
 		)
-		(property "Voltage Rating" "25V"
+		(property "Voltage Rating" "6V3"
+			(at 163.83 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 163.83 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 163.83 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
 			(at 163.83 54.61 0)
 			(effects
 				(font
@@ -2168,6 +2222,33 @@
 			)
 		)
 		(property "PN" ""
+			(at 140.97 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 140.97 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 140.97 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
 			(at 140.97 115.57 0)
 			(effects
 				(font
@@ -2430,7 +2511,7 @@
 			(uuid "1d5adecb-2476-416a-9cf8-dd64506caf54")
 		)
 		(pin "CTRL_H_DAC" input
-			(at 209.55 67.31 180)
+			(at 209.55 64.77 180)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2440,7 +2521,7 @@
 			(uuid "5f2f3adf-5321-4713-a889-5f9e128817b6")
 		)
 		(pin "CTRL_L_DAC" input
-			(at 209.55 64.77 180)
+			(at 209.55 67.31 180)
 			(effects
 				(font
 					(size 1.27 1.27)
