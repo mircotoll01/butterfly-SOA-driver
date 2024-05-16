@@ -10273,7 +10273,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 59.69 25.4 0)
 			(effects
 				(font
@@ -10327,7 +10327,7 @@
 				(hide yes)
 			)
 		)
-		(property "Voltage Rating" "25V"
+		(property "Voltage Rating" "6V3"
 			(at 59.69 25.4 0)
 			(effects
 				(font
@@ -12879,7 +12879,7 @@
 				(hide yes)
 			)
 		)
-		(property "Voltage Rating" "25V"
+		(property "Voltage Rating" "16V"
 			(at 110.49 151.13 0)
 			(effects
 				(font

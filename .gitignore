@@ -8,3 +8,6 @@ fp-lib-table
 # Ignore additional symbols' backups
 lib/symbols.bak 
 
+# for now ignore BOM files
+bom/*
+

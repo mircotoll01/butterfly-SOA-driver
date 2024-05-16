@@ -6111,7 +6111,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 146.05 50.8 0)
 			(effects
 				(font
@@ -6138,7 +6138,7 @@
 				(hide yes)
 			)
 		)
-		(property "Voltage Rating" "25V"
+		(property "Voltage Rating" "6V3"
 			(at 149.86 50.8 0)
 			(effects
 				(font
@@ -7730,7 +7730,7 @@
 				(hide yes)
 			)
 		)
-		(property "Voltage Rating" "25V"
+		(property "Voltage Rating" "16V"
 			(at 104.14 39.37 0)
 			(effects
 				(font
@@ -11673,7 +11673,7 @@
 				(hide yes)
 			)
 		)
-		(property "Voltage Rating" "25V"
+		(property "Voltage Rating" "16V"
 			(at 104.14 46.99 0)
 			(effects
 				(font
@@ -11817,7 +11817,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 170.18 67.31 0)
 			(effects
 				(font
@@ -11844,7 +11844,7 @@
 				(hide yes)
 			)
 		)
-		(property "Voltage Rating" "25V"
+		(property "Voltage Rating" "6V3"
 			(at 172.72 71.12 0)
 			(effects
 				(font
@@ -11871,6 +11871,33 @@
 			)
 		)
 		(property "Sim.Type" ""
+			(at 170.18 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Store Link" ""
+			(at 170.18 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Dielectric (capacitors)" ""
+			(at 170.18 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "PN" ""
 			(at 170.18 67.31 0)
 			(effects
 				(font
@@ -12273,7 +12300,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 201.93 59.69 0)
 			(effects
 				(font
@@ -12300,7 +12327,7 @@
 				(hide yes)
 			)
 		)
-		(property "Voltage Rating" "25V"
+		(property "Voltage Rating" "6V3"
 			(at 206.248 59.69 0)
 			(effects
 				(font
@@ -12327,6 +12354,33 @@
 			)
 		)
 		(property "Sim.Type" ""
+			(at 201.93 59.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Store Link" ""
+			(at 201.93 59.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Dielectric (capacitors)" ""
+			(at 201.93 59.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "PN" ""
 			(at 201.93 59.69 0)
 			(effects
 				(font
@@ -12777,7 +12831,7 @@
 		(dnp no)
 		(uuid "f7e89c9f-3249-4e87-ad96-811834bab0e3")
 		(property "Reference" "C43"
-			(at 135.382 66.802 0)
+			(at 134.366 66.802 0)
 			(effects
 				(font
 					(size 1.27 1.27)
