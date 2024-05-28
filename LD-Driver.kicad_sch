@@ -1124,7 +1124,7 @@
 	)
 	(wire
 		(pts
-			(xy 135.89 115.57) (xy 120.65 115.57)
+			(xy 135.89 110.49) (xy 120.65 110.49)
 		)
 		(stroke
 			(width 0)
@@ -1364,7 +1364,7 @@
 	)
 	(wire
 		(pts
-			(xy 135.89 110.49) (xy 120.65 110.49)
+			(xy 135.89 115.57) (xy 120.65 115.57)
 		)
 		(stroke
 			(width 0)
@@ -1414,7 +1414,7 @@
 	)
 	(wire
 		(pts
-			(xy 135.89 107.95) (xy 120.65 107.95)
+			(xy 135.89 118.11) (xy 120.65 118.11)
 		)
 		(stroke
 			(width 0)
@@ -1487,7 +1487,7 @@
 		(uuid "1c9a6374-3a98-4e31-8e61-63520cee70cd")
 	)
 	(label "SCL"
-		(at 120.65 115.57 0)
+		(at 120.65 110.49 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1586,7 +1586,7 @@
 		(uuid "9b17f9be-70e8-492a-9edf-916da74431b6")
 	)
 	(label "~{LDAC}"
-		(at 120.65 110.49 0)
+		(at 120.65 115.57 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1652,7 +1652,7 @@
 		(uuid "d25d6658-cf25-436e-92f8-12f302354808")
 	)
 	(label "RDY/~{BSY}"
-		(at 120.65 107.95 0)
+		(at 120.65 118.11 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1791,7 +1791,6 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "462e7cba-e595-4816-be82-4cae89e4528a")
 		(property "Reference" "#PWR05"
 			(at 163.83 64.77 0)
@@ -1803,7 +1802,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 163.83 63.5 0)
+			(at 160.274 60.452 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2310,8 +2309,7 @@
 	)
 	(symbol
 		(lib_id "power:+3V3")
-		(at 135.89 118.11 90)
-		(mirror x)
+		(at 135.89 107.95 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2319,7 +2317,7 @@
 		(dnp no)
 		(uuid "78ff9876-5706-4366-92f8-5118331d7ae3")
 		(property "Reference" "#PWR01"
-			(at 139.7 118.11 0)
+			(at 139.7 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2328,7 +2326,7 @@
 			)
 		)
 		(property "Value" "+3V3"
-			(at 130.302 118.11 90)
+			(at 130.302 107.95 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2336,7 +2334,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 135.89 118.11 0)
+			(at 135.89 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2345,7 +2343,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 135.89 118.11 0)
+			(at 135.89 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2354,7 +2352,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3V3\""
-			(at 135.89 118.11 0)
+			(at 135.89 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
