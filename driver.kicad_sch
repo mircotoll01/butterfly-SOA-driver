@@ -17903,8 +17903,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "50m"
-			(at 117.856 138.684 90)
+		(property "Value" "200m"
+			(at 118.364 138.684 90)
 			(effects
 				(font
 					(size 1.27 1.27)

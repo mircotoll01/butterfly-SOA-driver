@@ -1,6 +1,4 @@
 (sym_lib_table
   (version 7)
   (lib (name "symbols")(type "KiCad")(uri "${KIPRJMOD}/lib/symbols.kicad_sym")(options "")(descr ""))
-  (lib (name "FPGA_Xilinx_Artix7")(type "KiCad")(uri "${KIPRJMOD}/lib/FPGA_Xilinx_Artix7.kicad_sym")(options "")(descr ""))
-  (lib (name "Driver_TEC")(type "KiCad")(uri "${KIPRJMOD}/lib/Driver_TEC.kicad_sym")(options "")(descr ""))
 )
