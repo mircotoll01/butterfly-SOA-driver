@@ -11,3 +11,6 @@ lib/symbols.bak
 # for now ignore BOM files
 bom/*
 
+# ...and gerber files
+gerber/*
+gerber.zip

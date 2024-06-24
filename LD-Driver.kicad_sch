@@ -1442,17 +1442,6 @@
 		)
 		(uuid "f954a006-f901-4ac6-ac0a-e599c9dce105")
 	)
-	(text "TODO:\n- DAC implementation"
-		(exclude_from_sim no)
-		(at 206.756 170.18 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "af7aab78-c258-4396-b9f3-cac6f70d6391")
-	)
 	(label "CTRL_SEL"
 		(at 163.83 110.49 180)
 		(fields_autoplaced yes)
@@ -1930,6 +1919,24 @@
 				(hide yes)
 			)
 		)
+		(property "PN" " MCP4728-E/UN "
+			(at 171.45 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Store Link" "https://www.mouser.it/ProductDetail/Microchip-Technology/MCP4728-E-UN?qs=E6wAi2XWqcP2zTenScklGA%3D%3D"
+			(at 171.45 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "8"
 			(uuid "2eb9ce44-c923-4f83-8075-a9af8f1c7dcf")
 		)
@@ -2059,6 +2066,24 @@
 				(hide yes)
 			)
 		)
+		(property "PN" " CL10B104KB8NNND "
+			(at 163.83 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Store Link" "https://www.mouser.it/ProductDetail/Samsung-Electro-Mechanics/CL10B104KB8NNND?qs=349EhDEZ59pgcFJT%2FYAROA%3D%3D"
+			(at 163.83 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "0785ec3f-d442-4ea6-8d6f-816a5b571a1d")
 		)
@@ -2146,7 +2171,7 @@
 		(at 140.97 115.57 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)

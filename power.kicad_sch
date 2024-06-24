@@ -6312,6 +6312,24 @@
 				(hide yes)
 			)
 		)
+		(property "PN" " CL10B104KB8NNND "
+			(at 132.08 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Store Link" "https://www.mouser.it/ProductDetail/Samsung-Electro-Mechanics/CL10B104KB8NNND?qs=349EhDEZ59pgcFJT%2FYAROA%3D%3D"
+			(at 132.08 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "25706e69-2a7f-46c3-b8ac-cc86ed764d76")
 		)
@@ -6391,7 +6409,7 @@
 				(hide yes)
 			)
 		)
-		(property "Store Link" ""
+		(property "Store Link" "https://www.mouser.it/ProductDetail/Samsung-Electro-Mechanics/CL21F104ZBANNNC?qs=X6jEic%2FHinD8qPH2gRTTkg%3D%3D"
 			(at 198.12 62.23 0)
 			(effects
 				(font
@@ -6409,7 +6427,7 @@
 				(hide yes)
 			)
 		)
-		(property "PN" ""
+		(property "PN" "CL21F104ZBANNNC "
 			(at 198.12 62.23 0)
 			(effects
 				(font
@@ -6746,6 +6764,24 @@
 				(hide yes)
 			)
 		)
+		(property "PN" " TMK212BBJ106MG-T "
+			(at 39.37 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Store Link" "https://www.mouser.it/ProductDetail/TAIYO-YUDEN/TMK212BBJ106MG-T?qs=lkMpTOwszhd%2F%252Bg1AlFV9dw%3D%3D"
+			(at 39.37 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "43f02e51-8b2e-44dd-b095-f11a968d398d")
 		)
@@ -6823,7 +6859,7 @@
 				)
 			)
 		)
-		(property "Store Link" ""
+		(property "Store Link" "https://www.mouser.it/ProductDetail/Renesas-Electronics/RJK0355DSP-00J0?qs=ZVKuL1Ob8AsOeHAZ3bvOkA%3D%3D"
 			(at 140.97 48.26 0)
 			(effects
 				(font
@@ -6841,7 +6877,7 @@
 				(hide yes)
 			)
 		)
-		(property "PN" ""
+		(property "PN" "RJK0355DSP"
 			(at 140.97 48.26 0)
 			(effects
 				(font
@@ -7100,7 +7136,7 @@
 				(hide yes)
 			)
 		)
-		(property "Store Link" ""
+		(property "Store Link" "https://www.mouser.it/ProductDetail/Wurth-Elektronik/885012207078?qs=0KOYDY2FL2%252BPiA0twQIXxQ%3D%3D"
 			(at 45.72 54.61 0)
 			(effects
 				(font
@@ -7118,7 +7154,7 @@
 				(hide yes)
 			)
 		)
-		(property "PN" ""
+		(property "PN" "885012207078 "
 			(at 45.72 54.61 0)
 			(effects
 				(font
@@ -7234,7 +7270,7 @@
 				(hide yes)
 			)
 		)
-		(property "Store Link" ""
+		(property "Store Link" "https://www.mouser.it/ProductDetail/KEMET/EEV337M025S9MAA?qs=E9QF1UCAUX7qXVZn7Vw13Q%3D%3D"
 			(at 217.17 62.23 0)
 			(effects
 				(font
@@ -7321,7 +7357,7 @@
 				)
 			)
 		)
-		(property "Value" "10k"
+		(property "Value" "1k"
 			(at 182.372 72.644 0)
 			(effects
 				(font
@@ -7375,6 +7411,24 @@
 			)
 		)
 		(property "Sim.Type" ""
+			(at 179.07 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "PN" " RC0603FR-7W1KL "
+			(at 179.07 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Store Link" "https://www.mouser.it/ProductDetail/YAGEO/RC0603FR-7W1KL?qs=tggtontpCXMvQ%2FyOJmz2GQ%3D%3D"
 			(at 179.07 71.12 0)
 			(effects
 				(font
@@ -7563,6 +7617,15 @@
 				(hide yes)
 			)
 		)
+		(property "Store Link" "https://www.mouser.it/ProductDetail/KEMET/EEV337M025S9MAA?qs=E9QF1UCAUX7qXVZn7Vw13Q%3D%3D"
+			(at 223.52 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "af9db239-f502-4265-89b9-d0629273c87e")
 		)
@@ -7583,7 +7646,7 @@
 		(at 190.5 132.08 270)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "217b28d6-3b74-424e-b207-4c72c481c140")
@@ -7713,7 +7776,7 @@
 		(at 256.54 33.02 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
@@ -7727,7 +7790,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "Conn_01x02"
+		(property "Value" "5V EXT"
 			(at 259.08 35.5599 0)
 			(effects
 				(font
@@ -7906,6 +7969,24 @@
 				(hide yes)
 			)
 		)
+		(property "PN" "EDK227M025A9MAA"
+			(at 33.02 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Store Link" "https://www.mouser.it/ProductDetail/KEMET/EDK227M025A9MAA?qs=yID0DEbBT%252Bm%2F7VW9YTJGzQ%3D%3D"
+			(at 33.02 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "c63fff7a-9fd2-4cd4-9206-ece832913493")
 		)
@@ -8011,6 +8092,24 @@
 				(hide yes)
 			)
 		)
+		(property "PN" " C1608X5R1E475K080AC "
+			(at 90.17 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Store Link" "https://www.mouser.it/ProductDetail/TDK/C1608X5R1E475K080AC?qs=dfay7wIA1uHUGZGvnFtOyQ%3D%3D"
+			(at 90.17 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "a5591f1d-5825-4a42-a4f0-c5e49501ffbd")
 		)
@@ -8098,7 +8197,7 @@
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "4941ae8e-e3ae-4d64-b7f0-600b53cd5814")
@@ -8919,7 +9018,7 @@
 				(hide yes)
 			)
 		)
-		(property "Store Link" ""
+		(property "Store Link" "https://www.mouser.it/ProductDetail/Samsung-Electro-Mechanics/CL21F104ZBANNNC?qs=X6jEic%2FHinD8qPH2gRTTkg%3D%3D"
 			(at 52.07 54.61 0)
 			(effects
 				(font
@@ -8937,7 +9036,7 @@
 				(hide yes)
 			)
 		)
-		(property "PN" ""
+		(property "PN" "CL21F104ZBANNNC "
 			(at 52.07 54.61 0)
 			(effects
 				(font
@@ -9174,7 +9273,7 @@
 				(hide yes)
 			)
 		)
-		(property "PN" "EEV337M025S9MAA"
+		(property "PN" "EDH105M050A9BAA"
 			(at 85.09 156.21 0)
 			(effects
 				(font
@@ -9192,7 +9291,7 @@
 				(hide yes)
 			)
 		)
-		(property "Store Link" ""
+		(property "Store Link" "https://www.mouser.it/ProductDetail/KEMET/EDH105M050A9BAA?qs=E9QF1UCAUX56DBSFGzxVeg%3D%3D"
 			(at 85.09 156.21 0)
 			(effects
 				(font
@@ -9384,7 +9483,7 @@
 		(at 190.5 135.89 270)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "8294e085-366a-4d6d-a376-0b734bb282bb")
@@ -9590,7 +9689,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "100k"
+		(property "Value" "10k"
 			(at 168.148 63.754 0)
 			(effects
 				(font
@@ -9599,7 +9698,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "PCM_Potentiometer_SMD_AKL:Potentiometer_Bourns_3214W_Vertical"
+		(property "Footprint" "PCM_Potentiometer_SMD_AKL:Potentiometer_Bourns_3224X_Vertical"
 			(at 173.99 62.23 0)
 			(effects
 				(font
@@ -9634,7 +9733,7 @@
 				)
 			)
 		)
-		(property "Store Link" ""
+		(property "Store Link" "https://www.mouser.it/ProductDetail/Bourns/3224X-1-103E?qs=r%252B5EJQndA0rIAjwsj55AfA%3D%3D"
 			(at 173.99 62.23 0)
 			(effects
 				(font
@@ -9652,7 +9751,7 @@
 				(hide yes)
 			)
 		)
-		(property "PN" ""
+		(property "PN" " 3224X-1-103E "
 			(at 173.99 62.23 0)
 			(effects
 				(font
@@ -9843,7 +9942,7 @@
 		(at 190.5 139.7 270)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "99e67ee8-bd2a-47bb-87d5-f261cfa1e95c")
@@ -9951,7 +10050,7 @@
 				)
 			)
 		)
-		(property "Value" "100k"
+		(property "Value" "5k6"
 			(at 182.626 63.754 0)
 			(effects
 				(font
@@ -10005,6 +10104,24 @@
 			)
 		)
 		(property "Sim.Type" ""
+			(at 179.07 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "PN" " CRCW06035K60FKEA "
+			(at 179.07 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Store Link" "https://www.mouser.it/ProductDetail/Vishay-Dale/CRCW06035K60FKEA?qs=%2FAtLfjUBFoX1vHGCl0oHag%3D%3D"
 			(at 179.07 62.23 0)
 			(effects
 				(font
@@ -10118,6 +10235,24 @@
 				(hide yes)
 			)
 		)
+		(property "PN" "EDK227M025A9MAA"
+			(at 26.67 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Store Link" "https://www.mouser.it/ProductDetail/KEMET/EDK227M025A9MAA?qs=yID0DEbBT%252Bm%2F7VW9YTJGzQ%3D%3D"
+			(at 26.67 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "71901327-417f-41b0-bdad-5f896ddfc046")
 		)
@@ -10213,6 +10348,24 @@
 				(hide yes)
 			)
 		)
+		(property "PN" "CRCW060310K0FKEC "
+			(at 63.5 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Store Link" "https://www.mouser.it/ProductDetail/Vishay-Dale/CRCW060310K0FKEC?qs=DhCTQV%252BB7kVUX5brQUG3LA%3D%3D"
+			(at 63.5 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "4504c404-a003-4a4d-a1d5-9882531dbdd2")
 		)
@@ -10291,7 +10444,7 @@
 				)
 			)
 		)
-		(property "Store Link" ""
+		(property "Store Link" "https://www.mouser.it/ProductDetail/Renesas-Electronics/RJK0355DSP-00J0?qs=ZVKuL1Ob8AsOeHAZ3bvOkA%3D%3D"
 			(at 140.97 66.04 0)
 			(effects
 				(font
@@ -10309,7 +10462,7 @@
 				(hide yes)
 			)
 		)
-		(property "PN" ""
+		(property "PN" "RJK0355DSP"
 			(at 140.97 66.04 0)
 			(effects
 				(font
@@ -10384,7 +10537,7 @@
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "9f345529-a9d0-4517-9283-497a7f97d23a")
@@ -10630,6 +10783,24 @@
 				(hide yes)
 			)
 		)
+		(property "PN" " TMK212BBJ106MG-T "
+			(at 210.82 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Store Link" "https://www.mouser.it/ProductDetail/TAIYO-YUDEN/TMK212BBJ106MG-T?qs=lkMpTOwszhd%2F%252Bg1AlFV9dw%3D%3D"
+			(at 210.82 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "e27a74df-18e7-4a39-9e73-e52f8e4b4c06")
 		)
@@ -10662,7 +10833,7 @@
 				)
 			)
 		)
-		(property "Value" "1PS76SB21"
+		(property "Value" "BAT54"
 			(at 109.728 36.576 0)
 			(effects
 				(font
@@ -10697,15 +10868,16 @@
 				(hide yes)
 			)
 		)
-		(property "Voltage Rating" ""
-			(at 109.22 39.37 0)
+		(property "Voltage Rating" "30V"
+			(at 109.474 39.624 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(hide yes)
 			)
 		)
-		(property "Store Link" ""
+		(property "Store Link" "https://www.mouser.it/ProductDetail/Diotec-Semiconductor/BAT54WS?qs=OlC7AqGiEDky6b8%2FWvhBfg%3D%3D"
 			(at 109.22 39.37 0)
 			(effects
 				(font
@@ -10723,7 +10895,7 @@
 				(hide yes)
 			)
 		)
-		(property "PN" ""
+		(property "PN" "BAT54"
 			(at 109.22 39.37 0)
 			(effects
 				(font
@@ -10838,7 +11010,7 @@
 				(hide yes)
 			)
 		)
-		(property "Store Link" ""
+		(property "Store Link" "https://www.mouser.it/ProductDetail/Wurth-Elektronik/885012207078?qs=0KOYDY2FL2%252BPiA0twQIXxQ%3D%3D"
 			(at 204.47 62.23 0)
 			(effects
 				(font
@@ -10856,7 +11028,7 @@
 				(hide yes)
 			)
 		)
-		(property "PN" ""
+		(property "PN" "885012207078 "
 			(at 204.47 62.23 0)
 			(effects
 				(font
@@ -10971,7 +11143,7 @@
 				)
 			)
 		)
-		(property "Store Link" ""
+		(property "Store Link" "https://www.mouser.it/ProductDetail/Diotec-Semiconductor/2N7002?qs=OlC7AqGiEDmcCpiykpS%252BnA%3D%3D"
 			(at 59.69 63.5 0)
 			(effects
 				(font
@@ -10989,7 +11161,7 @@
 				(hide yes)
 			)
 		)
-		(property "PN" ""
+		(property "PN" "2N7002"
 			(at 59.69 63.5 0)
 			(effects
 				(font
@@ -11103,7 +11275,7 @@
 				)
 			)
 		)
-		(property "Store Link" ""
+		(property "Store Link" "https://www.mouser.it/ProductDetail/Microchip-Technology/MIC2101YML-TR?qs=Y3Q3JoKAO1RzZr%252Bkg0HGSA%3D%3D"
 			(at 109.22 54.61 0)
 			(effects
 				(font
@@ -11121,7 +11293,7 @@
 				(hide yes)
 			)
 		)
-		(property "PN" ""
+		(property "PN" " MIC2101YML-TR "
 			(at 109.22 54.61 0)
 			(effects
 				(font
@@ -11429,6 +11601,24 @@
 				(hide yes)
 			)
 		)
+		(property "PN" "CRCW06032K20FKEA"
+			(at 57.15 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Store Link" "https://www.mouser.it/ProductDetail/Vishay-Dale/CRCW06032K20FKEA?qs=wckIcdUuIXiMEbhHncbunA%3D%3D"
+			(at 57.15 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "2460496f-6760-4406-9ff1-079c5893c8a3")
 		)
@@ -11579,7 +11769,7 @@
 		(at 57.15 73.66 90)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "c6390df0-f4b5-4848-bb18-ef0a009f9dbd")
@@ -11777,6 +11967,24 @@
 			)
 		)
 		(property "Sim.Type" ""
+			(at 77.47 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "PN" "RC0603FR-10100KL"
+			(at 77.47 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Store Link" "https://www.mouser.it/ProductDetail/YAGEO/RC0603FR-10100KL?qs=EiqXWrxQq61ZH6Ig%2FQCCjQ%3D%3D"
 			(at 77.47 54.61 0)
 			(effects
 				(font
@@ -12020,6 +12228,24 @@
 				(hide yes)
 			)
 		)
+		(property "PN" " C1608X5R1E475K080AC "
+			(at 90.17 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Store Link" "https://www.mouser.it/ProductDetail/TDK/C1608X5R1E475K080AC?qs=dfay7wIA1uHUGZGvnFtOyQ%3D%3D"
+			(at 90.17 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "c9b99cf3-00a9-43b9-80a0-c1db7943b967")
 		)
@@ -12172,7 +12398,7 @@
 		(at 156.21 69.85 180)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "e1f5f33f-4343-4a12-b2d0-ea0f77e18c9d")
@@ -12256,7 +12482,7 @@
 				(hide yes)
 			)
 		)
-		(property "Store Link" ""
+		(property "Store Link" "https://www.mouser.it/ProductDetail/Samsung-Electro-Mechanics/CL10B104KB8NNND?qs=349EhDEZ59pgcFJT%2FYAROA%3D%3D"
 			(at 156.21 69.85 0)
 			(effects
 				(font
@@ -12274,7 +12500,7 @@
 				(hide yes)
 			)
 		)
-		(property "PN" ""
+		(property "PN" " CL10B104KB8NNND "
 			(at 156.21 69.85 0)
 			(effects
 				(font
@@ -12560,7 +12786,7 @@
 		(at 190.5 128.27 270)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "ed28635f-5f67-4898-8fa9-49ddeca8e627")
@@ -12739,7 +12965,7 @@
 				(hide yes)
 			)
 		)
-		(property "Store Link" ""
+		(property "Store Link" "https://www.mouser.it/ProductDetail/Samsung-Electro-Mechanics/CL10B104KB8NNND?qs=349EhDEZ59pgcFJT%2FYAROA%3D%3D"
 			(at 187.96 62.23 0)
 			(effects
 				(font
@@ -12757,7 +12983,7 @@
 				(hide yes)
 			)
 		)
-		(property "PN" ""
+		(property "PN" " CL10B104KB8NNND "
 			(at 187.96 62.23 0)
 			(effects
 				(font
@@ -13034,7 +13260,7 @@
 				)
 			)
 		)
-		(property "Store Link" ""
+		(property "Store Link" "https://www.mouser.it/ProductDetail/TAIYO-YUDEN/NRS8040T220MJGJ?qs=PzICbMaShUfBQRmzxHhTQw%3D%3D"
 			(at 163.83 57.15 0)
 			(effects
 				(font
@@ -13183,6 +13409,24 @@
 				(hide yes)
 			)
 		)
+		(property "PN" "CRCW060310K0FKEC "
+			(at 69.85 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Store Link" "https://www.mouser.it/ProductDetail/Vishay-Dale/CRCW060310K0FKEC?qs=DhCTQV%252BB7kVUX5brQUG3LA%3D%3D"
+			(at 69.85 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "8d8dd17d-8ae4-4dad-96cc-7f90d1a9ba8c")
 		)
@@ -13279,6 +13523,24 @@
 			)
 		)
 		(property "Sim.Type" ""
+			(at 124.46 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "PN" "CL21F104ZBANNNC "
+			(at 124.46 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Store Link" "https://www.mouser.it/ProductDetail/Samsung-Electro-Mechanics/CL21F104ZBANNNC?qs=X6jEic%2FHinD8qPH2gRTTkg%3D%3D"
 			(at 124.46 71.12 0)
 			(effects
 				(font
