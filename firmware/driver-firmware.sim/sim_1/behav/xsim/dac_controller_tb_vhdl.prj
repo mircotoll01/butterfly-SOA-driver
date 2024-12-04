@@ -1,0 +1,8 @@
+# compile vhdl design source files
+vhdl xil_defaultlib  \
+"../../../../Driver_Firmware.srcs/sources_1/new/DAC_Controller.vhd" \
+"../../../../Driver_Firmware.srcs/sources_1/new/I2C_master.vhd" \
+"../../../../Driver_Firmware.srcs/sim_1/new/dac_testbench.vhd" \
+
+# Do not sort compile order
+nosort

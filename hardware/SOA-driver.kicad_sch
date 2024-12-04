@@ -5,7 +5,7 @@
 	(uuid "aef12ca3-3d60-44eb-99b6-8bdd18a4b35c")
 	(paper "A4")
 	(title_block
-		(title "Laser Diode Driver")
+		(title "SOA Driver Board")
 		(date "2024-03-27")
 		(comment 1 "Mirco Tollardo")
 	)
@@ -2634,7 +2634,7 @@
 			(uuid "41dfeb0d-5da5-49c5-8ddb-8a957e8f8ca7")
 		)
 		(instances
-			(project "LD-Driver"
+			(project "SOA-driver"
 				(path "/aef12ca3-3d60-44eb-99b6-8bdd18a4b35c"
 					(page "2")
 				)
@@ -2676,7 +2676,7 @@
 			)
 		)
 		(instances
-			(project "LD-Driver"
+			(project "SOA-driver"
 				(path "/aef12ca3-3d60-44eb-99b6-8bdd18a4b35c"
 					(page "3")
 				)
