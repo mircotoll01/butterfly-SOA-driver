@@ -26,13 +26,13 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity I2C_Master is
     Port (
-        clk      : in  std_logic;
-        reset    : in  std_logic;
-        start_tx : in  std_logic;                       -- external blocks will start transmission
-        payload  : in  std_logic_vector(47 downto 0);  
-        sda      : inout std_logic;
-        scl      : out std_logic;
-        n_ldac   : out std_logic
+        clk         : in  std_logic;
+        reset       : in  std_logic;
+        start_tx    : in  std_logic;                       -- external blocks will start transmission
+        I2C_payload : in  std_logic_vector(47 downto 0);  
+        sda         : inout std_logic;
+        scl         : out std_logic;
+        n_ldac      : out std_logic
     );
 end I2C_Master;
 
@@ -87,7 +87,7 @@ begin
 
                 when Address =>
                     if bit_counter < 8 then
-                        sda_out     <= payload(47 - bit_counter);
+                        sda_out     <= I2C_payload(47 - bit_counter);
                         bit_counter <= bit_counter + 1;
                     else
                         bit_counter <= 0;
@@ -104,6 +104,7 @@ begin
                     if scl_reg = '1' then
                         sda_out     <= '1';     -- Stop condition: SDA goes high with SCL high
                         state       <= Idle;
+                        n_ldac  <= '1';
                     end if;
 
                 when others =>
