@@ -490,7 +490,7 @@
     ]
   },
   "meta": {
-    "filename": "LD-Driver.kicad_pro",
+    "filename": "SOA-driver.kicad_pro",
     "version": 1
   },
   "net_settings": {
@@ -697,11 +697,19 @@
     ],
     [
       "0cf54d10-df79-4134-a1a5-0b62e168ff1c",
-      "Power"
+      "5V DCDC converter"
+    ],
+    [
+      "9a05be4d-3a9d-469a-8e61-6949b36a14c9",
+      "TEC controller"
+    ],
+    [
+      "b8096563-2aa1-42a7-b303-2d7d794c80ce",
+      "From Basys3"
     ],
     [
       "07610737-0881-4cf5-871c-717695af83a2",
-      "Driver"
+      "SOA Driver"
     ]
   ],
   "text_variables": {}

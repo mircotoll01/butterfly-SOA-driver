@@ -111,7 +111,7 @@
 						(type default)
 					)
 					(fill
-						(type none)
+						(type outline)
 					)
 				)
 				(arc
@@ -123,7 +123,7 @@
 						(type default)
 					)
 					(fill
-						(type outline)
+						(type none)
 					)
 				)
 				(polyline
@@ -2079,7 +2079,7 @@
 						(type default)
 					)
 					(fill
-						(type none)
+						(type outline)
 					)
 				)
 				(arc
@@ -2091,7 +2091,7 @@
 						(type default)
 					)
 					(fill
-						(type outline)
+						(type none)
 					)
 				)
 				(polyline
@@ -2653,7 +2653,7 @@
 				)
 				(polyline
 					(pts
-						(xy 2.54 2.54) (xy 2.54 0) (xy 0.762 0)
+						(xy 2.54 2.54) (xy 7.62 2.54)
 					)
 					(stroke
 						(width 0)
@@ -2665,7 +2665,7 @@
 				)
 				(polyline
 					(pts
-						(xy 2.54 2.54) (xy 7.62 2.54)
+						(xy 2.54 2.54) (xy 2.54 0) (xy 0.762 0)
 					)
 					(stroke
 						(width 0)
