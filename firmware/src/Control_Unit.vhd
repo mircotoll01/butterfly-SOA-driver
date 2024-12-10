@@ -38,8 +38,8 @@ entity Control_Unit is
         clk                 : in std_logic;
         overtemp_alarm      : in std_logic;
         undertemp_alarm     : in std_logic;
-        CTRL_L              : in std_logic;
-        CTRL_H              : in std_logic;
+        CTRL_L              : in real;
+        CTRL_H              : in real;
         PWM_DC              : in std_logic;
         Modulation_type     : in std_logic;
         
@@ -75,8 +75,8 @@ architecture Structural of Control_Unit is
         Port (
             clk         : in std_logic;                      
             reset       : in std_logic;                      
-            JXADC       : in std_logic_vector(1 downto 0);   -- Pin analogici VP e VN
-            digital_out : out std_logic_vector(15 downto 0); -- Valore raw
+            JXADC       : in std_logic_vector(1 downto 0);   -- Analog pins VP and VN
+            digital_out : out std_logic_vector(15 downto 0); -- Raw value
             eoc         : out std_logic;                        
             eos         : out std_logic
         );
