@@ -55,7 +55,7 @@ begin
     process(clk)
     begin
         if rising_edge(clk) then
-            if scl_div = 499 then           -- Divider per 100 kHz (a clock of clock 100 MHz)
+            if scl_div = 499 then           -- 100 kHz divider (with a clock of 50 MHz)
                 scl_div <= 0;
                 scl_reg <= not scl_reg;
             else

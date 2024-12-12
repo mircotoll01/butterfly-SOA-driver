@@ -34,7 +34,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity modulator is
     Port ( 
         clk             : in std_logic;
-        duty_cycle      : in integer;
+        duty_cycle      : in real;
         mod_sel         : in std_logic_vector(1 downto 0);      -- 00 = driver disabled, 01 = pwm mode, 10 = double threshold mode
         soa_en          : out std_logic;
         ctrl_sel        : buffer std_logic;

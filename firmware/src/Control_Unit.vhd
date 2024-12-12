@@ -36,14 +36,11 @@ entity Control_Unit is
         --Inputs
         reset               : in std_logic;
         clk                 : in std_logic;
+        uart_rx             : in std_logic;
         overtemp_alarm      : in std_logic;
         undertemp_alarm     : in std_logic;
-        ctrl_l              : in real;
-        ctrl_h              : in real;
-        tec_set_t           : in real;
-        tec_maxv            : in real;
-        duty_cylce          : in integer;
-        
+        JXADC               : in std_logic_vector(1 downto 0);
+                
         --Outputs
         ctrl_sel_pwm        : buffer std_logic;
         soa_pwm             : buffer std_logic;
@@ -58,9 +55,13 @@ architecture Structural of Control_Unit is
     signal start_tx         : std_logic;
     
     -- signals for mudulation and controls
-    signal duty_cycle       : integer;
     signal mod_sel          : std_logic_vector(1 downto 0);
     signal soa_en           : std_logic;
+    signal ctrl_l           : real;
+    signal ctrl_h           : real;
+    signal setpoint         : real;
+    signal tec_maxv         : real;
+    signal duty_cycle       : integer;
     
     -- signals for the ADC
     signal ISOA_raw         : std_logic_vector(15 downto 0);
@@ -73,7 +74,7 @@ architecture Structural of Control_Unit is
             ctrl_h          : in real;
             ctrl_l          : in real;
             tec_maxv        : in real;
-            tec_set_t       : in real;
+            setpoint        : in real;
             I2C_payload     : out std_logic_vector(47 downto 0)
         );
     end component;
@@ -113,47 +114,76 @@ architecture Structural of Control_Unit is
             pwm             : buffer std_logic
         );
     end component;
+    
+    -- component for UART communication
+    component UART_decoder
+        Port (
+            clk          : in std_logic;
+            reset        : in std_logic;
+            rx           : in std_logic;
+            duty_cycle   : out integer;  
+            ctrl_l       : out real;
+            ctrl_h       : out real;
+            tec_maxv     : out real;
+            setpoint     : out real;                                  
+            command      : out std_logic_vector(1 downto 0)
+        );
+    end component;
 
 begin
     -- i2c blocks
-    i2c_gen_inst: MCP4728_payload_generator
+    i2c_gen: MCP4728_payload_generator
         Port map (
-            ctrl_l      => ctrl_l,
-            ctrl_h      => ctrl_h,
-            tec_maxv    => tec_maxv,
-            tec_set_t   => tec_set_t,
-            I2C_payload => payload  
+            ctrl_l          => ctrl_l,
+            ctrl_h          => ctrl_h,
+            tec_maxv        => tec_maxv,
+            setpoint        => setpoint,
+            I2C_payload     => payload  
         );
         
-    i2c_inst : I2C_Master
+    i2cmaster : I2C_Master
         Port map (
-            clk         => clk,
-            reset       => reset,
-            start_tx    => start_tx,
-            I2C_payload => payload
+            clk             => clk,
+            reset           => reset,
+            start_tx        => start_tx,
+            I2C_payload     => payload
         );
     
     -- modulation and control block
-    mod_inst : modulator
+    modulator_block : modulator
         Port map (
-            clk         => clk,
-            duty_cycle  => duty_cycle, 
-            mod_sel     => mod_sel,
-            soa_en      => soa_en,
-            ctrl_sel    => ctrl_sel_pwm,
-            pwm         => soa_pwm
+            clk             => clk,
+            duty_cycle      => duty_cycle, 
+            mod_sel         => mod_sel,
+            soa_en          => soa_en,
+            ctrl_sel        => ctrl_sel_pwm,
+            pwm             => soa_pwm
         );
         
     -- other blocks
-    adc_inst : Reader
+    adc_reader : Reader
         Port map (
-            clk         => clk,
-            reset       => reset,
-            digital_out => ISOA_raw,
-            eoc         => eoc,
-            eos         => eos
+            clk             => clk,
+            reset           => reset,
+            JXADC           => JXADC,
+            digital_out     => ISOA_raw,
+            eoc             => eoc,
+            eos             => eos
         );
     
+    -- uart communication block
+    decoder : UART_decoder
+        Port map(
+            clk             => clk,
+            reset           => reset,
+            rx              => uart_rx,
+            duty_cycle      => duty_cycle,  
+            ctrl_l          => ctrl_l,
+            ctrl_h          => ctrl_h,
+            tec_maxv        => tec_maxv,
+            setpoint        => setpoint,                                  
+            command         => mod_sel
+        );
     -- over/under-temperature response for butterfly SOA
      process(overtemp_alarm, undertemp_alarm)
      begin

@@ -36,7 +36,7 @@ entity MCP4728_payload_generator is
         ctrl_h      : in real;
         ctrl_l      : in real;
         tec_maxv    : in real;
-        tec_set_t   : in real;
+        setpoint    : in real;
         I2C_payload : out std_logic_vector(47 downto 0)
     );
 end MCP4728_payload_generator;

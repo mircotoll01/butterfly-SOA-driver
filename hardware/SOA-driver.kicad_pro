@@ -704,12 +704,12 @@
       "TEC controller"
     ],
     [
-      "b8096563-2aa1-42a7-b303-2d7d794c80ce",
-      "From Basys3"
-    ],
-    [
       "07610737-0881-4cf5-871c-717695af83a2",
       "SOA Driver"
+    ],
+    [
+      "b8096563-2aa1-42a7-b303-2d7d794c80ce",
+      "From Basys3"
     ]
   ],
   "text_variables": {}

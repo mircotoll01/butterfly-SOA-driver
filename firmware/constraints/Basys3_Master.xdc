@@ -6,7 +6,7 @@
 ## Clock signal
 set_property PACKAGE_PIN W5 [get_ports clk]							
 	set_property IOSTANDARD LVCMOS33 [get_ports clk]
-    create_clock -add -name sys_clk_pin -period 10.00 -waveform {0 5} [get_ports clk]  # 100MHz clock generation
+    create_clock -add -name sys_clk_pin -period 20.00 -waveform {0 5} [get_ports clk]  # 50MHz clock generation
  
 ## Switches
 set_property PACKAGE_PIN V17 [get_ports {sw[0]}]					
@@ -292,4 +292,11 @@ set_property PACKAGE_PIN L3 [get_ports {JXADC[1]}]
 	#set_property IOSTANDARD LVCMOS33 [get_ports {QspiDB[3]}]
 #set_property PACKAGE_PIN K19 [get_ports QspiCSn]					
 	#set_property IOSTANDARD LVCMOS33 [get_ports QspiCSn]
+
+## UART Interface
+set_property PACKAGE_PIN A9 [get_ports uart_rx] 
+    set_property IOSTANDARD LVCMOS33 [get_ports uart_rx]
+
+#set_property PACKAGE_PIN D10 [get_ports uart_tx] 
+    #set_property IOSTANDARD LVCMOS33 [get_ports uart_tx]
 
