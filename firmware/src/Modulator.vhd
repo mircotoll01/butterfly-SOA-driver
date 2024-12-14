@@ -34,7 +34,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity modulator is
     Port ( 
         clk             : in std_logic;
-        duty_cycle      : in real;
+        duty_cycle      : in integer;
         mod_sel         : in std_logic_vector(1 downto 0);      -- 00 = driver disabled, 01 = pwm mode, 10 = double threshold mode
         soa_en          : out std_logic;
         ctrl_sel        : buffer std_logic;
@@ -50,21 +50,22 @@ begin
     ctrl_sel    <= '0';
     process(clk)
     begin
-        if not mod_sel = "00" then
-            soa_en <= '1';
-            if clk_divider < 499 and rising_edge(clk) then      -- Assuming the clock is 100 MHz
-                clk_divider <= clk_divider + 1;
-            else
-                if mod_sel = "01" and dc_counter < duty_cycle then
+        if rising_edge(clk) then
+            if not mod_sel = "00" then
+                soa_en <= '1';
+                if clk_divider < 499 then      -- Assuming the clock is 100 MHz
+                    clk_divider <= clk_divider + 1;
+                elsif mod_sel = "01" then
                     dc_counter <= dc_counter +1;
                     pwm <= not pwm;
-                elsif mod_sel = "10" and dc_counter < duty_cycle then
+                elsif mod_sel = "10" then
                     dc_counter <= dc_counter + 1;
                     ctrl_sel <= not ctrl_sel;
-                else dc_counter <= 0;
-                end if; 
-            end if; 
-        else soa_en <= '0';          
+                elsif dc_counter = duty_cycle - 1 then
+                    dc_counter <= 0;
+                end if;
+            else soa_en <= '0';
+            end if;           
         end if;
     end process;
 end Behavioral;

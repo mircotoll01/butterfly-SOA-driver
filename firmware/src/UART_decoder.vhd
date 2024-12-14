@@ -37,20 +37,19 @@ entity UART_decoder is
         reset        : in std_logic;
         rx           : in std_logic;
         duty_cycle   : out integer;  
-        ctrl_l       : out real;
-        ctrl_h       : out real;
-        tec_maxv     : out real;
-        setpoint     : out real;                                  
-        command      : out std_logic_vector(1 downto 0)                 -- Commands that will be sent to the modulator block
+        ctrl_l       : out integer;  -- Scaled by 10000
+        ctrl_h       : out integer;  -- Scaled by 10000
+        tec_maxv     : out integer;  -- Scaled by 10000
+        setpoint     : out integer;  -- Scaled by 10000                                
+        mod_command  : out std_logic_vector(1 downto 0)                 -- Commands that will be sent to the modulator block
     );
 end UART_decoder;
 
-architecture Behavioral of UART_decoder is
-    signal command_buffer           : string(1 to 32);                                  -- Command parsing buffer
+architecture Structural of UART_decoder is
     signal char_index               : integer := 0;
-    signal reg_in                   : real;
+    signal reg_in                   : integer;
     signal write_flag               : std_logic;
-    signal reg_address              : std_logic_vector(1 downto 0);
+    signal reg_address              : std_logic_vector(2 downto 0);
     signal data_ready               : std_logic;
     signal rx_data                  : std_logic_vector(7 downto 0);
     
@@ -58,12 +57,12 @@ architecture Behavioral of UART_decoder is
         Port(
             clk                     : in std_logic;
             write_flag              : in std_logic;
-            address                 : in std_logic_vector(1 downto 0);
-            data_in                 : in real;
-            ctrl_l                  : out real;
-            ctrl_h                  : out real;
-            tec_maxv                : out real;
-            setpoint                : out real
+            address                 : in std_logic_vector(2 downto 0);
+            data_in                 : in integer;  -- Scaled by 10000
+            ctrl_l                  : out integer; -- Scaled by 10000
+            ctrl_h                  : out integer; -- Scaled by 10000
+            tec_maxv                : out integer; -- Scaled by 10000
+            setpoint                : out integer  -- Scaled by 10000
         );
     end component;
     
@@ -77,7 +76,21 @@ architecture Behavioral of UART_decoder is
         );
     end component;
     
+    component UART_parser is 
+        Port(
+            clk          : in std_logic;
+            reset        : in std_logic;
+            data_ready_in: in std_logic;
+            uart_byte_in : in std_logic_vector(7 downto 0);
+            reg_address  : out std_logic_vector(2 downto 0);
+            write_out_reg: out std_logic;
+            data_out_reg : out integer;                           
+            mod_command  : out std_logic_vector(1 downto 0)  
+        );
+    end component;
+    
 begin
+
     receiver: UART_receiver
         Port Map(
             clk             => clk,
@@ -99,51 +112,16 @@ begin
             setpoint        => setpoint
         );
     
-    process(clk)
-    begin
-        if rising_edge(clk) then
-            if reset = '1' then
-                command_buffer <= (others => ' ');
-                char_index <= 0;
-                
-            elsif data_ready = '1' then                                                         -- If data is ready convert byte to character and put it into the buffer
-                command_buffer(char_index) <= character'val(to_integer(unsigned(rx_data)));
-                char_index <= char_index + 1;
-                
-                if command_buffer(char_index - 1) = character'val(10) then                      -- When \n is given, analyze the command
-                    case command_buffer(0 to 2) is
-                        when "OFF" =>
-                            command             <= "00";
-                        when "PWM" =>                                                           -- This command expects an integer value for duty cycle
-                            duty_cycle          <= integer'value(command_buffer(6 to char_index - 1));
-                            command             <= "01";
-                        when "DBL" =>                                                           -- Selects double threshold mode for SOA
-                            command             <= "10";
-                        when "SET" =>
-                            case command_buffer(4 to 7) is 
-                                when "CTLL" =>
-                                    write_flag  <= '1';
-                                    reg_address <= "00";
-                                    reg_in      <= real'value(command_buffer(9 to char_index - 1));
-                                when "CTLH" =>
-                                    write_flag  <= '1';
-                                    reg_address <= "01";
-                                    reg_in      <= real'value(command_buffer(9 to char_index - 1));
-                                when "MAXV" =>
-                                    write_flag  <= '1';
-                                    reg_address <= "10";
-                                    reg_in      <= real'value(command_buffer(9 to char_index - 1));
-                                when "TSET" =>
-                                    write_flag  <= '1';
-                                    reg_address <= "11";
-                                    reg_in      <= real'value(command_buffer(9 to char_index - 1));
-                                when others =>
-                            write_flag      <= '0';
-                            end case;
-                    end case;
-                    char_index <= 0;                                                            -- Clear buffer
-                end if;
-            end if;
-        end if;
-    end process;
-end Behavioral;
+    parser : UART_parser
+        Port map(
+            clk             => clk,
+            reset           => reset,
+            data_ready_in   => data_ready,
+            uart_byte_in    => rx_data,
+            reg_address     => reg_address,
+            write_out_reg   => write_flag,
+            data_out_reg    => reg_in,
+            mod_command     => mod_command
+        );
+    
+end Structural;

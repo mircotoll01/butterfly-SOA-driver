@@ -33,33 +33,41 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity MCP4728_payload_generator is
     Port ( 
-        ctrl_h      : in real;
-        ctrl_l      : in real;
-        tec_maxv    : in real;
-        setpoint    : in real;
+        ctrl_h      : in integer;
+        ctrl_l      : in integer;
+        tec_maxv    : in integer;
+        setpoint    : in integer;
         I2C_payload : out std_logic_vector(47 downto 0)
     );
 end MCP4728_payload_generator;
 
 architecture Behavioral of MCP4728_payload_generator is
-constant write_mode:            std_logic_vector (7 downto 0) := "11000000";
-constant LSB:                   real := 0.0005;                                 -- DAC's least significant bit if internal voltage reference is used (2.048)  
-signal first_byte_register:     std_logic_vector (7 downto 0);
-signal second_byte_register:    std_logic_vector (7 downto 0);
-begin
-    process(ctrl_h, ctrl_l, tec_maxv, tec_set_t)
-    variable mul_factor_A: unsigned;                                            -- V_out = LSB * a factor which has to be converted to binary and sent to the DAC
-    variable mul_factor_B: unsigned;
-    variable mul_factor_C: unsigned;
-    variable mul_factor_D: unsigned;
+        constant LSB_INT : integer := 5; -- Scaled LSB (e.g., 0.0005 * 10000)
+        signal mul_factor_A: unsigned(11 downto 0);
+        signal mul_factor_B: unsigned(11 downto 0);
+        signal mul_factor_C: unsigned(11 downto 0);
+        signal mul_factor_D: unsigned(11 downto 0);
+        
     begin
-        mul_factor_A := to_unsigned(integer(ctrl_h / LSB), 12);
-        mul_factor_B := to_unsigned(integer(ctrl_l / LSB), 12);
-        mul_factor_C := to_unsigned(integer(tec_maxv / LSB), 12);
-        mul_factor_D := to_unsigned(integer(tec_set_t / LSB), 12);
-        I2C_payload <= std_logic_vector (mul_factor_A) & 
-                       std_logic_vector (mul_factor_B) &   
-                       std_logic_vector (mul_factor_C) &
-                       std_logic_vector (mul_factor_D);
-    end process;
+        process(ctrl_h, ctrl_l, tec_maxv, setpoint)
+            variable a0, a1, a2, a3 : integer;
+        begin
+            -- Compute scaled values
+            a0 := ctrl_l / LSB_INT; -- Integer division
+            a1 := ctrl_h / LSB_INT;
+            a2 := tec_maxv / LSB_INT;
+            a3 := setpoint / LSB_INT;
+    
+            -- Convert to unsigned
+            mul_factor_A <= to_unsigned(a0, 12);
+            mul_factor_B <= to_unsigned(a1, 12);
+            mul_factor_C <= to_unsigned(a2, 12);
+            mul_factor_D <= to_unsigned(a3, 12);
+    
+            -- Concatenate the factors into the payload
+            I2C_payload <= std_logic_vector(mul_factor_A) & 
+                           std_logic_vector(mul_factor_B) & 
+                           std_logic_vector(mul_factor_C) & 
+                           std_logic_vector(mul_factor_D);
+        end process;
 end Behavioral;

@@ -35,12 +35,13 @@ entity driver_reg is
     Port (
         clk         : in std_logic;
         write_flag  : in std_logic;
-        address     : in std_logic_vector(1 downto 0);
-        data_in     : in real;
-        ctrl_l      : out real;
-        ctrl_h      : out real;
-        tec_maxv    : out real;
-        setpoint    : out real
+        address     : in std_logic_vector(2 downto 0);
+        data_in     : in integer;
+        ctrl_l      : out integer;
+        ctrl_h      : out integer;
+        tec_maxv    : out integer;
+        setpoint    : out integer;
+        duty_cycle  : out integer
      );
 end driver_reg;
 
@@ -64,6 +65,14 @@ begin
                         tec_maxv <= data_in;
                     end if;
                 when "011" =>
+                    if write_flag = '1' then
+                        setpoint <= data_in;
+                    end if;
+                when "100" =>
+                    if write_flag = '1' then
+                        duty_cycle <= data_in;
+                    end if;
+                when others =>
                     if write_flag = '1' then
                         setpoint <= data_in;
                     end if;

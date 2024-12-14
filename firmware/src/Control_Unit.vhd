@@ -44,7 +44,9 @@ entity Control_Unit is
         --Outputs
         ctrl_sel_pwm        : buffer std_logic;
         soa_pwm             : buffer std_logic;
-        tec_en              : out std_logic
+        tec_en              : out std_logic;
+        seg                 : out std_logic_vector(6 downto 0);
+        an                  : out std_logic_vector(3 downto 0)
     );
 end Control_Unit;
 
@@ -57,10 +59,10 @@ architecture Structural of Control_Unit is
     -- signals for mudulation and controls
     signal mod_sel          : std_logic_vector(1 downto 0);
     signal soa_en           : std_logic;
-    signal ctrl_l           : real;
-    signal ctrl_h           : real;
-    signal setpoint         : real;
-    signal tec_maxv         : real;
+    signal ctrl_l           : integer;
+    signal ctrl_h           : integer;
+    signal setpoint         : integer;
+    signal tec_maxv         : integer;
     signal duty_cycle       : integer;
     
     -- signals for the ADC
@@ -71,10 +73,10 @@ architecture Structural of Control_Unit is
     -- components for I2C communication
     component MCP4728_payload_generator
         Port ( 
-            ctrl_h          : in real;
-            ctrl_l          : in real;
-            tec_maxv        : in real;
-            setpoint        : in real;
+            ctrl_h          : in integer;
+            ctrl_l          : in integer;
+            tec_maxv        : in integer;
+            setpoint        : in integer;
             I2C_payload     : out std_logic_vector(47 downto 0)
         );
     end component;
@@ -115,6 +117,15 @@ architecture Structural of Control_Unit is
         );
     end component;
     
+    component Display
+        Port(
+            clk     : in std_logic;
+            input   : in std_logic_vector(1 downto 0);
+            seg     : out std_logic_vector(6 downto 0);
+            an      : out std_logic_vector(3 downto 0)
+        );
+    end component;
+    
     -- component for UART communication
     component UART_decoder
         Port (
@@ -122,11 +133,11 @@ architecture Structural of Control_Unit is
             reset        : in std_logic;
             rx           : in std_logic;
             duty_cycle   : out integer;  
-            ctrl_l       : out real;
-            ctrl_h       : out real;
-            tec_maxv     : out real;
-            setpoint     : out real;                                  
-            command      : out std_logic_vector(1 downto 0)
+            ctrl_l       : out integer;
+            ctrl_h       : out integer;
+            tec_maxv     : out integer;
+            setpoint     : out integer;                                  
+            mod_command  : out std_logic_vector(1 downto 0)
         );
     end component;
 
@@ -160,6 +171,14 @@ begin
             pwm             => soa_pwm
         );
         
+    display_block : Display
+        Port map(
+            clk             => clk,
+            input           => mod_sel,
+            seg             => seg,
+            an              => an
+        );
+        
     -- other blocks
     adc_reader : Reader
         Port map (
@@ -182,7 +201,7 @@ begin
             ctrl_h          => ctrl_h,
             tec_maxv        => tec_maxv,
             setpoint        => setpoint,                                  
-            command         => mod_sel
+            mod_command     => mod_sel
         );
     -- over/under-temperature response for butterfly SOA
      process(overtemp_alarm, undertemp_alarm)

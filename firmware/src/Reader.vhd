@@ -75,7 +75,7 @@ begin
             digital_out <= (others => '0');
         elsif rising_edge(clk) then
             -- Primi 12 bit del valore convertito
-            digital_out <= xadc_data(15 downto 4);
+            digital_out <= xadc_data(15 downto 0);
         end if;
     end process;
 end Behavioral;
