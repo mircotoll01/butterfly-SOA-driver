@@ -33,41 +33,38 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity MCP4728_payload_generator is
     Port ( 
+        clk         : in std_logic;
         ctrl_h      : in integer;
         ctrl_l      : in integer;
         tec_maxv    : in integer;
         setpoint    : in integer;
+        start_tx    : out std_logic;
         I2C_payload : out std_logic_vector(47 downto 0)
     );
 end MCP4728_payload_generator;
 
 architecture Behavioral of MCP4728_payload_generator is
         constant LSB_INT : integer := 5; -- Scaled LSB (e.g., 0.0005 * 10000)
-        signal mul_factor_A: unsigned(11 downto 0);
-        signal mul_factor_B: unsigned(11 downto 0);
-        signal mul_factor_C: unsigned(11 downto 0);
-        signal mul_factor_D: unsigned(11 downto 0);
-        
+        signal payload : std_logic_vector(47 downto 0);
     begin
-        process(ctrl_h, ctrl_l, tec_maxv, setpoint)
+        process(clk)
             variable a0, a1, a2, a3 : integer;
         begin
-            -- Compute scaled values
-            a0 := ctrl_l / LSB_INT; -- Integer division
-            a1 := ctrl_h / LSB_INT;
-            a2 := tec_maxv / LSB_INT;
-            a3 := setpoint / LSB_INT;
-    
-            -- Convert to unsigned
-            mul_factor_A <= to_unsigned(a0, 12);
-            mul_factor_B <= to_unsigned(a1, 12);
-            mul_factor_C <= to_unsigned(a2, 12);
-            mul_factor_D <= to_unsigned(a3, 12);
-    
-            -- Concatenate the factors into the payload
-            I2C_payload <= std_logic_vector(mul_factor_A) & 
-                           std_logic_vector(mul_factor_B) & 
-                           std_logic_vector(mul_factor_C) & 
-                           std_logic_vector(mul_factor_D);
+            if rising_edge(clk) then
+                start_tx    <= '0';
+                -- Compute scaled values
+                a0 := ctrl_l / LSB_INT; -- Integer division
+                a1 := ctrl_h / LSB_INT;
+                a2 := tec_maxv / LSB_INT;
+                a3 := setpoint / LSB_INT;
+                
+                -- Concatenate the factors into the payload
+                payload     <= std_logic_vector(to_unsigned(a0, 12)) & 
+                               std_logic_vector(to_unsigned(a1, 12)) & 
+                               std_logic_vector(to_unsigned(a2, 12)) & 
+                               std_logic_vector(to_unsigned(a3, 12));
+                start_tx    <= '1';
+           end if;
         end process;
+        I2C_payload <= payload;
 end Behavioral;

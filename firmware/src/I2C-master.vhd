@@ -42,12 +42,12 @@ architecture Behavioral of I2C_master is
     signal state : state_type := Idle;
 
     -- Clock divider to generate SCL
-    signal scl_div : integer := 0;
+    signal scl_div : integer range 0 to 499 := 0;
 
     -- controls and data
-    signal bit_counter  : integer := 0;
+    signal bit_counter  : integer range 0 to 7 := 0;
     signal sda_out      : std_logic := '1';
-    signal ack          : std_logic;
+    signal ack          : std_logic := '0';
     signal scl_reg      : std_logic := '1';
     
 begin
@@ -67,13 +67,16 @@ begin
     scl <= scl_reg;
 
     -- FSM for I2C
-    process(clk, reset)
+    process(clk)      
     begin
-        if reset = '1' then
-            state <= Idle;
-            sda_out <= '1';
-            bit_counter <= 0;
-        elsif rising_edge(clk) then
+        if rising_edge(clk) then
+            if reset = '1' then
+                state       <= Idle;
+                sda_out     <= '1';
+                bit_counter <= 0;
+                n_ldac      <= '1';
+                ack         <= '0';
+            end if;
             case state is
                 when Idle =>
                     if start_tx = '1' then
@@ -86,7 +89,7 @@ begin
                     state   <= Address;
 
                 when Address =>
-                    if bit_counter < 8 then
+                    if bit_counter < 7 then
                         sda_out     <= I2C_payload(47 - bit_counter);
                         bit_counter <= bit_counter + 1;
                     else
@@ -96,15 +99,18 @@ begin
 
                 when Waitack =>
                     sda_out     <= 'Z';         -- Release SDA to let the slave give ACK
-                    ack         <= sda;         -- read ACK
-                    state       <= Stop;
+                    ack         <= sda_out;     -- read ACK
+                    if ack = '1' then
+                        state   <= Stop; 
+                        ack     <= '0';
+                    end if;
 
                 when Stop =>
                     sda_out <= '0';             -- SDA goes low before SCL
                     if scl_reg = '1' then
                         sda_out     <= '1';     -- Stop condition: SDA goes high with SCL high
                         state       <= Idle;
-                        n_ldac  <= '1';
+                        n_ldac      <= '1';
                     end if;
 
                 when others =>

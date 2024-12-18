@@ -41,28 +41,32 @@ entity UART_decoder is
         ctrl_h       : out integer;  -- Scaled by 10000
         tec_maxv     : out integer;  -- Scaled by 10000
         setpoint     : out integer;  -- Scaled by 10000                                
-        mod_command  : out std_logic_vector(1 downto 0)                 -- Commands that will be sent to the modulator block
+        mod_mode     : out std_logic_vector(1 downto 0)                 -- Commands that will be sent to the modulator block
     );
 end UART_decoder;
 
 architecture Structural of UART_decoder is
-    signal char_index               : integer := 0;
     signal reg_in                   : integer;
-    signal write_flag               : std_logic;
+    signal register_enable          : std_logic;
     signal reg_address              : std_logic_vector(2 downto 0);
     signal data_ready               : std_logic;
     signal rx_data                  : std_logic_vector(7 downto 0);
+    signal mod_sel_reg              : std_logic_vector(1 downto 0);
     
     component driver_reg is
         Port(
             clk                     : in std_logic;
+            reset                   : in std_logic;
             write_flag              : in std_logic;
             address                 : in std_logic_vector(2 downto 0);
+            mod_sel_in              : in std_logic_vector(1 downto 0);
             data_in                 : in integer;  -- Scaled by 10000
             ctrl_l                  : out integer; -- Scaled by 10000
             ctrl_h                  : out integer; -- Scaled by 10000
             tec_maxv                : out integer; -- Scaled by 10000
-            setpoint                : out integer  -- Scaled by 10000
+            setpoint                : out integer; -- Scaled by 10000
+            duty_cycle              : out integer;
+            mod_mode                : out std_logic_vector(1 downto 0) 
         );
     end component;
     
@@ -70,7 +74,7 @@ architecture Structural of UART_decoder is
         Port(
             clk                     : in  std_logic;                       
             reset                   : in  std_logic;                       
-            rx                      : in  std_logic;                                    -- Incoming bit (RX)
+            rx_bit                  : in  std_logic;                                    -- Incoming bit (RX)
             rx_data                 : out std_logic_vector(7 downto 0);                 -- Received data
             data_ready              : out std_logic     
         );
@@ -78,14 +82,14 @@ architecture Structural of UART_decoder is
     
     component UART_parser is 
         Port(
-            clk          : in std_logic;
-            reset        : in std_logic;
-            data_ready_in: in std_logic;
-            uart_byte_in : in std_logic_vector(7 downto 0);
-            reg_address  : out std_logic_vector(2 downto 0);
-            write_out_reg: out std_logic;
-            data_out_reg : out integer;                           
-            mod_command  : out std_logic_vector(1 downto 0)  
+            clk             : in std_logic;
+            reset           : in std_logic;
+            data_ready_in   : in std_logic;
+            uart_byte_in    : in std_logic_vector(7 downto 0);
+            address_select  : out std_logic_vector(2 downto 0);
+            register_enable : out std_logic;
+            data_out        : out integer;                           
+            mod_select_out  : out std_logic_vector(1 downto 0)  
         );
     end component;
     
@@ -95,7 +99,7 @@ begin
         Port Map(
             clk             => clk,
             reset           => reset,
-            rx              => rx,
+            rx_bit          => rx,
             rx_data         => rx_data,
             data_ready      => data_ready
         );
@@ -103,13 +107,17 @@ begin
     reg : driver_reg
         Port map(
             clk             => clk,
-            write_flag      => write_flag,
+            reset           => reset,
+            write_flag      => register_enable,
             address         => reg_address,
+            mod_sel_in      => mod_sel_reg,
             data_in         => reg_in,
             ctrl_l          => ctrl_l,
             ctrl_h          => ctrl_h,
             tec_maxv        => tec_maxv,
-            setpoint        => setpoint
+            setpoint        => setpoint,  
+            duty_cycle      => duty_cycle,
+            mod_mode        => mod_mode
         );
     
     parser : UART_parser
@@ -118,10 +126,10 @@ begin
             reset           => reset,
             data_ready_in   => data_ready,
             uart_byte_in    => rx_data,
-            reg_address     => reg_address,
-            write_out_reg   => write_flag,
-            data_out_reg    => reg_in,
-            mod_command     => mod_command
+            address_select  => reg_address,
+            register_enable => register_enable,
+            data_out        => reg_in,
+            mod_select_out  => mod_sel_reg
         );
     
 end Structural;

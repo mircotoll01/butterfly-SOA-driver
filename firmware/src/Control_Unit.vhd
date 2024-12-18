@@ -39,13 +39,17 @@ entity Control_Unit is
         uart_rx             : in std_logic;
         overtemp_alarm      : in std_logic;
         undertemp_alarm     : in std_logic;
-        JXADC               : in std_logic_vector(1 downto 0);
+--        JXADC               : in std_logic_vector(1 downto 0);
                 
         --Outputs
-        ctrl_sel_pwm        : buffer std_logic;
-        soa_pwm             : buffer std_logic;
+        sda                 : inout std_logic;
+        scl                 : out std_logic;
+        n_ldac              : out std_logic;
+        ctrl_sel_pwm        : out std_logic;
+        soa_pwm             : out std_logic;
+        soa_en              : out std_logic;
         tec_en              : out std_logic;
-        seg                 : out std_logic_vector(6 downto 0);
+        seg                 : out std_logic_vector(5 downto 0);
         an                  : out std_logic_vector(3 downto 0)
     );
 end Control_Unit;
@@ -57,8 +61,8 @@ architecture Structural of Control_Unit is
     signal start_tx         : std_logic;
     
     -- signals for mudulation and controls
-    signal mod_sel          : std_logic_vector(1 downto 0);
-    signal soa_en           : std_logic;
+    signal mod_mode         : std_logic_vector(1 downto 0);
+    signal status           : std_logic_vector(1 downto 0);
     signal ctrl_l           : integer;
     signal ctrl_h           : integer;
     signal setpoint         : integer;
@@ -66,17 +70,19 @@ architecture Structural of Control_Unit is
     signal duty_cycle       : integer;
     
     -- signals for the ADC
-    signal ISOA_raw         : std_logic_vector(15 downto 0);
-    signal eoc              : std_logic;
-    signal eos              : std_logic;
+--    signal ISOA_raw         : std_logic_vector(15 downto 0);
+--    signal eoc              : std_logic;
+--    signal eos              : std_logic;
     
     -- components for I2C communication
     component MCP4728_payload_generator
         Port ( 
-            ctrl_h          : in integer;
+            clk             : in std_logic;
+            ctrl_h          : in integer;  
             ctrl_l          : in integer;
             tec_maxv        : in integer;
             setpoint        : in integer;
+            start_tx        : out std_logic;
             I2C_payload     : out std_logic_vector(47 downto 0)
         );
     end component;
@@ -109,19 +115,25 @@ architecture Structural of Control_Unit is
     component modulator
         Port (
             clk             : in std_logic;
+            overtemp_alarm  : in std_logic;
+            undertemp_alarm : in std_logic;
             duty_cycle      : in integer;
-            mod_sel         : in std_logic_vector(1 downto 0); 
+            mod_sel         : in std_logic_vector(1 downto 0);
+            status          : out std_logic_vector(1 downto 0);
             soa_en          : out std_logic;
-            ctrl_sel        : buffer std_logic;
-            pwm             : buffer std_logic
+            tec_en          : out std_logic;
+            ctrl_sel        : out std_logic;
+            pwm             : out std_logic
         );
     end component;
     
     component Display
         Port(
             clk     : in std_logic;
-            input   : in std_logic_vector(1 downto 0);
-            seg     : out std_logic_vector(6 downto 0);
+            reset   : in std_logic;
+            mode    : in std_logic_vector(1 downto 0);
+            status  : in std_logic_vector(1 downto 0);
+            seg     : out std_logic_vector(5 downto 0);
             an      : out std_logic_vector(3 downto 0)
         );
     end component;
@@ -137,59 +149,11 @@ architecture Structural of Control_Unit is
             ctrl_h       : out integer;
             tec_maxv     : out integer;
             setpoint     : out integer;                                  
-            mod_command  : out std_logic_vector(1 downto 0)
+            mod_mode     : out std_logic_vector(1 downto 0)
         );
     end component;
 
 begin
-    -- i2c blocks
-    i2c_gen: MCP4728_payload_generator
-        Port map (
-            ctrl_l          => ctrl_l,
-            ctrl_h          => ctrl_h,
-            tec_maxv        => tec_maxv,
-            setpoint        => setpoint,
-            I2C_payload     => payload  
-        );
-        
-    i2cmaster : I2C_Master
-        Port map (
-            clk             => clk,
-            reset           => reset,
-            start_tx        => start_tx,
-            I2C_payload     => payload
-        );
-    
-    -- modulation and control block
-    modulator_block : modulator
-        Port map (
-            clk             => clk,
-            duty_cycle      => duty_cycle, 
-            mod_sel         => mod_sel,
-            soa_en          => soa_en,
-            ctrl_sel        => ctrl_sel_pwm,
-            pwm             => soa_pwm
-        );
-        
-    display_block : Display
-        Port map(
-            clk             => clk,
-            input           => mod_sel,
-            seg             => seg,
-            an              => an
-        );
-        
-    -- other blocks
-    adc_reader : Reader
-        Port map (
-            clk             => clk,
-            reset           => reset,
-            JXADC           => JXADC,
-            digital_out     => ISOA_raw,
-            eoc             => eoc,
-            eos             => eos
-        );
-    
     -- uart communication block
     decoder : UART_decoder
         Port map(
@@ -201,16 +165,65 @@ begin
             ctrl_h          => ctrl_h,
             tec_maxv        => tec_maxv,
             setpoint        => setpoint,                                  
-            mod_command     => mod_sel
+            mod_mode        => mod_mode
         );
-    -- over/under-temperature response for butterfly SOA
-     process(overtemp_alarm, undertemp_alarm)
-     begin
-        if overtemp_alarm = '1' then
-            soa_en <= '0';
-        elsif undertemp_alarm = '1' then
-            tec_en <= '0';
-        end if;
-     end process;
-     
+        
+    -- modulation and control block
+    modulator_block : modulator
+        Port map (
+            clk             => clk,
+            overtemp_alarm  => overtemp_alarm,
+            undertemp_alarm => undertemp_alarm,
+            duty_cycle      => duty_cycle,
+            mod_sel         => mod_mode,
+            soa_en          => soa_en,
+            tec_en          => tec_en,
+            status          => status, 
+            ctrl_sel        => ctrl_sel_pwm,
+            pwm             => soa_pwm
+        );
+
+    display_block : Display
+        Port map(
+            clk             => clk,
+            reset           => reset,
+            mode            => mod_mode,
+            status          => status,
+            seg             => seg,
+            an              => an
+        );
+        
+    -- other blocks
+--    adc_reader : Reader
+--        Port map (
+--            clk             => clk,
+--            reset           => reset,
+--            JXADC           => JXADC,
+--            digital_out     => ISOA_raw,
+--            eoc             => eoc,
+--            eos             => eos
+--        );
+        
+    -- i2c blocks
+    i2c_gen: MCP4728_payload_generator
+        Port map (
+            clk             => clk,
+            ctrl_l          => ctrl_l,
+            ctrl_h          => ctrl_h,
+            tec_maxv        => tec_maxv,
+            setpoint        => setpoint,
+            start_tx        => start_tx,
+            I2C_payload     => payload  
+        );
+        
+    i2cmaster : I2C_Master
+        Port map (
+            clk             => clk,
+            reset           => reset,
+            start_tx        => start_tx,
+            I2C_payload     => payload,
+            sda             => sda,
+            scl             => scl,
+            n_ldac          => n_ldac
+        );
 end Structural;
