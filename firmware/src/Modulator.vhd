@@ -47,17 +47,22 @@ entity modulator is
 end modulator;
 
 architecture Behavioral of modulator is
-    constant on_time       : integer := duty_cycle;
     signal soa_en_buffer   : std_logic;
     signal tec_en_buffer   : std_logic;
     signal ctrl_sel_buffer : std_logic;
     signal pwm_buffer      : std_logic;
-    signal on_counter      : integer range 0 to 99 := 0;
-    signal off_counter     : integer range 0 to 99 := 0;
+    
+    signal on_time         : integer range 0 to 100 := 0;
+    signal off_time        : integer range 0 to 100 := 0;
+    signal on_counter      : integer range 0 to 100 := 0;
+    signal off_counter     : integer range 0 to 100 := 0;
     signal alarms          : std_logic_vector(1 downto 0) := "00";
 begin 
+    on_time     <= duty_cycle;
+    off_time    <= 100 - on_time;    
     process(clk)        
     begin
+        alarms            <= overtemp_alarm & undertemp_alarm;
         if rising_edge(clk) then
             case alarms is
                 when "10" => 
@@ -86,17 +91,16 @@ begin
                             if on_counter < on_time then
                                 on_counter     <= on_counter + 1;
                                 pwm_buffer     <= '1';
-                            end if;
                             
-                            if off_counter < 99 - on_time then
+                            elsif on_counter = on_time and off_counter < off_time then
                                 off_counter    <= off_counter + 1;
                                 pwm_buffer     <= '0';
-                            end if;
-                            
-                            if on_counter + off_counter = 99 then
+
+                            elsif on_counter = on_time and off_counter = off_time then
                                 on_counter     <= 0;
                                 off_counter    <= 0;
                             end if;
+                            
                         when "10" =>
                             soa_en_buffer      <= '1';
                             tec_en_buffer      <= '1';
@@ -106,7 +110,7 @@ begin
                                 ctrl_sel_buffer<= '1';
                             elsif on_counter = 49 and off_counter < 49 then
                                 off_counter    <= off_counter + 1;
-                                ctrl_sel_buffer    <= '0';
+                                ctrl_sel_buffer<= '0';
                             elsif on_counter = 49 and off_counter = 49 then
                                 on_counter     <= 0;
                                 off_counter    <= 0;
@@ -125,7 +129,7 @@ begin
             end case;
         end if;
     end process;
-    alarms            <= overtemp_alarm & undertemp_alarm;
+    
     soa_en            <= soa_en_buffer;
     status            <= soa_en_buffer & tec_en_buffer;
     pwm               <= pwm_buffer;

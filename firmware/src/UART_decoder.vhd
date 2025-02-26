@@ -36,6 +36,7 @@ entity UART_decoder is
         clk          : in std_logic;
         reset        : in std_logic;
         rx           : in std_logic;
+        uart_tx      : out std_logic;
         duty_cycle   : out integer;  
         ctrl_l       : out integer;  -- Scaled by 10000
         ctrl_h       : out integer;  -- Scaled by 10000
@@ -49,7 +50,7 @@ architecture Structural of UART_decoder is
     signal reg_in                   : integer;
     signal register_enable          : std_logic;
     signal reg_address              : std_logic_vector(2 downto 0);
-    signal data_ready               : std_logic;
+    signal data_ready_signal        : std_logic;
     signal rx_data                  : std_logic_vector(7 downto 0);
     signal mod_sel_reg              : std_logic_vector(1 downto 0);
     
@@ -83,7 +84,6 @@ architecture Structural of UART_decoder is
     component UART_parser is 
         Port(
             clk             : in std_logic;
-            reset           : in std_logic;
             data_ready_in   : in std_logic;
             uart_byte_in    : in std_logic_vector(7 downto 0);
             address_select  : out std_logic_vector(2 downto 0);
@@ -93,7 +93,23 @@ architecture Structural of UART_decoder is
         );
     end component;
     
+    component UART_transmitter
+        Port (
+            clk         : in std_logic;
+            enable      : in std_logic;
+            input       : in std_logic_vector(7 downto 0);
+            uart_tx     : out std_logic
+        );
+    end component;
+    
 begin
+    transmitter: UART_transmitter
+        Port map(
+            clk             => clk,
+            enable          => data_ready_signal,
+            input           => rx_data,
+            uart_tx         => uart_tx  
+        );
 
     receiver: UART_receiver
         Port Map(
@@ -101,7 +117,7 @@ begin
             reset           => reset,
             rx_bit          => rx,
             rx_data         => rx_data,
-            data_ready      => data_ready
+            data_ready      => data_ready_signal
         );
         
     reg : driver_reg
@@ -123,8 +139,7 @@ begin
     parser : UART_parser
         Port map(
             clk             => clk,
-            reset           => reset,
-            data_ready_in   => data_ready,
+            data_ready_in   => data_ready_signal,
             uart_byte_in    => rx_data,
             address_select  => reg_address,
             register_enable => register_enable,

@@ -45,7 +45,7 @@ end MCP4728_payload_generator;
 
 architecture Behavioral of MCP4728_payload_generator is
         constant LSB_INT : integer := 5; -- Scaled LSB (e.g., 0.0005 * 10000)
-        signal payload : std_logic_vector(47 downto 0);
+        signal payload : std_logic_vector(47 downto 0) := (others => '0');
     begin
         process(clk)
             variable a0, a1, a2, a3 : integer;

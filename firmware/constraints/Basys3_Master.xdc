@@ -10,7 +10,7 @@ set_property CONFIG_VOLTAGE 3.3 [current_design]
 ## Clock signal
 set_property PACKAGE_PIN W5 [get_ports clk]
 set_property IOSTANDARD LVCMOS33 [get_ports clk]
-create_clock -period 1000.000 -name sys_clk_pin [get_ports clk]
+create_clock -period 100 -name sys_clk_pin [get_ports clk]
 
 ## Switches
 #set_property PACKAGE_PIN V17 [get_ports {sw[0]}]
@@ -155,18 +155,16 @@ set_property IOSTANDARD LVCMOS33 [get_ports sda]
 set_property PACKAGE_PIN G3 [get_ports scl]
 set_property IOSTANDARD LVCMOS33 [get_ports scl]
 
-
-
 ##Pmod Header JB
 ##Sch name = JB1
 set_property PACKAGE_PIN A14 [get_ports n_ldac]
 set_property IOSTANDARD LVCMOS33 [get_ports n_ldac]
 ##Sch name = JB2
-#set_property PACKAGE_PIN A16 [get_ports {JB[1]}]
-#set_property IOSTANDARD LVCMOS33 [get_ports {JB[1]}]
+#set_property PACKAGE_PIN A16 [get_ports {JB[4]}]
+#set_property IOSTANDARD LVCMOS33 [get_ports {JB[4]}]
 ##Sch name = JB3
-#set_property PACKAGE_PIN B15 [get_ports {JB[2]}]
-#set_property IOSTANDARD LVCMOS33 [get_ports {JB[2]}]
+set_property PACKAGE_PIN B15 [get_ports uart_tx]
+set_property IOSTANDARD LVCMOS33 [get_ports uart_tx]
 ##Sch name = JB4
 #set_property PACKAGE_PIN B16 [get_ports {JB[3]}]
 #set_property IOSTANDARD LVCMOS33 [get_ports {JB[3]}]
@@ -305,43 +303,7 @@ set_property IOSTANDARD LVCMOS33 [get_ports n_ldac]
 set_property PACKAGE_PIN B18 [get_ports uart_rx]
 set_property IOSTANDARD LVCMOS33 [get_ports uart_rx]
 
-#set_property PACKAGE_PIN A18 [get_ports uart_tx]
-#set_property IOSTANDARD LVCMOS33 [get_ports uart_tx]
-
-
-
-
-set_input_delay -clock [get_clocks sys_clk_pin] -min -add_delay 10.000 [get_ports overtemp_alarm]
-set_input_delay -clock [get_clocks sys_clk_pin] -max -add_delay 20.000 [get_ports overtemp_alarm]
-set_input_delay -clock [get_clocks sys_clk_pin] -min -add_delay 10.000 [get_ports reset]
-set_input_delay -clock [get_clocks sys_clk_pin] -max -add_delay 20.000 [get_ports reset]
-set_input_delay -clock [get_clocks sys_clk_pin] -min -add_delay 10.000 [get_ports uart_rx]
-set_input_delay -clock [get_clocks sys_clk_pin] -max -add_delay 20.000 [get_ports uart_rx]
-set_input_delay -clock [get_clocks sys_clk_pin] -min -add_delay 10.000 [get_ports undertemp_alarm]
-set_input_delay -clock [get_clocks sys_clk_pin] -max -add_delay 20.000 [get_ports undertemp_alarm]
-
-
-
-set_input_delay -clock [get_clocks sys_clk_pin] -min -add_delay 3.000 [get_ports sda]
-set_input_delay -clock [get_clocks sys_clk_pin] -max -add_delay 8.000 [get_ports sda]
-set_output_delay -clock [get_clocks sys_clk_pin] -min -add_delay 1.000 [get_ports {an[*]}]
-set_output_delay -clock [get_clocks sys_clk_pin] -max -add_delay 51.000 [get_ports {an[*]}]
-set_output_delay -clock [get_clocks sys_clk_pin] -min -add_delay 1.000 [get_ports {seg[*]}]
-set_output_delay -clock [get_clocks sys_clk_pin] -max -add_delay 51.000 [get_ports {seg[*]}]
-set_output_delay -clock [get_clocks sys_clk_pin] -min -add_delay 1.000 [get_ports ctrl_sel_pwm]
-set_output_delay -clock [get_clocks sys_clk_pin] -max -add_delay 51.000 [get_ports ctrl_sel_pwm]
-set_output_delay -clock [get_clocks sys_clk_pin] -min -add_delay 1.000 [get_ports n_ldac]
-set_output_delay -clock [get_clocks sys_clk_pin] -max -add_delay 51.000 [get_ports n_ldac]
-set_output_delay -clock [get_clocks sys_clk_pin] -min -add_delay 1.000 [get_ports scl]
-set_output_delay -clock [get_clocks sys_clk_pin] -max -add_delay 51.000 [get_ports scl]
-set_output_delay -clock [get_clocks sys_clk_pin] -min -add_delay 1.000 [get_ports sda]
-set_output_delay -clock [get_clocks sys_clk_pin] -max -add_delay 51.000 [get_ports sda]
-set_output_delay -clock [get_clocks sys_clk_pin] -min -add_delay 1.000 [get_ports soa_en]
-set_output_delay -clock [get_clocks sys_clk_pin] -max -add_delay 51.000 [get_ports soa_en]
-set_output_delay -clock [get_clocks sys_clk_pin] -min -add_delay 1.000 [get_ports soa_pwm]
-set_output_delay -clock [get_clocks sys_clk_pin] -max -add_delay 51.000 [get_ports soa_pwm]
-set_output_delay -clock [get_clocks sys_clk_pin] -min -add_delay 1.000 [get_ports tec_en]
-set_output_delay -clock [get_clocks sys_clk_pin] -max -add_delay 51.000 [get_ports tec_en]
-
+set_property PACKAGE_PIN A18 [get_ports uart_tx]
+set_property IOSTANDARD LVCMOS33 [get_ports uart_tx]
 
 

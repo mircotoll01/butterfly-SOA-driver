@@ -1,7 +1,7 @@
 (kicad_sch
-	(version 20241004)
+	(version 20250114)
 	(generator "eeschema")
-	(generator_version "8.99")
+	(generator_version "9.0")
 	(uuid "8046f346-72e4-4b79-9377-728656605f61")
 	(paper "A4")
 	(title_block
@@ -6536,7 +6536,6 @@
 	)
 	(label "LD"
 		(at 29.21 160.02 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6547,7 +6546,6 @@
 	)
 	(label "SENSE-"
 		(at 120.65 82.55 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6558,7 +6556,6 @@
 	)
 	(label "Pin_8"
 		(at 55.88 160.02 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6569,7 +6566,6 @@
 	)
 	(label "Pin_4"
 		(at 76.2 168.91 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6580,7 +6576,6 @@
 	)
 	(label "Pin_14"
 		(at 54.61 167.64 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6591,7 +6586,6 @@
 	)
 	(label "Pin_9"
 		(at 55.88 162.56 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6602,7 +6596,6 @@
 	)
 	(label "Pin_8"
 		(at 101.6 176.53 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6613,7 +6606,6 @@
 	)
 	(label "SENSE+"
 		(at 147.32 81.28 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6624,7 +6616,6 @@
 	)
 	(label "Pin_11"
 		(at 54.61 172.72 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6635,7 +6626,6 @@
 	)
 	(label "Pin_4"
 		(at 54.61 160.02 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6646,7 +6636,6 @@
 	)
 	(label "Pin_2"
 		(at 76.2 163.83 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6657,7 +6646,6 @@
 	)
 	(label "NTC-"
 		(at 29.21 172.72 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6668,7 +6656,6 @@
 	)
 	(label "Pin_6"
 		(at 76.2 173.99 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6679,7 +6666,6 @@
 	)
 	(label "Pin_5"
 		(at 54.61 165.1 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6690,7 +6676,6 @@
 	)
 	(label "Pin_1"
 		(at 76.2 161.29 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6701,7 +6686,6 @@
 	)
 	(label "LD"
 		(at 243.84 69.85 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6712,7 +6696,6 @@
 	)
 	(label "PWMGL"
 		(at 120.65 87.63 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6723,7 +6706,6 @@
 	)
 	(label "PWMGH"
 		(at 185.42 156.21 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6734,7 +6716,6 @@
 	)
 	(label "Pin_3"
 		(at 76.2 166.37 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6745,7 +6726,6 @@
 	)
 	(label "LD"
 		(at 185.42 152.4 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6756,7 +6736,6 @@
 	)
 	(label "Pin_12"
 		(at 54.61 175.26 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6767,7 +6746,6 @@
 	)
 	(label "TEC-"
 		(at 29.21 167.64 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6778,7 +6756,6 @@
 	)
 	(label "PWMGL"
 		(at 167.64 96.52 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6789,7 +6766,6 @@
 	)
 	(label "Pin_11"
 		(at 101.6 168.91 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6800,7 +6776,6 @@
 	)
 	(label "Pin_2"
 		(at 29.21 180.34 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6811,7 +6786,6 @@
 	)
 	(label "Pin_12"
 		(at 101.6 166.37 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6822,7 +6796,6 @@
 	)
 	(label "NTC+"
 		(at 29.21 175.26 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6833,7 +6806,6 @@
 	)
 	(label "Pin_6"
 		(at 54.61 177.8 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6844,7 +6816,6 @@
 	)
 	(label "Pin_3"
 		(at 54.61 162.56 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6855,7 +6826,6 @@
 	)
 	(label "SENSE+"
 		(at 121.92 167.64 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6866,7 +6836,6 @@
 	)
 	(label "Pin_13"
 		(at 101.6 163.83 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6877,7 +6846,6 @@
 	)
 	(label "SW"
 		(at 80.01 40.64 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6888,7 +6856,6 @@
 	)
 	(label "Pin_10"
 		(at 101.6 171.45 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6899,7 +6866,6 @@
 	)
 	(label "SW"
 		(at 113.03 69.85 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6910,7 +6876,6 @@
 	)
 	(label "SENSE+"
 		(at 120.65 80.01 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6921,7 +6886,6 @@
 	)
 	(label "PWMGH"
 		(at 191.77 96.52 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6932,7 +6896,6 @@
 	)
 	(label "PWMGH"
 		(at 120.65 85.09 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6943,7 +6906,6 @@
 	)
 	(label "LD"
 		(at 137.16 90.17 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6954,7 +6916,6 @@
 	)
 	(label "SENSE-"
 		(at 147.32 83.82 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6965,7 +6926,6 @@
 	)
 	(label "SENSE-"
 		(at 121.92 177.8 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6976,7 +6936,6 @@
 	)
 	(label "PWMGL"
 		(at 265.43 152.4 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6987,7 +6946,6 @@
 	)
 	(label "Pin_14"
 		(at 101.6 161.29 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6998,7 +6956,6 @@
 	)
 	(label "Pin_5"
 		(at 76.2 171.45 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -7009,7 +6966,6 @@
 	)
 	(label "Pin_7"
 		(at 76.2 176.53 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -7020,7 +6976,6 @@
 	)
 	(label "Pin_13"
 		(at 55.88 167.64 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -7031,7 +6986,6 @@
 	)
 	(label "Pin_7"
 		(at 54.61 180.34 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -7042,7 +6996,6 @@
 	)
 	(label "Pin_10"
 		(at 55.88 165.1 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -7053,7 +7006,6 @@
 	)
 	(label "TEC+"
 		(at 29.21 170.18 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -7064,7 +7016,6 @@
 	)
 	(label "Pin_9"
 		(at 101.6 173.99 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -7075,7 +7026,6 @@
 	)
 	(label "Pin_1"
 		(at 54.61 170.18 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -7241,7 +7191,6 @@
 	(hierarchical_label "CTRL_L_DAC"
 		(shape input)
 		(at 232.41 156.21 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -7253,7 +7202,6 @@
 	(hierarchical_label "LD_MODULATION"
 		(shape input)
 		(at 273.05 156.21 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -7265,7 +7213,6 @@
 	(hierarchical_label "CTRL_H_DAC"
 		(shape input)
 		(at 232.41 152.4 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)

@@ -39,7 +39,7 @@ entity Control_Unit is
         uart_rx             : in std_logic;
         overtemp_alarm      : in std_logic;
         undertemp_alarm     : in std_logic;
---        JXADC               : in std_logic_vector(1 downto 0);
+        --JXADC             : in std_logic_vector(1 downto 0);
                 
         --Outputs
         sda                 : inout std_logic;
@@ -50,7 +50,9 @@ entity Control_Unit is
         soa_en              : out std_logic;
         tec_en              : out std_logic;
         seg                 : out std_logic_vector(5 downto 0);
-        an                  : out std_logic_vector(3 downto 0)
+        an                  : out std_logic_vector(3 downto 0);
+        
+        uart_tx             : out std_logic
     );
 end Control_Unit;
 
@@ -130,7 +132,6 @@ architecture Structural of Control_Unit is
     component Display
         Port(
             clk     : in std_logic;
-            reset   : in std_logic;
             mode    : in std_logic_vector(1 downto 0);
             status  : in std_logic_vector(1 downto 0);
             seg     : out std_logic_vector(5 downto 0);
@@ -144,6 +145,7 @@ architecture Structural of Control_Unit is
             clk          : in std_logic;
             reset        : in std_logic;
             rx           : in std_logic;
+            uart_tx      : out std_logic;
             duty_cycle   : out integer;  
             ctrl_l       : out integer;
             ctrl_h       : out integer;
@@ -154,12 +156,14 @@ architecture Structural of Control_Unit is
     end component;
 
 begin
+    
     -- uart communication block
     decoder : UART_decoder
         Port map(
             clk             => clk,
             reset           => reset,
             rx              => uart_rx,
+            uart_tx         => uart_tx,
             duty_cycle      => duty_cycle,  
             ctrl_l          => ctrl_l,
             ctrl_h          => ctrl_h,
@@ -186,7 +190,6 @@ begin
     display_block : Display
         Port map(
             clk             => clk,
-            reset           => reset,
             mode            => mod_mode,
             status          => status,
             seg             => seg,

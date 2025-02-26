@@ -35,7 +35,6 @@ use IEEE.NUMERIC_STD.ALL;
 entity UART_parser is
     Port ( 
         clk             : in std_logic;
-        reset           : in std_logic;
         data_ready_in   : in std_logic;
         uart_byte_in    : in std_logic_vector(7 downto 0);
         address_select  : out std_logic_vector(2 downto 0);
@@ -46,15 +45,20 @@ entity UART_parser is
 end UART_parser;
 
 architecture Behavioral of UART_parser is  
-    type ASCII_string is array (0 to 31) of std_logic_vector(7 downto 0);
-    signal command_reg     : ASCII_string  := (others => (others => '0'));
-    signal char_index      : integer range 0 to 31 := 0;
-    signal command_buffer  : ASCII_string := (others => (others => '0'));
-    
-    signal address_sel_buffer : std_logic_vector(2 downto 0);
-    signal register_en_buffer : std_logic;
-    signal data_out_buffer    : integer;
-    signal mod_select_buffer  : std_logic_vector(1 downto 0);
+    type ASCII_string is array (0 to 13) of std_logic_vector(7 downto 0);
+    signal command_reg          : ASCII_string := (others => (others => '0'));
+    signal command_buffer       : ASCII_string := (others => (others => '0'));
+    signal command_parsed       : std_logic_vector(23 downto 0) := (others => '0');
+    signal attribute_ASCII      : std_logic_vector(31 downto 0) := (others => '0');
+    signal pwm_value_ASCII      : std_logic_vector(15 downto 0) := (others => '0');
+    signal ctl_value_ASCII      : std_logic_vector(31 downto 0) := (others => '0');
+        
+    signal char_index           : integer range 0 to 13 := 0;
+    signal data_out_buffer      : integer := 0;
+    signal address_sel_buffer   : std_logic_vector(2 downto 0):= (others => '1');
+    signal mod_select_buffer    : std_logic_vector(1 downto 0):= (others => '0');
+    signal register_en_buffer   : std_logic := '0';
+    signal data_ready_prev      : std_logic := '0';
     
     function twobytes_ASCII_to_integer (vect: std_logic_vector(15 downto 0)) return integer is 
         type parsedint is array (0 to 1) of integer;
@@ -104,103 +108,81 @@ architecture Behavioral of UART_parser is
         return result;
     end fourBytes_ASCII_to_integer;
     
-begin    
-    process (reset, data_ready_in)
+begin      
+    process(clk)
     begin
-        if reset = '1' then
-            command_buffer             <= (others => (others => '0'));
-        end if; 
-        
-        if data_ready_in = '1' then                                                     -- If data is ready convert byte to character and put it into the buffer
-            command_buffer(char_index)  <= uart_byte_in;
-            char_index                  <= char_index + 1;
-            if uart_byte_in = "00001010" then                                            -- When \n is given (line feed is number 10 in ascii code), analyze the command
-                command_buffer(char_index)  <= uart_byte_in;
-            end if; 
-        end if;                            
-    end process;
-        
-    process (clk)
-        variable command_parsed  : std_logic_vector(23 downto 0);
-        variable attribute_ASCII : std_logic_vector(31 downto 0);
-        variable pwm_value_ASCII : std_logic_vector(15 downto 0);
-        variable ctl_value_ASCII : std_logic_vector(31 downto 0);
-    begin
-        if rising_edge(clk) then  
-            command_parsed :=   command_reg(0) & 
-                                command_reg(1) &
-                                command_reg(2);
-             
-            case command_parsed is  
-                when "010011110100011001000110" =>                                      -- ASCII code for OFF
+        if rising_edge(clk) then
+            data_ready_prev <= data_ready_in;
+            if (data_ready_in = '1' and data_ready_prev = '0') then                     -- If data is ready convert byte to character and put it into the buffer
+                command_buffer(char_index)      <= uart_byte_in;
+                char_index                      <= char_index + 1;
+                if uart_byte_in = "00001010" then                                       -- When \n is given (line feed is number 10 in ascii code), analyze the command 
+                    command_reg                 <= command_buffer;
+                    command_buffer              <= (others => (others => '0'));
+                    char_index                  <= 0;
+                end if;
+            end if;
+            
+            case command_parsed is
+                when "01001111" & "01000110" & "01000110" =>                                      -- ASCII code for OFF (Every code is LSB first)
                     mod_select_buffer          <= "00";
-                when "010100000101011101001101" =>                                      -- ASCII coded for PWM This command expects an integer value for duty cycle from 0 to 99
+                when "01010000" & "01010111" & "01001101" =>                                      -- ASCII coded for PWM This command expects an integer value for duty cycle from 0 to 99
                     register_en_buffer         <= '1';
                     address_sel_buffer         <= "100";
-                    pwm_value_ASCII         := command_reg(4) &
-                                               command_reg(5);
                     data_out_buffer            <= twobytes_ASCII_to_integer(pwm_value_ASCII);
                     mod_select_buffer          <= "01";
-                when "010001000100001001001100" =>                                      -- ASCII coded for DBL This command expects two integer values for dac from 0 to 2048
+                when "01000100" & "01000010" & "01001100" =>                                      -- ASCII coded for DBL This command expects two integer values for dac from 0 to 2048
                     mod_select_buffer          <= "10";
-                when "010100110100010101010100" =>                                      -- ASCII coded for SET
-                    attribute_ASCII         := command_reg(4) &
-                                               command_reg(5) &
-                                               command_reg(6) &
-                                               command_reg(7);
+                when "01010011" & "01000101" & "01010100" =>                                      -- ASCII coded for SET
                     case attribute_ASCII is 
-                        when "01000011010101000100110001001100" =>                      -- CTLL changes CTRL_L
-                            register_en_buffer         <= '1';
-                            address_sel_buffer         <= "000";
-                            ctl_value_ASCII     :=     command_reg(9) &
-                                                       command_reg(10) &
-                                                       command_reg(11) &
-                                                       command_reg(12);
-                            
-                            data_out_buffer        <= fourBytes_ASCII_to_integer(ctl_value_ASCII);
-                        when "01000011010101000100110001001000" =>                      -- CTLH changes CTRL_H
-                            register_en_buffer       <= '1';
-                            address_sel_buffer         <= "001";
-                            ctl_value_ASCII     :=     command_reg(9) &
-                                                       command_reg(10) &
-                                                       command_reg(11) &
-                                                       command_reg(12);
-                            data_out_buffer        <= fourBytes_ASCII_to_integer(ctl_value_ASCII);
-                        when "01001101010000010101100001010110" =>                      -- MAXV changes maximum tec voltage
-                            register_en_buffer       <= '1';
-                            address_sel_buffer         <= "010";
-                            ctl_value_ASCII     :=     command_reg(9) &
-                                                       command_reg(10) &
-                                                       command_reg(11) &
-                                                       command_reg(12);
-                            data_out_buffer        <= fourBytes_ASCII_to_integer(ctl_value_ASCII);
-                        when "01010100010100110100010101010100" =>                      -- TSET changes temperature setpoint for TEC controller
-                            register_en_buffer       <= '1';
-                            address_sel_buffer         <= "011";
-                            ctl_value_ASCII     :=     command_reg(9) &
-                                                       command_reg(10) &
-                                                       command_reg(11) &
-                                                       command_reg(12);
-                            data_out_buffer        <= fourBytes_ASCII_to_integer(ctl_value_ASCII);
+                        when "01000011" & "01010100" & "01001100" & "01001100" =>                 -- CTLL changes CTRL_L
+                            register_en_buffer      <= '1';
+                            address_sel_buffer      <= "000";                           
+                            data_out_buffer         <= fourBytes_ASCII_to_integer(ctl_value_ASCII);
+                        when "01000011" & "01010100" & "01001100" & "01001000" =>                      -- CTLH changes CTRL_H
+                            register_en_buffer      <= '1';
+                        address_sel_buffer          <= "001";
+                            data_out_buffer         <= fourBytes_ASCII_to_integer(ctl_value_ASCII);
+                        when "01001101" & "01000001" & "01011000" & "01010110" =>                      -- MAXV changes maximum tec voltage
+                            register_en_buffer      <= '1';
+                            address_sel_buffer      <= "010";
+                            data_out_buffer         <= fourBytes_ASCII_to_integer(ctl_value_ASCII);
+                        when "01010100" & "01000100" & "01000101" & "01010100" =>                      -- TSET changes temperature setpoint for TEC controller
+                            register_en_buffer      <= '1';
+                            address_sel_buffer      <= "011";
+                            data_out_buffer         <= fourBytes_ASCII_to_integer(ctl_value_ASCII);
                         when others =>
-                            register_en_buffer       <= '0';
-                            address_sel_buffer         <= "000";
-                            ctl_value_ASCII     := (others => '0');
-                            attribute_ASCII     := (others => '0');
-                            pwm_value_ASCII     := (others => '0');
+                            register_en_buffer      <= '0';
+                            address_sel_buffer      <= "111";
+                            mod_select_buffer       <= "00";
+                            data_out_buffer         <= 0;
                     end case;
                 when others =>
                     register_en_buffer  <= '0';
-                    address_sel_buffer  <= "000";
+                    address_sel_buffer  <= "111";
                     mod_select_buffer   <= "00";
-                    ctl_value_ASCII     := (others => '0');
-                    attribute_ASCII     := (others => '0');
-                    pwm_value_ASCII     := (others => '0');
+                    data_out_buffer     <= 0;
             end case;
         end if;
     end process;
     
-    command_reg             <= command_buffer;
+    command_parsed          <= command_reg(0) & 
+                               command_reg(1) &
+                               command_reg(2);
+                       
+    pwm_value_ASCII         <= command_reg(4) &
+                               command_reg(5);   
+                               
+    attribute_ASCII         <= command_reg(4) &
+                               command_reg(5) &
+                               command_reg(6) &
+                               command_reg(7);  
+                               
+    ctl_value_ASCII         <= command_reg(9) &
+                               command_reg(10) &
+                               command_reg(11) &
+                               command_reg(12);
+                               
     address_select          <= address_sel_buffer;
     register_enable         <= register_en_buffer;
     data_out                <= data_out_buffer;

@@ -1,7 +1,7 @@
 (kicad_sch
-	(version 20241004)
+	(version 20250114)
 	(generator "eeschema")
-	(generator_version "8.99")
+	(generator_version "9.0")
 	(uuid "9e2b61da-2037-4001-92ff-9d54cf3ed90b")
 	(paper "A4")
 	(title_block
@@ -111,7 +111,7 @@
 						(type default)
 					)
 					(fill
-						(type outline)
+						(type none)
 					)
 				)
 				(arc
@@ -123,7 +123,7 @@
 						(type default)
 					)
 					(fill
-						(type none)
+						(type outline)
 					)
 				)
 				(polyline
@@ -2055,7 +2055,7 @@
 						(type default)
 					)
 					(fill
-						(type outline)
+						(type none)
 					)
 				)
 				(arc
@@ -2067,18 +2067,6 @@
 						(type default)
 					)
 					(fill
-						(type none)
-					)
-				)
-				(arc
-					(start 0.254 1.016)
-					(mid 1.2656 0)
-					(end 0.254 -1.016)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
 						(type outline)
 					)
 				)
@@ -2092,6 +2080,18 @@
 					)
 					(fill
 						(type none)
+					)
+				)
+				(arc
+					(start 0.254 1.016)
+					(mid 1.2656 0)
+					(end 0.254 -1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
 					)
 				)
 				(polyline
@@ -2711,6 +2711,18 @@
 				)
 				(polyline
 					(pts
+						(xy 7.62 -2.54) (xy 2.54 -2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
 						(xy 7.62 -2.54) (xy 10.16 -2.54)
 					)
 					(stroke
@@ -2730,18 +2742,6 @@
 					)
 					(fill
 						(type outline)
-					)
-				)
-				(polyline
-					(pts
-						(xy 7.62 -2.54) (xy 2.54 -2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
 					)
 				)
 			)
@@ -6265,7 +6265,6 @@
 	)
 	(label "FB"
 		(at 152.4 73.66 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6276,7 +6275,6 @@
 	)
 	(label "DL"
 		(at 125.73 60.96 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6287,7 +6285,6 @@
 	)
 	(label "DH"
 		(at 134.62 49.53 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6298,7 +6295,6 @@
 	)
 	(label "DH"
 		(at 125.73 53.34 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6309,7 +6305,6 @@
 	)
 	(label "DL"
 		(at 134.62 67.31 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6320,7 +6315,6 @@
 	)
 	(label "FB"
 		(at 168.91 67.31 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6331,7 +6325,6 @@
 	)
 	(label "FB"
 		(at 91.44 67.31 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)

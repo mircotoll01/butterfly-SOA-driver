@@ -34,7 +34,6 @@ use IEEE.NUMERIC_STD.ALL;
 entity Display is
     Port ( 
         clk     : in std_logic;
-        reset   : in std_logic;
         mode    : in std_logic_vector(1 downto 0);
         status  : in std_logic_vector(1 downto 0);
         seg     : out std_logic_vector(5 downto 0);
@@ -43,33 +42,24 @@ entity Display is
 end Display;
 
 architecture Behavioral of Display is
-    signal activeDigit        : integer range 0 to 3 := 0;     -- Display attivo
-    signal status_buffer      : std_logic_vector(1 downto 0);
-    signal mode_buffer        : std_logic_vector(1 downto 0);
+    signal activeDigit        : integer;     -- Display attivo
+    signal clk_counter        : integer range 0 to 9999:= 0; 
+    signal status_buffer      : std_logic_vector(1 downto 0) := "00";
+    signal mode_buffer        : std_logic_vector(1 downto 0) := "00";
 begin
     -- Multiplexing per i 7-segmenti
-    process(clk, reset)
-        variable clk_counter        : integer := 0; 
+    process(clk)
     begin
-        if reset = '1' then
-            clk_counter := 0;
-        end if;
-
         if rising_edge(clk) then
-            clk_counter := clk_counter + 1;
-            if clk_counter = 100000 then  -- Cambia display attivo ogni tot cicli
-                clk_counter := 0;
-                activeDigit <= activeDigit + 1; 
+            clk_counter <= clk_counter + 1;
+            if clk_counter = 9999 then  -- Cambia display attivo ogni tot cicli
+                clk_counter <= 0;
+                activeDigit <= (activeDigit + 1) mod 4; 
                 status_buffer <= status;
                 mode_buffer   <= mode;
             end if;
-        end if;
-    end process; 
-    
-        -- Mappare le cifre sui display
-    process(activeDigit)
-    begin
-        case activeDigit is
+            
+            case activeDigit is
             when 0 =>
                 an <= "1110";           -- Attiva primo display
                 if mode_buffer(0) = '0' then
@@ -102,6 +92,7 @@ begin
                 seg <= "000110";       -- Tutti i segmenti spenti
                 an <= "0000";
         end case;
-    end process;  
-    
+        end if;
+    end process; 
+
 end Behavioral;

@@ -43,15 +43,15 @@ end UART_receiver;
 
 architecture Behavioral of UART_receiver is
     constant BAUD_RATE      : integer := 9600;                                  -- Baud rate 
-    constant CLOCK_FREQ     : integer := 1000000;                               -- System clock frequency (1 MHz)
+    constant CLOCK_FREQ     : integer := 10000000;                               -- System clock frequency (10 MHz)
     constant BAUD_DIVISOR   : integer := CLOCK_FREQ / BAUD_RATE;                -- This is the number of clock per bit
 
     signal rx_buffer        : std_logic_vector(7 downto 0) := (others => '0');  -- received byte
+    signal bit_index        : integer range 0 to 7 := 0;                        -- Indice dei bit (start, dati, stop)
     signal dr_buffer        : std_logic := '0';
-    signal bit_index        : integer range 0 to 9 := 0;                        -- Indice dei bit (start, dati, stop)
 
-    type state_type is (IDLE, START_BIT, DATA_BITS, STOP_BIT);
-    signal state : state_type := IDLE;
+    type state_type is (IDLE, START_BIT, DATA_BITS, STOP_BIT, CLEANUP);
+    signal state : state_type := CLEANUP;
 begin 
     -- Receiver FSM
     process(clk)
@@ -63,25 +63,30 @@ begin
                 state       <= IDLE;
                 bit_index   <= 0;
                 rx_buffer   <= (others => '0');
-                dr_buffer   <= '0';
             end if;
             
             case state is
+                when CLEANUP =>
+                    rx_buffer       <= (others => '0');
+                    dr_buffer       <= '0';
+                    bit_index       <= 0;
+                    baud_counter    := 0;
+                    state           <= IDLE;  
+                
                 when IDLE =>
-                    dr_buffer <= '0';                              -- Reset data ready flag
                     if rx_bit = '0' then                            -- Detect start bit 
-                        state       <= START_BIT;
-                        bit_index   <= 0;
+                        state           <= START_BIT;
                     end if;
+                    
 
                 when START_BIT =>
                     if baud_counter = (BAUD_DIVISOR - 1)/2 then
                         if rx_bit = '0' then                       -- Is it really a start bit? check middle of start bit to verify it wasn't noise
-                            baud_counter    := 0;
                             state           <= DATA_BITS;
                         else
                             state           <= IDLE;               -- Turn back if it wasn't
                         end if;
+                        baud_counter        := 0;
                     else 
                         baud_counter        := baud_counter + 1;
                         state               <= START_BIT;
@@ -97,6 +102,8 @@ begin
                         
                         if bit_index = 7 then
                             state           <= STOP_BIT;           -- After eighth bit there's a stop
+                            dr_buffer       <= '1';
+                            bit_index       <= 0;
                         else
                             bit_index       <= bit_index + 1;
                             state           <= DATA_BITS;
@@ -104,22 +111,21 @@ begin
                     end if;
                     
                 when STOP_BIT =>
-                    if baud_counter < BAUD_DIVISOR - 1 then
+                    if baud_counter < (BAUD_DIVISOR - 1)/2 then
                         baud_counter        := baud_counter + 1;
                         state               <= STOP_BIT;
                     else
+                        baud_counter        := 0;
                         if rx_bit = '1' then                    -- Validate stop bit
-                            dr_buffer  <= '1';                 -- Set data ready flag
+                            state           <= CLEANUP;         -- clean up
                         end if;
-                        state <= IDLE;                          -- Go back to idle
                     end if;
                 when others =>
-                    state <= IDLE;
+                    state <= CLEANUP;
             end case;
         end if;
     end process;
     
-    rx_data     <= rx_buffer;
-    data_ready  <= dr_buffer;
-    
+    rx_data         <= rx_buffer;
+    data_ready      <= dr_buffer;
 end Behavioral;
