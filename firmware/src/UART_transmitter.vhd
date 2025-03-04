@@ -43,7 +43,7 @@ end UART_transmitter;
  
 architecture Behavioral of UART_transmitter is
     constant BAUD_RATE      : integer := 9600;                                  -- Baud rate 
-    constant CLOCK_FREQ     : integer := 10000000;                               -- System clock frequency (10 MHz)
+    constant CLOCK_FREQ     : integer := 10000000;                              -- System clock frequency (10 MHz)
     constant BAUD_DIVISOR   : integer := CLOCK_FREQ / BAUD_RATE;                -- This is the number of clock per bit
     
     type state_type is (IDLE, START_BIT, DATA_BITS, STOP_BIT, CLEANUP);
@@ -60,19 +60,16 @@ begin
         if rising_edge(clk) then
             case state is
                 when IDLE =>
-                    uart_tx         <= '1';         -- Drive Line High for Idle
-                    baud_counter    := 0;
-                    bit_index       <= 0;
-                
+                    uart_tx             <= '1';         -- Drive Line High for Idle
                     if enable = '1' then 
-                        tx_buffer   <= input;
-                        state       <= START_BIT;
+                        tx_buffer       <= input;
+                        state           <= START_BIT;
                     else
-                        state       <= IDLE;
+                        state           <= IDLE;
                     end if;
                 
                 when START_BIT =>
-                    uart_tx         <= '0';
+                    uart_tx             <= '0';
                     
                     if baud_counter < BAUD_DIVISOR-1 then
                         baud_counter    := baud_counter + 1;
@@ -87,16 +84,16 @@ begin
                     
                     if baud_counter < BAUD_DIVISOR-1 then
                         baud_counter    := baud_counter + 1;
-                        state   <= DATA_BITS;
+                        state           <= DATA_BITS;
                     else
                         baud_counter    := 0;
                      
                         if bit_index < 7 then
-                            bit_index <= bit_index + 1;
-                            state   <= DATA_BITS;
+                            bit_index   <= bit_index + 1;
+                            state       <= DATA_BITS;
                         else
-                            bit_index <= 0;
-                            state   <= STOP_BIT;
+                            bit_index   <= 0;
+                            state       <= STOP_BIT;
                         end if;
                     end if;
                 
@@ -106,17 +103,16 @@ begin
                         baud_counter    := baud_counter + 1;
                         state           <= STOP_BIT;
                     else
-                        ready_buffer    <= '1';
-                        baud_counter    := 0;
                         state           <= CLEANUP;
                     end if;
          
                 when CLEANUP =>
-                    ready_buffer   <= '1';
-                    state   <= IDLE;
-                
+                    baud_counter        := 0;
+                    bit_index           <= 0;
+                    state               <= IDLE;
+                    
                 when others =>
-                    state <= IDLE;
+                    state               <= IDLE;
             end case;
         end if;
     end process;   

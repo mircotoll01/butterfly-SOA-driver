@@ -47,92 +47,102 @@ entity modulator is
 end modulator;
 
 architecture Behavioral of modulator is
-    signal soa_en_buffer   : std_logic;
-    signal tec_en_buffer   : std_logic;
-    signal ctrl_sel_buffer : std_logic;
-    signal pwm_buffer      : std_logic;
-    
-    signal on_time         : integer range 0 to 100 := 0;
-    signal off_time        : integer range 0 to 100 := 0;
-    signal on_counter      : integer range 0 to 100 := 0;
-    signal off_counter     : integer range 0 to 100 := 0;
-    signal alarms          : std_logic_vector(1 downto 0) := "00";
+    signal soa_en_reg       : std_logic := '0';
+    signal tec_en_reg       : std_logic := '0';
+    signal ctrl_sel_reg     : std_logic := '0';
+    signal pwm_reg          : std_logic := '0';
+    signal alarms           : std_logic_vector(1 downto 0) := "00";
 begin 
-    on_time     <= duty_cycle;
-    off_time    <= 100 - on_time;    
-    process(clk)        
+    process(clk)
+    variable refresh_counter    :integer range 0 to 999 := 0;
     begin
-        alarms            <= overtemp_alarm & undertemp_alarm;
+        if rising_edge(clk) then
+            if refresh_counter = 999 then
+                alarms          <= overtemp_alarm & undertemp_alarm;
+                soa_en          <= soa_en_reg;
+                status          <= soa_en_reg & tec_en_reg;
+                pwm             <= pwm_reg;
+                tec_en          <= tec_en_reg;
+                ctrl_sel        <= ctrl_sel_reg;
+                refresh_counter := 0;
+            else
+                refresh_counter := refresh_counter + 1;
+            end if;
+        end if;
+    end process;
+    
+    process(clk)
+    variable on_counter      : integer range 0 to 100 := 0;
+    variable off_counter     : integer range 0 to 100 := 0;
+    variable on_time         : integer range 0 to 100 := duty_cycle;
+    variable off_time        : integer range 0 to 100 := 100 - on_time;
+    begin
         if rising_edge(clk) then
             case alarms is
                 when "10" => 
-                    soa_en_buffer      <= '0';  
-                    tec_en_buffer      <= '1';
-                    ctrl_sel_buffer    <= '0';
-                    pwm_buffer         <= '0';
+                    soa_en_reg          <= '0';  
+                    tec_en_reg          <= '1';
+                    ctrl_sel_reg        <= '0';
+                    pwm_reg             <= '0';
                 when "01" =>
-                    soa_en_buffer      <= '1';
-                    tec_en_buffer      <= '0';
-                    ctrl_sel_buffer    <= '0'; 
-                    pwm_buffer         <= '0';
+                    soa_en_reg          <= '1';
+                    tec_en_reg          <= '0';
+                    ctrl_sel_reg        <= '0'; 
+                    pwm_reg             <= '0';
                 when "00" =>
-                    tec_en_buffer      <= '1';
+                    tec_en_reg          <= '1';
                     case mod_sel is
                         when "00" =>
-                            soa_en_buffer      <= '0';
-                            tec_en_buffer      <= '1';
-                            pwm_buffer         <= '0';
-                            ctrl_sel_buffer    <= '0';
+                            soa_en_reg          <= '0';
+                            tec_en_reg          <= '1';
+                            pwm_reg             <= '0';
+                            ctrl_sel_reg        <= '0';
                         when "01" =>
-                            soa_en_buffer      <= '1';
-                            tec_en_buffer      <= '1';
-                            ctrl_sel_buffer    <= '0';
+                            soa_en_reg          <= '1';
+                            tec_en_reg          <= '1';
+                            ctrl_sel_reg        <= '0';
                             
                             if on_counter < on_time then
-                                on_counter     <= on_counter + 1;
-                                pwm_buffer     <= '1';
+                                on_counter      := on_counter + 1;
+                                pwm_reg         <= '1';
                             
                             elsif on_counter = on_time and off_counter < off_time then
-                                off_counter    <= off_counter + 1;
-                                pwm_buffer     <= '0';
-
+                                off_counter     := off_counter + 1;
+                                pwm_reg         <= '0';
+    
                             elsif on_counter = on_time and off_counter = off_time then
-                                on_counter     <= 0;
-                                off_counter    <= 0;
+                                on_counter      := 0;
+                                off_counter     := 0;
                             end if;
                             
                         when "10" =>
-                            soa_en_buffer      <= '1';
-                            tec_en_buffer      <= '1';
-                            pwm_buffer         <= '0';
-                            if on_counter < 49 then
-                                on_counter     <= on_counter + 1;
-                                ctrl_sel_buffer<= '1';
-                            elsif on_counter = 49 and off_counter < 49 then
-                                off_counter    <= off_counter + 1;
-                                ctrl_sel_buffer<= '0';
-                            elsif on_counter = 49 and off_counter = 49 then
-                                on_counter     <= 0;
-                                off_counter    <= 0;
+                            soa_en_reg          <= '1';
+                            tec_en_reg          <= '1';
+                            pwm_reg             <= '0';
+                            if on_counter < on_time then
+                                on_counter      := on_counter + 1;
+                                ctrl_sel_reg    <= '1';
+                            elsif on_counter = on_time and off_counter < off_time then
+                                off_counter     := off_counter + 1;
+                                ctrl_sel_reg    <= '0';
+                            elsif on_counter = on_time and off_counter = off_time then
+                                on_counter      := 0;
+                                off_counter     := 0;
                             end if;      
                         when others =>
-                            soa_en_buffer      <= '0';
-                            pwm_buffer         <= '0';
-                            tec_en_buffer      <= '0';
-                            ctrl_sel_buffer    <= '0';
+                            soa_en_reg          <= '0';
+                            pwm_reg             <= '0';
+                            tec_en_reg          <= '0';
+                            ctrl_sel_reg        <= '0';
                     end case;
                 when others =>
-                    soa_en_buffer      <= '0';
-                    pwm_buffer         <= '0';
-                    tec_en_buffer      <= '0';
-                    ctrl_sel_buffer    <= '0';
+                    soa_en_reg          <= '0';
+                    pwm_reg             <= '0';
+                    tec_en_reg          <= '0';
+                    ctrl_sel_reg        <= '0';
             end case;
         end if;
     end process;
     
-    soa_en            <= soa_en_buffer;
-    status            <= soa_en_buffer & tec_en_buffer;
-    pwm               <= pwm_buffer;
-    tec_en            <= tec_en_buffer;
-    ctrl_sel          <= ctrl_sel_buffer;
+    
 end Behavioral;

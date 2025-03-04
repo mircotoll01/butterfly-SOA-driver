@@ -84,6 +84,7 @@ architecture Structural of UART_decoder is
     component UART_parser is 
         Port(
             clk             : in std_logic;
+            reset           : in std_logic;
             data_ready_in   : in std_logic;
             uart_byte_in    : in std_logic_vector(7 downto 0);
             address_select  : out std_logic_vector(2 downto 0);
@@ -139,6 +140,7 @@ begin
     parser : UART_parser
         Port map(
             clk             => clk,
+            reset           => reset,
             data_ready_in   => data_ready_signal,
             uart_byte_in    => rx_data,
             address_select  => reg_address,

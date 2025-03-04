@@ -61,6 +61,7 @@ architecture Structural of Control_Unit is
     -- signals to interconnect i2c master and paload generation
     signal payload          : std_logic_vector(47 downto 0);
     signal start_tx         : std_logic;
+    signal clk_div          : std_logic;        
     
     -- signals for mudulation and controls
     signal mod_mode         : std_logic_vector(1 downto 0);
@@ -75,6 +76,13 @@ architecture Structural of Control_Unit is
 --    signal ISOA_raw         : std_logic_vector(15 downto 0);
 --    signal eoc              : std_logic;
 --    signal eos              : std_logic;
+
+    component clk_divider
+        Port (
+            clk             : in  std_logic;
+            clk_div         : out std_logic
+        );
+    end component;
     
     -- components for I2C communication
     component MCP4728_payload_generator
@@ -156,11 +164,16 @@ architecture Structural of Control_Unit is
     end component;
 
 begin
+    divider : clk_divider
+        Port map(
+            clk             => clk,
+            clk_div         => clk_div
+        );
     
     -- uart communication block
     decoder : UART_decoder
         Port map(
-            clk             => clk,
+            clk             => clk_div,
             reset           => reset,
             rx              => uart_rx,
             uart_tx         => uart_tx,
@@ -175,7 +188,7 @@ begin
     -- modulation and control block
     modulator_block : modulator
         Port map (
-            clk             => clk,
+            clk             => clk_div,
             overtemp_alarm  => overtemp_alarm,
             undertemp_alarm => undertemp_alarm,
             duty_cycle      => duty_cycle,
@@ -189,7 +202,7 @@ begin
 
     display_block : Display
         Port map(
-            clk             => clk,
+            clk             => clk_div,
             mode            => mod_mode,
             status          => status,
             seg             => seg,
@@ -199,7 +212,7 @@ begin
     -- other blocks
 --    adc_reader : Reader
 --        Port map (
---            clk             => clk,
+--            clk             => clk_div,
 --            reset           => reset,
 --            JXADC           => JXADC,
 --            digital_out     => ISOA_raw,
@@ -210,7 +223,7 @@ begin
     -- i2c blocks
     i2c_gen: MCP4728_payload_generator
         Port map (
-            clk             => clk,
+            clk             => clk_div,
             ctrl_l          => ctrl_l,
             ctrl_h          => ctrl_h,
             tec_maxv        => tec_maxv,
@@ -221,7 +234,7 @@ begin
         
     i2cmaster : I2C_Master
         Port map (
-            clk             => clk,
+            clk             => clk_div,
             reset           => reset,
             start_tx        => start_tx,
             I2C_payload     => payload,

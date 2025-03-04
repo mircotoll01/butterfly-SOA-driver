@@ -35,6 +35,7 @@ use IEEE.NUMERIC_STD.ALL;
 entity UART_parser is
     Port ( 
         clk             : in std_logic;
+        reset           : in std_logic;
         data_ready_in   : in std_logic;
         uart_byte_in    : in std_logic_vector(7 downto 0);
         address_select  : out std_logic_vector(2 downto 0);
@@ -108,11 +109,20 @@ architecture Behavioral of UART_parser is
         return result;
     end fourBytes_ASCII_to_integer;
     
-begin      
+begin
     process(clk)
     begin
+        if reset = '1' then 
+            register_en_buffer  <= '0';
+            address_sel_buffer  <= "111";
+            mod_select_buffer   <= "00";
+            data_out_buffer     <= 0;
+            command_buffer      <= (others => (others => '0'));
+        end if;
+            
         if rising_edge(clk) then
             data_ready_prev <= data_ready_in;
+            
             if (data_ready_in = '1' and data_ready_prev = '0') then                     -- If data is ready convert byte to character and put it into the buffer
                 command_buffer(char_index)      <= uart_byte_in;
                 char_index                      <= char_index + 1;
@@ -181,7 +191,7 @@ begin
     ctl_value_ASCII         <= command_reg(9) &
                                command_reg(10) &
                                command_reg(11) &
-                               command_reg(12);
+                               command_reg(12);  
                                
     address_select          <= address_sel_buffer;
     register_enable         <= register_en_buffer;

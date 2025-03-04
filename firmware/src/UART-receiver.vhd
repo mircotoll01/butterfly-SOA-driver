@@ -46,9 +46,9 @@ architecture Behavioral of UART_receiver is
     constant CLOCK_FREQ     : integer := 10000000;                               -- System clock frequency (10 MHz)
     constant BAUD_DIVISOR   : integer := CLOCK_FREQ / BAUD_RATE;                -- This is the number of clock per bit
 
-    signal rx_buffer        : std_logic_vector(7 downto 0) := (others => '0');  -- received byte
+    signal rx_reg           : std_logic_vector(7 downto 0) := (others => '0');  -- received byte
     signal bit_index        : integer range 0 to 7 := 0;                        -- Indice dei bit (start, dati, stop)
-    signal dr_buffer        : std_logic := '0';
+    signal dr_reg           : std_logic := '0';
 
     type state_type is (IDLE, START_BIT, DATA_BITS, STOP_BIT, CLEANUP);
     signal state : state_type := CLEANUP;
@@ -60,18 +60,18 @@ begin
         if rising_edge(clk) then
         
             if reset = '1' then
-                state       <= IDLE;
-                bit_index   <= 0;
-                rx_buffer   <= (others => '0');
+                state                   <= IDLE;
+                bit_index               <= 0;
+                rx_reg                  <= (others => '0');
             end if;
             
             case state is
                 when CLEANUP =>
-                    rx_buffer       <= (others => '0');
-                    dr_buffer       <= '0';
-                    bit_index       <= 0;
-                    baud_counter    := 0;
-                    state           <= IDLE;  
+                    rx_reg              <= (others => '0');
+                    dr_reg              <= '0';
+                    bit_index           <= 0;
+                    baud_counter        := 0;
+                    state               <= IDLE;  
                 
                 when IDLE =>
                     if rx_bit = '0' then                            -- Detect start bit 
@@ -98,11 +98,11 @@ begin
                         state               <= DATA_BITS;
                     else
                         baud_counter        := 0;
-                        rx_buffer(bit_index)<= rx_bit;             -- Memorize bit in a buffer
+                        rx_reg(bit_index)<= rx_bit;             -- Memorize bit in a buffer
                         
                         if bit_index = 7 then
                             state           <= STOP_BIT;           -- After eighth bit there's a stop
-                            dr_buffer       <= '1';
+                            dr_reg          <= '1';
                             bit_index       <= 0;
                         else
                             bit_index       <= bit_index + 1;
@@ -126,6 +126,6 @@ begin
         end if;
     end process;
     
-    rx_data         <= rx_buffer;
-    data_ready      <= dr_buffer;
+    rx_data         <= rx_reg;
+    data_ready      <= dr_reg;
 end Behavioral;

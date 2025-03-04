@@ -48,23 +48,31 @@ architecture Behavioral of MCP4728_payload_generator is
         signal payload : std_logic_vector(47 downto 0) := (others => '0');
     begin
         process(clk)
-            variable a0, a1, a2, a3 : integer;
+            variable a0, a1, a2, a3 : integer := 0;
+            variable refresh_counter: integer range 0 to 99999 := 0;
         begin
             if rising_edge(clk) then
-                start_tx    <= '0';
-                -- Compute scaled values
-                a0 := ctrl_l / LSB_INT; -- Integer division
-                a1 := ctrl_h / LSB_INT;
-                a2 := tec_maxv / LSB_INT;
-                a3 := setpoint / LSB_INT;
-                
-                -- Concatenate the factors into the payload
-                payload     <= std_logic_vector(to_unsigned(a0, 12)) & 
-                               std_logic_vector(to_unsigned(a1, 12)) & 
-                               std_logic_vector(to_unsigned(a2, 12)) & 
-                               std_logic_vector(to_unsigned(a3, 12));
-                start_tx    <= '1';
-           end if;
+                if refresh_counter = 99999 then
+                    -- Compute scaled values
+                    a0              := ctrl_l / LSB_INT; -- Integer division
+                    a1              := ctrl_h / LSB_INT;
+                    a2              := tec_maxv / LSB_INT;
+                    a3              := setpoint / LSB_INT;
+                    
+                    -- Concatenate the factors into the payload
+                    payload         <=  std_logic_vector(to_unsigned(a0, 12)) & 
+                                        std_logic_vector(to_unsigned(a1, 12)) & 
+                                        std_logic_vector(to_unsigned(a2, 12)) & 
+                                        std_logic_vector(to_unsigned(a3, 12));
+                    start_tx        <= '1';
+                    refresh_counter := 0;
+                elsif refresh_counter = 9999 then
+                    start_tx        <= '0';
+                    refresh_counter := refresh_counter + 1;
+                else 
+                    refresh_counter := refresh_counter + 1;
+                end if;
+            end if;
         end process;
         I2C_payload <= payload;
 end Behavioral;

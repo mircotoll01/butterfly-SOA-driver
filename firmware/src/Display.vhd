@@ -42,24 +42,33 @@ entity Display is
 end Display;
 
 architecture Behavioral of Display is
-    signal activeDigit        : integer;     -- Display attivo
-    signal clk_counter        : integer range 0 to 9999:= 0; 
     signal status_buffer      : std_logic_vector(1 downto 0) := "00";
     signal mode_buffer        : std_logic_vector(1 downto 0) := "00";
+    signal activeDigit        : integer range 0 to 3;
+    
 begin
-    -- Multiplexing per i 7-segmenti
     process(clk)
+    variable clk_counter        : integer range 0 to 999:= 0; 
     begin
         if rising_edge(clk) then
-            clk_counter <= clk_counter + 1;
-            if clk_counter = 9999 then  -- Cambia display attivo ogni tot cicli
-                clk_counter <= 0;
-                activeDigit <= (activeDigit + 1) mod 4; 
-                status_buffer <= status;
-                mode_buffer   <= mode;
+            clk_counter := clk_counter + 1;
+            if clk_counter = 999 then  -- Cambia display attivo ogni tot cicli
+                clk_counter         := 0;
+                status_buffer       <= status;
+                mode_buffer         <= mode;
+                if activeDigit < 3 then
+                    activeDigit     <= activeDigit + 1;
+                else
+                    activeDigit     <= 0;
+                end if;
             end if;
-            
-            case activeDigit is
+        end if;
+    end process;
+    
+    -- Multiplexing per i 7-segmenti
+    process(activeDigit)
+    begin
+        case activeDigit is
             when 0 =>
                 an <= "1110";           -- Attiva primo display
                 if mode_buffer(0) = '0' then
@@ -92,7 +101,6 @@ begin
                 seg <= "000110";       -- Tutti i segmenti spenti
                 an <= "0000";
         end case;
-        end if;
     end process; 
 
 end Behavioral;

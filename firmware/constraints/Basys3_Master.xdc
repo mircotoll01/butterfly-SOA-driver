@@ -10,7 +10,7 @@ set_property CONFIG_VOLTAGE 3.3 [current_design]
 ## Clock signal
 set_property PACKAGE_PIN W5 [get_ports clk]
 set_property IOSTANDARD LVCMOS33 [get_ports clk]
-create_clock -period 100 -name sys_clk_pin [get_ports clk]
+create_clock -period 100.000 -name sys_clk_pin [get_ports clk]
 
 ## Switches
 #set_property PACKAGE_PIN V17 [get_ports {sw[0]}]
@@ -115,7 +115,7 @@ set_property IOSTANDARD LVCMOS33 [get_ports {an[3]}]
 ##Buttons
 set_property PACKAGE_PIN U18 [get_ports reset]
 set_property IOSTANDARD LVCMOS33 [get_ports reset]
-set_property PULLDOWN true [get_ports reset]
+set_property PULLTYPE PULLDOWN [get_ports reset]
 #set_property PACKAGE_PIN T18 [get_ports btnU]
 #set_property IOSTANDARD LVCMOS33 [get_ports btnU]
 #set_property PACKAGE_PIN W19 [get_ports btnL]
@@ -131,11 +131,10 @@ set_property PULLDOWN true [get_ports reset]
 ##Sch name = JA1
 set_property PACKAGE_PIN J1 [get_ports overtemp_alarm]
 set_property IOSTANDARD LVCMOS33 [get_ports overtemp_alarm]
-set_property PULLDOWN true [get_ports overtemp_alarm]
+set_property PULLTYPE PULLDOWN [get_ports overtemp_alarm]
 ##Sch name = JA2
 set_property PACKAGE_PIN L2 [get_ports undertemp_alarm]
 set_property IOSTANDARD LVCMOS33 [get_ports undertemp_alarm]
-set_property PULLDOWN true [get_ports undertemp_alarm]
 ##Sch name = JA3
 set_property PACKAGE_PIN J2 [get_ports soa_en]
 set_property IOSTANDARD LVCMOS33 [get_ports soa_en]
@@ -151,20 +150,21 @@ set_property IOSTANDARD LVCMOS33 [get_ports tec_en]
 ##Sch name = JA9
 set_property PACKAGE_PIN H2 [get_ports sda]
 set_property IOSTANDARD LVCMOS33 [get_ports sda]
+set_property PULLTYPE PULLUP [get_ports sda]
 ##Sch name = JA10
 set_property PACKAGE_PIN G3 [get_ports scl]
 set_property IOSTANDARD LVCMOS33 [get_ports scl]
+set_property PULLTYPE PULLUP [get_ports scl]
 
 ##Pmod Header JB
 ##Sch name = JB1
 set_property PACKAGE_PIN A14 [get_ports n_ldac]
 set_property IOSTANDARD LVCMOS33 [get_ports n_ldac]
+set_property PULLTYPE PULLDOWN [get_ports undertemp_alarm]
 ##Sch name = JB2
 #set_property PACKAGE_PIN A16 [get_ports {JB[4]}]
 #set_property IOSTANDARD LVCMOS33 [get_ports {JB[4]}]
 ##Sch name = JB3
-set_property PACKAGE_PIN B15 [get_ports uart_tx]
-set_property IOSTANDARD LVCMOS33 [get_ports uart_tx]
 ##Sch name = JB4
 #set_property PACKAGE_PIN B16 [get_ports {JB[3]}]
 #set_property IOSTANDARD LVCMOS33 [get_ports {JB[3]}]
@@ -305,5 +305,4 @@ set_property IOSTANDARD LVCMOS33 [get_ports uart_rx]
 
 set_property PACKAGE_PIN A18 [get_ports uart_tx]
 set_property IOSTANDARD LVCMOS33 [get_ports uart_tx]
-
 
