@@ -61,13 +61,13 @@ architecture Behavioral of UART_parser is
     signal register_en_buffer   : std_logic := '0';
     signal data_ready_prev      : std_logic := '0';
     
-    function twobytes_ASCII_to_integer (vect: std_logic_vector(15 downto 0)) return integer is 
-        type parsedint is array (0 to 1) of integer;
+    function ASCII_to_integer (vect: std_logic_vector(23 downto 0)) return integer is 
+        type parsedint is array (0 to 2) of integer;
         variable digits: parsedint;
         variable result: integer := 0;
     begin
-        for i in 0 to 1 loop 
-            case vect(15-i*8 downto 8-i*8) is 
+        for i in 0 to 2 loop 
+            case vect(23-i*8 downto 16-i*8) is 
                 when "00110000" => digits(i) := 0;
                 when "00110001" => digits(i) := 1;
                 when "00110010" => digits(i) := 2;
@@ -81,9 +81,9 @@ architecture Behavioral of UART_parser is
                 when others     => digits(i) := 0;
             end case;
         end loop;
-        result := digits(0)*10 + digits(1);
+        result := digits(0)*100 + digits(1)*10 + digits(2);
         return result;
-    end twobytes_ASCII_to_integer; 
+    end ASCII_to_integer; 
     
     function fourBytes_ASCII_to_integer (vect: std_logic_vector(31 downto 0)) return integer is
         type parsedint is array (0 to 3) of integer;
@@ -139,7 +139,7 @@ begin
                 when "01010000" & "01010111" & "01001101" =>                                      -- ASCII coded for PWM This command expects an integer value for duty cycle from 0 to 99
                     register_en_buffer         <= '1';
                     address_sel_buffer         <= "100";
-                    data_out_buffer            <= twobytes_ASCII_to_integer(pwm_value_ASCII);
+                    data_out_buffer            <= ASCII_to_integer(pwm_value_ASCII);
                     mod_select_buffer          <= "01";
                 when "01000100" & "01000010" & "01001100" =>                                      -- ASCII coded for DBL This command expects two integer values for dac from 0 to 2048
                     mod_select_buffer          <= "10";
@@ -181,7 +181,8 @@ begin
                                command_reg(2);
                        
     pwm_value_ASCII         <= command_reg(4) &
-                               command_reg(5);   
+                               command_reg(5) &
+                               command_reg(6);   
                                
     attribute_ASCII         <= command_reg(4) &
                                command_reg(5) &

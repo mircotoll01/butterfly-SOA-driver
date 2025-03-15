@@ -160,7 +160,7 @@ set_property PULLTYPE PULLUP [get_ports scl]
 ##Sch name = JB1
 set_property PACKAGE_PIN A14 [get_ports n_ldac]
 set_property IOSTANDARD LVCMOS33 [get_ports n_ldac]
-set_property PULLTYPE PULLDOWN [get_ports undertemp_alarm]
+set_property PULLTYPE PULLDOWN [get_ports n_ldac]
 ##Sch name = JB2
 #set_property PACKAGE_PIN A16 [get_ports {JB[4]}]
 #set_property IOSTANDARD LVCMOS33 [get_ports {JB[4]}]
