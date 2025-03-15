@@ -30,17 +30,17 @@ Since there is no standard pinouts in butterfly-type packages, this board routes
 
 The board was tested with a Basys3 as a master module and the firmware is available in this repository. If a basys3 is used to operate this driver connect its output pins in the following way (declared in the bays3's constraint file):
 
-JA1     &rarr; OVRTMP_ALM  
-JA2     &rarr; UNDRTMP_ALM
-JA3     &rarr; LD_EN 
-JA4     &rarr; CTRL_SEL
-JA5     &rarr; GND
-JA6     &rarr; 3V3
-JA8     &rarr; TEC_EN
-JA9     &rarr; SDA
-JA10    &rarr; SCL
-JB1     &rarr; $\overline{LDAC}$
-
+JA1     &rarr; OVRTMP_ALM  \
+JA2     &rarr; UNDRTMP_ALM \
+JA3     &rarr; LD_EN \
+JA4     &rarr; CTRL_SEL \
+JA5     &rarr; GND \
+JA6     &rarr; 3V3 \
+JA8     &rarr; TEC_EN \
+JA9     &rarr; SDA \
+JA10    &rarr; SCL \
+JB1     &rarr; $\overline{LDAC}$  
+\
 To control the board with the Basys3 simply connect these pins and connect the board to the computer via USB. The given firmware will provide a rudimental serial interface that will control the state of the driver.
 A simple python script can do the trick. the following one will work on linux:
 
