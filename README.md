@@ -103,7 +103,7 @@ The SET command will accept the following attributes:
     </tr>
     <tr>
         <td>TSET</td>
-        <td>Integer from 0 to 1500, which corresponds to a voltage output from the DAC that goes from 0 to 1500V.</td>
+        <td>Integer from 0 to 1500, which corresponds to a voltage output from the DAC that goes from 0 to 1.5V.</td>
     </tr>
     <tr>
         <td>MAXV</td>
@@ -122,3 +122,18 @@ The SET command will accept the following attributes:
     </tr>
 </table>
 
+### Examples
+
+Turn on a SOA or an LD:
+
+```
+SET CTLL XXXX
+PWM 100
+```
+
+Enable PWM modulation
+
+```
+SET CTLL XXXX
+PWM XXX
+```
