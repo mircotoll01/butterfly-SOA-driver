@@ -138,12 +138,15 @@ set_property IOSTANDARD LVCMOS33 [get_ports undertemp_alarm]
 ##Sch name = JA3
 set_property PACKAGE_PIN J2 [get_ports soa_en]
 set_property IOSTANDARD LVCMOS33 [get_ports soa_en]
+set_property PULLTYPE PULLDOWN [get_ports soa_en]
 ##Sch name = JA4
 set_property PACKAGE_PIN G2 [get_ports ctrl_sel_pwm]
 set_property IOSTANDARD LVCMOS33 [get_ports ctrl_sel_pwm]
+set_property PULLTYPE PULLDOWN [get_ports ctrl_sel_pwm]
 ##Sch name = JA7
 set_property PACKAGE_PIN H1 [get_ports soa_pwm]
 set_property IOSTANDARD LVCMOS33 [get_ports soa_pwm]
+set_property PULLTYPE PULLDOWN [get_ports soa_pwm]
 ##Sch name = JA8
 set_property PACKAGE_PIN K2 [get_ports tec_en]
 set_property IOSTANDARD LVCMOS33 [get_ports tec_en]

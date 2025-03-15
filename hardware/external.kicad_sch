@@ -905,34 +905,37 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Device:R"
+		(symbol "Device:R_Small"
 			(pin_numbers
 				(hide yes)
 			)
 			(pin_names
-				(offset 0)
+				(offset 0.254)
+				(hide yes)
 			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
 			(property "Reference" "R"
-				(at 2.032 0 90)
+				(at 0.762 0.508 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
+					(justify left)
 				)
 			)
-			(property "Value" "R"
-				(at 0 0 90)
+			(property "Value" "R_Small"
+				(at 0.762 -1.016 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
+					(justify left)
 				)
 			)
 			(property "Footprint" ""
-				(at -1.778 0 90)
+				(at 0 0 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -949,7 +952,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Resistor"
+			(property "Description" "Resistor, small symbol"
 				(at 0 0 0)
 				(effects
 					(font
@@ -958,7 +961,7 @@
 					(hide yes)
 				)
 			)
-			(property "ki_keywords" "R res resistor"
+			(property "ki_keywords" "R resistor"
 				(at 0 0 0)
 				(effects
 					(font
@@ -976,12 +979,12 @@
 					(hide yes)
 				)
 			)
-			(symbol "R_0_1"
+			(symbol "R_Small_0_1"
 				(rectangle
-					(start -1.016 -2.54)
-					(end 1.016 2.54)
+					(start -0.762 1.778)
+					(end 0.762 -1.778)
 					(stroke
-						(width 0.254)
+						(width 0.2032)
 						(type default)
 					)
 					(fill
@@ -989,10 +992,10 @@
 					)
 				)
 			)
-			(symbol "R_1_1"
+			(symbol "R_Small_1_1"
 				(pin passive line
-					(at 0 3.81 270)
-					(length 1.27)
+					(at 0 2.54 270)
+					(length 0.762)
 					(name "~"
 						(effects
 							(font
@@ -1009,8 +1012,8 @@
 					)
 				)
 				(pin passive line
-					(at 0 -3.81 90)
-					(length 1.27)
+					(at 0 -2.54 90)
+					(length 0.762)
 					(name "~"
 						(effects
 							(font
@@ -1310,16 +1313,6 @@
 	)
 	(wire
 		(pts
-			(xy 160.02 93.98) (xy 160.02 101.6)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "06769c1a-a4b1-4cdb-9925-3c2712a6431d")
-	)
-	(wire
-		(pts
 			(xy 176.53 83.82) (xy 176.53 85.09)
 		)
 		(stroke
@@ -1327,6 +1320,16 @@
 			(type default)
 		)
 		(uuid "0697fd6a-ef94-4924-8ebe-016998a43344")
+	)
+	(wire
+		(pts
+			(xy 160.02 86.36) (xy 160.02 87.63)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2d0b6c47-31f1-48c7-a9f6-dfd9d128cae5")
 	)
 	(wire
 		(pts
@@ -1447,7 +1450,17 @@
 	)
 	(wire
 		(pts
-			(xy 165.1 93.98) (xy 165.1 99.06)
+			(xy 165.1 86.36) (xy 165.1 87.63)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bcb32d09-a028-4149-9a0d-55775706a1fd")
+	)
+	(wire
+		(pts
+			(xy 165.1 92.71) (xy 165.1 99.06)
 		)
 		(stroke
 			(width 0)
@@ -1475,6 +1488,16 @@
 			(type default)
 		)
 		(uuid "f1da6a4e-64e4-49a3-820c-ebd53cfe530b")
+	)
+	(wire
+		(pts
+			(xy 160.02 92.71) (xy 160.02 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f4ada355-2f34-4d3a-8a30-b83020c8bae1")
 	)
 	(wire
 		(pts
@@ -2255,17 +2278,16 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 165.1 90.17 0)
+		(lib_id "Device:R_Small")
+		(at 165.1 90.17 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "94693681-cabb-4db5-8883-6117452a4800")
+		(uuid "782ec04b-f165-4fe7-989a-eb4fe8cb5a8e")
 		(property "Reference" "R28"
-			(at 167.64 88.8999 0)
+			(at 170.688 88.646 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2273,8 +2295,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "1k"
-			(at 167.64 91.4399 0)
+		(property "Value" "10"
+			(at 169.672 90.424 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2282,8 +2304,8 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
-			(at 163.322 90.17 90)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 165.1 90.17 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2300,7 +2322,52 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Resistor"
+		(property "Description" "Resistor, small symbol"
+			(at 165.1 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 165.1 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 165.1 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 165.1 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "PN" "CRCW060310R0FKEAC "
+			(at 165.1 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Store Link" "https://www.mouser.it/ProductDetail/Vishay-Dale/CRCW060310R0FKEAC?qs=E3Y5ESvWgWP5XvJ40P8QAg%3D%3D"
 			(at 165.1 90.17 0)
 			(effects
 				(font
@@ -2310,13 +2377,13 @@
 			)
 		)
 		(pin "2"
-			(uuid "0e8fe061-80aa-4317-b868-2c80adf00fca")
+			(uuid "1000a8e5-8154-47b6-b987-cae2db360587")
 		)
 		(pin "1"
-			(uuid "e4fb9c59-cd6d-4e87-a52a-b2cfe0b05a77")
+			(uuid "a22d9472-9ada-4ee5-9ac7-30376bf8888e")
 		)
 		(instances
-			(project ""
+			(project "SOA-driver"
 				(path "/aef12ca3-3d60-44eb-99b6-8bdd18a4b35c/b8096563-2aa1-42a7-b303-2d7d794c80ce"
 					(reference "R28")
 					(unit 1)
@@ -2325,7 +2392,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
+		(lib_id "Device:R_Small")
 		(at 160.02 90.17 0)
 		(mirror x)
 		(unit 1)
@@ -2333,28 +2400,27 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "a5a62d59-b1e6-48a3-90fc-e78f92c12048")
+		(uuid "8cfa948a-e923-4a66-b16d-28a03cc3b0e0")
 		(property "Reference" "R29"
-			(at 157.48 88.8999 0)
+			(at 154.432 88.646 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify right)
+				(justify left)
 			)
 		)
 		(property "Value" "1k"
-			(at 157.48 91.4399 0)
+			(at 155.448 90.424 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify right)
+				(justify left)
 			)
 		)
-		(property "Footprint" ""
-			(at 158.242 90.17 90)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 160.02 90.17 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2371,7 +2437,52 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Resistor"
+		(property "Description" "Resistor, small symbol"
+			(at 160.02 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 160.02 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 160.02 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 160.02 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "PN" "CRCW060310R0FKEAC "
+			(at 160.02 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Store Link" "https://www.mouser.it/ProductDetail/Vishay-Dale/CRCW060310R0FKEAC?qs=E3Y5ESvWgWP5XvJ40P8QAg%3D%3D"
 			(at 160.02 90.17 0)
 			(effects
 				(font
@@ -2381,13 +2492,13 @@
 			)
 		)
 		(pin "2"
-			(uuid "d8ac1fc6-ab8a-4f43-a5ff-3273dc89d8ce")
+			(uuid "a4528d57-a572-4671-8635-4132618d9d2a")
 		)
 		(pin "1"
-			(uuid "039de7ec-b1ea-4d27-b33a-de0e3426eb6c")
+			(uuid "c1de2be3-196c-4153-8feb-18e4d935595e")
 		)
 		(instances
-			(project ""
+			(project "SOA-driver"
 				(path "/aef12ca3-3d60-44eb-99b6-8bdd18a4b35c/b8096563-2aa1-42a7-b303-2d7d794c80ce"
 					(reference "R29")
 					(unit 1)
@@ -2487,7 +2598,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_2x07_P2.54mm_Horizontal"
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_2x07_P2.54mm_Vertical"
 			(at 104.14 97.79 0)
 			(effects
 				(font
