@@ -108,7 +108,7 @@ The SET command will accept the following attributes:
     <tr>
         <td>MAXV</td>
         <td>Integer from 0 to 2048, which corresponds to a voltage output from the DAC that goes from 0 to 2.048V.
-        Maximum TEC voltage will be set to 4*MAXV and </td>
+        Maximum TEC voltage will be set to 4*MAXV</td>
     </tr>
     <tr>
         <td>PWM</td>

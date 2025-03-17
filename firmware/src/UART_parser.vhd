@@ -51,7 +51,7 @@ architecture Behavioral of UART_parser is
     signal command_buffer       : ASCII_string := (others => (others => '0'));
     signal command_parsed       : std_logic_vector(23 downto 0) := (others => '0');
     signal attribute_ASCII      : std_logic_vector(31 downto 0) := (others => '0');
-    signal pwm_value_ASCII      : std_logic_vector(15 downto 0) := (others => '0');
+    signal pwm_value_ASCII      : std_logic_vector(23 downto 0) := (others => '0');
     signal ctl_value_ASCII      : std_logic_vector(31 downto 0) := (others => '0');
         
     signal char_index           : integer range 0 to 13 := 0;
@@ -139,28 +139,48 @@ begin
                 when "01010000" & "01010111" & "01001101" =>                                      -- ASCII coded for PWM This command expects an integer value for duty cycle from 0 to 99
                     register_en_buffer         <= '1';
                     address_sel_buffer         <= "100";
-                    data_out_buffer            <= ASCII_to_integer(pwm_value_ASCII);
+                    if ASCII_to_integer(pwm_value_ASCII) > 100 then
+                        data_out_buffer        <= 100;
+                    else
+                        data_out_buffer        <= ASCII_to_integer(pwm_value_ASCII);
+                    end if;
                     mod_select_buffer          <= "01";
                 when "01000100" & "01000010" & "01001100" =>                                      -- ASCII coded for DBL This command expects two integer values for dac from 0 to 2048
                     mod_select_buffer          <= "10";
                 when "01010011" & "01000101" & "01010100" =>                                      -- ASCII coded for SET
                     case attribute_ASCII is 
-                        when "01000011" & "01010100" & "01001100" & "01001100" =>                 -- CTLL changes CTRL_L
+                        when "01000011" & "01010100" & "01001100" & "01001100" =>                      -- CTLL changes CTRL_L
                             register_en_buffer      <= '1';
                             address_sel_buffer      <= "000";                           
-                            data_out_buffer         <= fourBytes_ASCII_to_integer(ctl_value_ASCII);
+                            if fourBytes_ASCII_to_integer(ctl_value_ASCII) > 1500 then
+                                data_out_buffer         <= 1500;
+                            else
+                                data_out_buffer         <= fourBytes_ASCII_to_integer(ctl_value_ASCII);
+                            end if;
                         when "01000011" & "01010100" & "01001100" & "01001000" =>                      -- CTLH changes CTRL_H
                             register_en_buffer      <= '1';
-                        address_sel_buffer          <= "001";
-                            data_out_buffer         <= fourBytes_ASCII_to_integer(ctl_value_ASCII);
+                            address_sel_buffer      <= "001";
+                            if fourBytes_ASCII_to_integer(ctl_value_ASCII) > 1500 then
+                                data_out_buffer         <= 1500;
+                            else
+                                data_out_buffer         <= fourBytes_ASCII_to_integer(ctl_value_ASCII);
+                            end if;
                         when "01001101" & "01000001" & "01011000" & "01010110" =>                      -- MAXV changes maximum tec voltage
                             register_en_buffer      <= '1';
                             address_sel_buffer      <= "010";
-                            data_out_buffer         <= fourBytes_ASCII_to_integer(ctl_value_ASCII);
+                            if fourBytes_ASCII_to_integer(ctl_value_ASCII) > 2048 then
+                                data_out_buffer         <= 2048;
+                            else
+                                data_out_buffer         <= fourBytes_ASCII_to_integer(ctl_value_ASCII);
+                            end if;
                         when "01010100" & "01000100" & "01000101" & "01010100" =>                      -- TSET changes temperature setpoint for TEC controller
                             register_en_buffer      <= '1';
                             address_sel_buffer      <= "011";
-                            data_out_buffer         <= fourBytes_ASCII_to_integer(ctl_value_ASCII);
+                            if fourBytes_ASCII_to_integer(ctl_value_ASCII) > 1500 then
+                                data_out_buffer         <= 1500;
+                            else
+                                data_out_buffer         <= fourBytes_ASCII_to_integer(ctl_value_ASCII);
+                            end if;
                         when others =>
                             register_en_buffer      <= '0';
                             address_sel_buffer      <= "111";
