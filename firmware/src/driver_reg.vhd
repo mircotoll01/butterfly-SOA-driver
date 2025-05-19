@@ -56,7 +56,7 @@ architecture Behavioral of driver_reg is
     signal duty_cycle_reg  : integer := 0;
     signal mod_mode_reg    : std_logic_vector(1 downto 0);
 begin
-    process(clk)
+    process(clk,reset)
     begin
         if reset = '1' then
                 ctrl_l_reg      <= 0;

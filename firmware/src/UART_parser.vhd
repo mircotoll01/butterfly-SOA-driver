@@ -1,52 +1,26 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date: 12/12/2024 02:53:00 PM
--- Design Name: 
--- Module Name: UART_parser - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
-
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
-
 use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
+library xil_defaultlib;
+use xil_defaultlib.utils_pkg.all;
 
 entity UART_parser is
     Port ( 
-        clk             : in std_logic;
-        reset           : in std_logic;
-        data_ready_in   : in std_logic;
-        uart_byte_in    : in std_logic_vector(7 downto 0);
-        address_select  : out std_logic_vector(2 downto 0);
-        register_enable : out std_logic;
-        data_out        : out integer;                           
-        mod_select_out  : out std_logic_vector(1 downto 0)   
+        clk                 : in std_logic;
+        reset               : in std_logic;
+        data_ready_in       : in std_logic;
+        uart_byte_in        : in std_logic_vector(7 downto 0);
+        address_select      : out std_logic_vector(2 downto 0);
+        register_enable     : out std_logic;
+        data_out            : out integer;                           
+        mod_select_out      : out std_logic_vector(1 downto 0);
+        command_parsed_out  : out std_logic_vector(23 downto 0);
+        attribute_ASCII_out : out std_logic_vector(31 downto 0);
+        ctl_value_ASCII_out : out std_logic_vector(31 downto 0)
     );
 end UART_parser;
 
-architecture Behavioral of UART_parser is  
-    type ASCII_string is array (0 to 13) of std_logic_vector(7 downto 0);
+architecture Behavioral of UART_parser is
     signal command_reg          : ASCII_string := (others => (others => '0'));
     signal command_buffer       : ASCII_string := (others => (others => '0'));
     signal command_parsed       : std_logic_vector(23 downto 0) := (others => '0');
@@ -60,54 +34,6 @@ architecture Behavioral of UART_parser is
     signal mod_select_buffer    : std_logic_vector(1 downto 0):= (others => '0');
     signal register_en_buffer   : std_logic := '0';
     signal data_ready_prev      : std_logic := '0';
-    
-    function ASCII_to_integer (vect: std_logic_vector(23 downto 0)) return integer is 
-        type parsedint is array (0 to 2) of integer;
-        variable digits: parsedint;
-        variable result: integer := 0;
-    begin
-        for i in 0 to 2 loop 
-            case vect(23-i*8 downto 16-i*8) is 
-                when "00110000" => digits(i) := 0;
-                when "00110001" => digits(i) := 1;
-                when "00110010" => digits(i) := 2;
-                when "00110011" => digits(i) := 3;
-                when "00110100" => digits(i) := 4;
-                when "00110101" => digits(i) := 5;
-                when "00110110" => digits(i) := 6;
-                when "00110111" => digits(i) := 7;
-                when "00111000" => digits(i) := 8;
-                when "00111001" => digits(i) := 9;
-                when others     => digits(i) := 0;
-            end case;
-        end loop;
-        result := digits(0)*100 + digits(1)*10 + digits(2);
-        return result;
-    end ASCII_to_integer; 
-    
-    function fourBytes_ASCII_to_integer (vect: std_logic_vector(31 downto 0)) return integer is
-        type parsedint is array (0 to 3) of integer;
-        variable digits: parsedint;
-        variable result: integer := 0;
-    begin
-        for i in 0 to 3 loop 
-            case vect(31-i*8 downto 24-i*8) is 
-                when "00110000" => digits(i) := 0;
-                when "00110001" => digits(i) := 1;
-                when "00110010" => digits(i) := 2;
-                when "00110011" => digits(i) := 3;
-                when "00110100" => digits(i) := 4;
-                when "00110101" => digits(i) := 5;
-                when "00110110" => digits(i) := 6;
-                when "00110111" => digits(i) := 7;
-                when "00111000" => digits(i) := 8;
-                when "00111001" => digits(i) := 9;
-                when others     => digits(i) := 0;
-            end case;
-        end loop;
-        result := digits(0)*1000 + digits(1)*100 + digits(2)*10 + digits(3);
-        return result;
-    end fourBytes_ASCII_to_integer;
     
 begin
     process(clk)
@@ -135,7 +61,10 @@ begin
             
             case command_parsed is
                 when "01001111" & "01000110" & "01000110" =>                                      -- ASCII code for OFF (Every code is LSB first)
-                    mod_select_buffer          <= "00";
+                    register_en_buffer      <= '0';
+                    address_sel_buffer      <= "111";
+                    mod_select_buffer       <= "00";
+                    data_out_buffer         <= 0;
                 when "01010000" & "01010111" & "01001101" =>                                      -- ASCII coded for PWM This command expects an integer value for duty cycle from 0 to 99
                     register_en_buffer         <= '1';
                     address_sel_buffer         <= "100";
@@ -144,6 +73,7 @@ begin
                     else
                         data_out_buffer        <= ASCII_to_integer(pwm_value_ASCII);
                     end if;
+                    
                     mod_select_buffer          <= "01";
                 when "01000100" & "01000010" & "01001100" =>                                      -- ASCII coded for DBL This command expects two integer values for dac from 0 to 2048
                     mod_select_buffer          <= "10";
@@ -152,7 +82,7 @@ begin
                         when "01000011" & "01010100" & "01001100" & "01001100" =>                      -- CTLL changes CTRL_L
                             register_en_buffer      <= '1';
                             address_sel_buffer      <= "000";                           
-                            if fourBytes_ASCII_to_integer(ctl_value_ASCII) > 1500 then
+                            if fourBytes_ASCII_to_integer(ctl_value_ASCII) >= 1500 then
                                 data_out_buffer         <= 1500;
                             else
                                 data_out_buffer         <= fourBytes_ASCII_to_integer(ctl_value_ASCII);
@@ -173,7 +103,7 @@ begin
                             else
                                 data_out_buffer         <= fourBytes_ASCII_to_integer(ctl_value_ASCII);
                             end if;
-                        when "01010100" & "01000100" & "01000101" & "01010100" =>                      -- TSET changes temperature setpoint for TEC controller
+                        when "01010100" & "01010011" & "01000101" & "01010100" =>                      -- TSET changes temperature setpoint for TEC controller
                             register_en_buffer      <= '1';
                             address_sel_buffer      <= "011";
                             if fourBytes_ASCII_to_integer(ctl_value_ASCII) > 1500 then
@@ -182,16 +112,8 @@ begin
                                 data_out_buffer         <= fourBytes_ASCII_to_integer(ctl_value_ASCII);
                             end if;
                         when others =>
-                            register_en_buffer      <= '0';
-                            address_sel_buffer      <= "111";
-                            mod_select_buffer       <= "00";
-                            data_out_buffer         <= 0;
                     end case;
                 when others =>
-                    register_en_buffer  <= '0';
-                    address_sel_buffer  <= "111";
-                    mod_select_buffer   <= "00";
-                    data_out_buffer     <= 0;
             end case;
         end if;
     end process;
@@ -218,5 +140,7 @@ begin
     register_enable         <= register_en_buffer;
     data_out                <= data_out_buffer;
     mod_select_out          <= mod_select_buffer;
-      
+    command_parsed_out      <= command_parsed;
+    attribute_ASCII_out     <= attribute_ASCII;
+    ctl_value_ASCII_out     <= ctl_value_ASCII;
 end Behavioral;

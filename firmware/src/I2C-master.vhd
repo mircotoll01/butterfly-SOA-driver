@@ -79,9 +79,7 @@ begin
             end if;
             case state is
                 when IDLE =>
-                    if START_tx = '1' then
                         state <= START;
-                    end if;
 
                 when START =>
                     sda_reg <= '0';             -- START condition: SDA goes low when SCL high

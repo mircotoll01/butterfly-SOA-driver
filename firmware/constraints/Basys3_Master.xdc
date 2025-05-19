@@ -135,10 +135,10 @@ set_property PULLTYPE PULLDOWN [get_ports overtemp_alarm]
 ##Sch name = JA2
 set_property PACKAGE_PIN L2 [get_ports undertemp_alarm]
 set_property IOSTANDARD LVCMOS33 [get_ports undertemp_alarm]
+set_property PULLTYPE PULLDOWN [get_ports undertemp_alarm]
 ##Sch name = JA3
 set_property PACKAGE_PIN J2 [get_ports soa_en]
 set_property IOSTANDARD LVCMOS33 [get_ports soa_en]
-set_property PULLTYPE PULLDOWN [get_ports soa_en]
 ##Sch name = JA4
 set_property PACKAGE_PIN G2 [get_ports ctrl_sel_pwm]
 set_property IOSTANDARD LVCMOS33 [get_ports ctrl_sel_pwm]
@@ -146,7 +146,6 @@ set_property PULLTYPE PULLDOWN [get_ports ctrl_sel_pwm]
 ##Sch name = JA7
 set_property PACKAGE_PIN H1 [get_ports soa_pwm]
 set_property IOSTANDARD LVCMOS33 [get_ports soa_pwm]
-set_property PULLTYPE PULLDOWN [get_ports soa_pwm]
 ##Sch name = JA8
 set_property PACKAGE_PIN K2 [get_ports tec_en]
 set_property IOSTANDARD LVCMOS33 [get_ports tec_en]
@@ -224,8 +223,8 @@ set_property PULLTYPE PULLDOWN [get_ports n_ldac]
 #set_property PACKAGE_PIN M2 [get_ports {JXADC[2]}]
 #set_property IOSTANDARD LVCMOS33 [get_ports {JXADC[2]}]
 ##Sch name = XA4_P
-#set_property PACKAGE_PIN N2 [get_ports {JXADC[3]}]
-#set_property IOSTANDARD LVCMOS33 [get_ports {JXADC[3]}]
+set_property PACKAGE_PIN N2 [get_ports vauxp15]
+set_property IOSTANDARD LVCMOS33 [get_ports vauxp15]
 ##Sch name = XA1_N
 #set_property PACKAGE_PIN K3 [get_ports {JXADC[4]}]
 #set_property IOSTANDARD LVCMOS33 [get_ports {JXADC[4]}]
@@ -236,8 +235,8 @@ set_property PULLTYPE PULLDOWN [get_ports n_ldac]
 #set_property PACKAGE_PIN M1 [get_ports {JXADC[6]}]
 #set_property IOSTANDARD LVCMOS33 [get_ports {JXADC[6]}]
 ##Sch name = XA4_N
-#set_property PACKAGE_PIN N1 [get_ports {JXADC[7]}]
-#set_property IOSTANDARD LVCMOS33 [get_ports {JXADC[7]}]
+set_property PACKAGE_PIN N1 [get_ports vauxn15]
+set_property IOSTANDARD LVCMOS33 [get_ports vauxn15]
 
 
 
