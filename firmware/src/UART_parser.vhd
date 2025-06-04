@@ -60,26 +60,32 @@ begin
             end if;
             
             case command_parsed is
-                when "01001111" & "01000110" & "01000110" =>                                            -- ASCII code for OFF (Every code is LSB first)
-                    register_en_buffer      <= '0';
-                    address_sel_buffer      <= "111";
-                    mod_select_buffer       <= "00";
-                    data_out_buffer         <= 0;
-                when "01010000" & "01010111" & "01001101" =>                                            -- ASCII coded for PWM This command expects an integer value for duty cycle from 0 to 99
-                    register_en_buffer         <= '1';
-                    address_sel_buffer         <= "100";
+                when x"4F4646"      =>                                              -- ASCII code for OFF (Every code is LSB first)
+                    register_en_buffer          <= '0';
+                    address_sel_buffer          <= "111";
+                    data_out_buffer             <= 0;
+                when x"50574D"      =>                                              -- ASCII coded for PWM This command expects an integer value for duty cycle from 0 to 99
+                    register_en_buffer          <= '1';
+                    address_sel_buffer          <= "100";
+                    mod_select_buffer           <= "01";
                     if ascii_to_integer(pwm_value_ASCII) > 100 then
-                        data_out_buffer        <= 100;
+                        data_out_buffer         <= 100;
                     else
-                        data_out_buffer        <= ascii_to_integer(pwm_value_ASCII);
+                        data_out_buffer         <= ascii_to_integer(pwm_value_ASCII);
+                    end if;
+                when x"44424C"      =>                                              -- ASCII coded for DBL This command expects two integer values for dac from 0 to 2048
+                    register_en_buffer          <= '1';
+                    mod_select_buffer           <= "10";
+                    address_sel_buffer          <= "100";
+                    if ascii_to_integer(pwm_value_ASCII) > 100 then
+                        data_out_buffer         <= 100;
+                    else
+                        data_out_buffer         <= ascii_to_integer(pwm_value_ASCII);
                     end if;
                     
-                    mod_select_buffer          <= "01";
-                when "01000100" & "01000010" & "01001100" =>                                            -- ASCII coded for DBL This command expects two integer values for dac from 0 to 2048
-                    mod_select_buffer          <= "10";
-                when x"534554" =>                                                                       -- ASCII coded for SET
+                when x"534554"      =>                                              -- ASCII coded for SET
                     case attribute_ASCII is 
-                        when x"43544C4C" =>                                                             -- CTLL changes CTRL_L
+                        when x"43544C4C" =>                                         -- CTLL changes CTRL_L
                             register_en_buffer      <= '1';
                             address_sel_buffer      <= "000";                           
                             if four_bytes_ascii_to_integer(ctl_value_ASCII) >= 1500 then
@@ -87,7 +93,7 @@ begin
                             else
                                 data_out_buffer         <= four_bytes_ascii_to_integer(ctl_value_ASCII);
                             end if;
-                        when "01000011" & "01010100" & "01001100" & "01001000" =>                      -- CTLH changes CTRL_H
+                        when x"43544C48" =>                      -- CTLH changes CTRL_H
                             register_en_buffer      <= '1';
                             address_sel_buffer      <= "001";
                             if four_bytes_ascii_to_integer(ctl_value_ASCII) > 1500 then
@@ -95,7 +101,7 @@ begin
                             else
                                 data_out_buffer         <= four_bytes_ascii_to_integer(ctl_value_ASCII);
                             end if;
-                        when "01001101" & "01000001" & "01011000" & "01010110" =>                      -- MAXV changes maximum tec voltage
+                        when x"4D415856" =>                      -- MAXV changes maximum tec voltage
                             register_en_buffer      <= '1';
                             address_sel_buffer      <= "010";
                             if four_bytes_ascii_to_integer(ctl_value_ASCII) > 2048 then
@@ -103,7 +109,7 @@ begin
                             else
                                 data_out_buffer         <= four_bytes_ascii_to_integer(ctl_value_ASCII);
                             end if;
-                        when "01010100" & "01010011" & "01000101" & "01010100" =>                      -- TSET changes temperature setpoint for TEC controller
+                        when x"54534554" =>                      -- TSET changes temperature setpoint for TEC controller
                             register_en_buffer      <= '1';
                             address_sel_buffer      <= "011";
                             if four_bytes_ascii_to_integer(ctl_value_ASCII) > 1500 then

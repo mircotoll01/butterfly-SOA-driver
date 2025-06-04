@@ -91,11 +91,6 @@ begin
                         duty_cycle_reg  <= data_in;
                     end if;
                 when "111" =>
-                    ctrl_l_reg      <= 0;
-                    ctrl_h_reg      <= 0;
-                    tec_maxv_reg    <= 0; 
-                    setpoint_reg    <= 0;
-                    duty_cycle_reg  <= 0;
                     mod_mode_reg    <= "00";
                 when others =>
             end case; 

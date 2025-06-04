@@ -47,37 +47,31 @@ entity modulator is
 end modulator;
 
 architecture Behavioral of modulator is
+    signal alarms           : std_logic_vector(1 downto 0) := "00";
+    signal clk_div          : std_logic := '0';
     signal soa_en_reg       : std_logic := '0';
     signal tec_en_reg       : std_logic := '0';
     signal ctrl_sel_reg     : std_logic := '0';
     signal pwm_reg          : std_logic := '0';
-    signal alarms           : std_logic_vector(1 downto 0) := "00";
-begin 
+begin
     process(clk)
-    variable refresh_counter    :integer range 0 to 999 := 0;
+    variable clock_divider : integer range 0 to 10000 := 0;
     begin
         if rising_edge(clk) then
-            if refresh_counter = 999 then
-                alarms          <= overtemp_alarm & undertemp_alarm;
-                soa_en          <= soa_en_reg;
-                status          <= soa_en_reg & tec_en_reg;
-                pwm             <= pwm_reg;
-                tec_en          <= tec_en_reg;
-                ctrl_sel        <= ctrl_sel_reg;
-                refresh_counter := 0;
-            else
-                refresh_counter := refresh_counter + 1;
+            clock_divider := clock_divider + 1;
+            if clock_divider = 10000 then
+                clk_div <= not(clk_div);
             end if;
         end if;
     end process;
     
-    process(clk)
+    process(clk_div)
     variable on_counter      : integer range 0 to 100 := 0;
     variable off_counter     : integer range 0 to 100 := 0;
     variable on_time         : integer range 0 to 100 := duty_cycle;
     variable off_time        : integer range 0 to 100 := 100 - on_time;
     begin
-        if rising_edge(clk) then
+        if rising_edge(clk_div) then
             case alarms is
                 when "10" => 
                     soa_en_reg          <= '0';  
@@ -144,5 +138,10 @@ begin
         end if;
     end process;
     
-    
+    alarms          <= overtemp_alarm & undertemp_alarm;
+    soa_en          <= soa_en_reg;
+    status          <= soa_en_reg & tec_en_reg;
+    pwm             <= pwm_reg;
+    tec_en          <= tec_en_reg;
+    ctrl_sel        <= ctrl_sel_reg;
 end Behavioral;

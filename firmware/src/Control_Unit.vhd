@@ -33,7 +33,6 @@ architecture Structural of Control_Unit is
 
     -- signals to interconnect i2c master and paload generation
     signal payload          : std_logic_vector(47 downto 0);
-    signal start_tx         : std_logic;
     signal clk_div          : std_logic;        
     
     -- signals for mudulation and controls
@@ -51,13 +50,6 @@ architecture Structural of Control_Unit is
     signal adc_eoc          : std_logic;
     signal adc_rdy          : std_logic;
     signal adc_off          : std_logic;
-
-    component clk_divider
-        Port (
-            clk             : in  std_logic;
-            clk_div         : out std_logic
-        );
-    end component;
     
     -- components for I2C communication
     component MCP4728_payload_generator

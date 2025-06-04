@@ -1,24 +1,3 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date: 10/29/2024 11:07:56 AM
--- Design Name: 
--- Module Name: I2C_master - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
-
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
@@ -28,7 +7,6 @@ entity I2C_Master is
     Port (
         clk         : in  std_logic;
         reset       : in  std_logic;
-        start_tx    : in  std_logic;                       -- external blocks will start transmission
         I2C_payload : in  std_logic_vector(47 downto 0);  
         sda         : inout std_logic;
         scl         : out std_logic;
