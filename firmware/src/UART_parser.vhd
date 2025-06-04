@@ -52,7 +52,7 @@ begin
             if (data_ready_in = '1' and data_ready_prev = '0') then                     -- If data is ready convert byte to character and put it into the buffer
                 command_buffer(char_index)      <= uart_byte_in;
                 char_index                      <= char_index + 1;
-                if uart_byte_in = "00001010" then                                       -- When \n is given (line feed is number 10 in ascii code), analyze the command 
+                if uart_byte_in = x"0A" then                                       -- When \n is given (line feed is number 10 in ascii code), analyze the command 
                     command_reg                 <= command_buffer;
                     command_buffer              <= (others => (others => '0'));
                     char_index                  <= 0;
@@ -60,56 +60,56 @@ begin
             end if;
             
             case command_parsed is
-                when "01001111" & "01000110" & "01000110" =>                                      -- ASCII code for OFF (Every code is LSB first)
+                when "01001111" & "01000110" & "01000110" =>                                            -- ASCII code for OFF (Every code is LSB first)
                     register_en_buffer      <= '0';
                     address_sel_buffer      <= "111";
                     mod_select_buffer       <= "00";
                     data_out_buffer         <= 0;
-                when "01010000" & "01010111" & "01001101" =>                                      -- ASCII coded for PWM This command expects an integer value for duty cycle from 0 to 99
+                when "01010000" & "01010111" & "01001101" =>                                            -- ASCII coded for PWM This command expects an integer value for duty cycle from 0 to 99
                     register_en_buffer         <= '1';
                     address_sel_buffer         <= "100";
-                    if ASCII_to_integer(pwm_value_ASCII) > 100 then
+                    if ascii_to_integer(pwm_value_ASCII) > 100 then
                         data_out_buffer        <= 100;
                     else
-                        data_out_buffer        <= ASCII_to_integer(pwm_value_ASCII);
+                        data_out_buffer        <= ascii_to_integer(pwm_value_ASCII);
                     end if;
                     
                     mod_select_buffer          <= "01";
-                when "01000100" & "01000010" & "01001100" =>                                      -- ASCII coded for DBL This command expects two integer values for dac from 0 to 2048
+                when "01000100" & "01000010" & "01001100" =>                                            -- ASCII coded for DBL This command expects two integer values for dac from 0 to 2048
                     mod_select_buffer          <= "10";
-                when "01010011" & "01000101" & "01010100" =>                                      -- ASCII coded for SET
+                when x"534554" =>                                                                       -- ASCII coded for SET
                     case attribute_ASCII is 
-                        when "01000011" & "01010100" & "01001100" & "01001100" =>                      -- CTLL changes CTRL_L
+                        when x"43544C4C" =>                                                             -- CTLL changes CTRL_L
                             register_en_buffer      <= '1';
                             address_sel_buffer      <= "000";                           
-                            if fourBytes_ASCII_to_integer(ctl_value_ASCII) >= 1500 then
+                            if four_bytes_ascii_to_integer(ctl_value_ASCII) >= 1500 then
                                 data_out_buffer         <= 1500;
                             else
-                                data_out_buffer         <= fourBytes_ASCII_to_integer(ctl_value_ASCII);
+                                data_out_buffer         <= four_bytes_ascii_to_integer(ctl_value_ASCII);
                             end if;
                         when "01000011" & "01010100" & "01001100" & "01001000" =>                      -- CTLH changes CTRL_H
                             register_en_buffer      <= '1';
                             address_sel_buffer      <= "001";
-                            if fourBytes_ASCII_to_integer(ctl_value_ASCII) > 1500 then
+                            if four_bytes_ascii_to_integer(ctl_value_ASCII) > 1500 then
                                 data_out_buffer         <= 1500;
                             else
-                                data_out_buffer         <= fourBytes_ASCII_to_integer(ctl_value_ASCII);
+                                data_out_buffer         <= four_bytes_ascii_to_integer(ctl_value_ASCII);
                             end if;
                         when "01001101" & "01000001" & "01011000" & "01010110" =>                      -- MAXV changes maximum tec voltage
                             register_en_buffer      <= '1';
                             address_sel_buffer      <= "010";
-                            if fourBytes_ASCII_to_integer(ctl_value_ASCII) > 2048 then
+                            if four_bytes_ascii_to_integer(ctl_value_ASCII) > 2048 then
                                 data_out_buffer         <= 2048;
                             else
-                                data_out_buffer         <= fourBytes_ASCII_to_integer(ctl_value_ASCII);
+                                data_out_buffer         <= four_bytes_ascii_to_integer(ctl_value_ASCII);
                             end if;
                         when "01010100" & "01010011" & "01000101" & "01010100" =>                      -- TSET changes temperature setpoint for TEC controller
                             register_en_buffer      <= '1';
                             address_sel_buffer      <= "011";
-                            if fourBytes_ASCII_to_integer(ctl_value_ASCII) > 1500 then
+                            if four_bytes_ascii_to_integer(ctl_value_ASCII) > 1500 then
                                 data_out_buffer         <= 1500;
                             else
-                                data_out_buffer         <= fourBytes_ASCII_to_integer(ctl_value_ASCII);
+                                data_out_buffer         <= four_bytes_ascii_to_integer(ctl_value_ASCII);
                             end if;
                         when others =>
                     end case;

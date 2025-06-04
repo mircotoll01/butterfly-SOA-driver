@@ -1,35 +1,5 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date: 11/27/2024 10:03:21 AM
--- Design Name: 
--- Module Name: Control_Unit - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
-
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
 
 entity Control_Unit is
     Port (
@@ -141,29 +111,29 @@ architecture Structural of Control_Unit is
     
     component Display
         Port(
-            clk     : in std_logic;
-            mode    : in std_logic_vector(1 downto 0);
-            status  : in std_logic_vector(1 downto 0);
-            seg     : out std_logic_vector(5 downto 0);
-            an      : out std_logic_vector(3 downto 0)
+            clk             : in std_logic;
+            mode            : in std_logic_vector(1 downto 0);
+            status          : in std_logic_vector(1 downto 0);
+            seg             : out std_logic_vector(5 downto 0);
+            an              : out std_logic_vector(3 downto 0)
         );
     end component;
     
     -- component for UART communication
     component UART_transceiver
         Port (
-            clk          : in std_logic;
-            reset        : in std_logic;
-            ADC_read     : in std_logic_vector(15 downto 0);
-            uart_rx      : in std_logic;
+            clk             : in std_logic;
+            reset           : in std_logic;
+            ADC_read        : in std_logic_vector(15 downto 0);
+            uart_rx         : in std_logic;
             
-            uart_tx      : out std_logic;
-            duty_cycle   : out integer;  
-            ctrl_l       : out integer; 
-            ctrl_h       : out integer; 
-            tec_maxv     : out integer;  
-            setpoint     : out integer;                      
-            mod_mode     : out std_logic_vector(1 downto 0)
+            uart_tx         : out std_logic;
+            duty_cycle      : out integer;  
+            ctrl_l          : out integer; 
+            ctrl_h          : out integer; 
+            tec_maxv        : out integer;  
+            setpoint        : out integer;                      
+            mod_mode        : out std_logic_vector(1 downto 0)
         );               
     end component;
     
@@ -191,16 +161,10 @@ architecture Structural of Control_Unit is
     end component;
     
 begin
-    divider : clk_divider
-        Port map(
-            clk             => clk,
-            clk_div         => clk_div
-        );
-    
     -- uart communication block
     transceiver : UART_transceiver
         Port map(
-            clk             => clk_div,
+            clk             => clk,
             reset           => reset,
             ADC_read        => SOA_current_dig,
             uart_rx         => uart_rx,
@@ -216,7 +180,7 @@ begin
     -- modulation and control block
     modulator_block : modulator
         Port map (
-            clk             => clk_div,
+            clk             => clk,
             overtemp_alarm  => overtemp_alarm,
             undertemp_alarm => undertemp_alarm,
             duty_cycle      => duty_cycle,
@@ -230,7 +194,7 @@ begin
 
     display_block : Display
         Port map(
-            clk             => clk_div,
+            clk             => clk,
             mode            => mod_mode,
             status          => status,
             seg             => seg,
@@ -248,7 +212,7 @@ begin
         
     i2cmaster : I2C_Master
         Port map (
-            clk             => clk_div,
+            clk             => clk,
             reset           => reset,
             I2C_payload     => payload,
             sda             => sda,

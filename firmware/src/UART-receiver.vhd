@@ -1,35 +1,6 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date: 12/11/2024 03:01:23 PM
--- Design Name: 
--- Module Name: Serial - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
-
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
 use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
 
 entity UART_receiver is
     Port ( 
@@ -43,7 +14,7 @@ end UART_receiver;
 
 architecture Behavioral of UART_receiver is
     constant BAUD_RATE      : integer := 9600;                                  -- Baud rate 
-    constant CLOCK_FREQ     : integer := 10000000;                               -- System clock frequency (10 MHz)
+    constant CLOCK_FREQ     : integer := 100000000;                               -- System clock frequency (10 MHz)
     constant BAUD_DIVISOR   : integer := CLOCK_FREQ / BAUD_RATE;                -- This is the number of clock per bit
 
     signal rx_reg           : std_logic_vector(7 downto 0) := (others => '0');  -- received byte
