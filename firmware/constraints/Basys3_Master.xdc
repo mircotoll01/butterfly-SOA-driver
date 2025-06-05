@@ -10,7 +10,7 @@ set_property CONFIG_VOLTAGE 3.3 [current_design]
 ## Clock signal
 set_property PACKAGE_PIN W5 [get_ports clk]
 set_property IOSTANDARD LVCMOS33 [get_ports clk]
-create_clock -period 10.000 -name sys_clk_pin [get_ports clk]
+create_clock -period 10 -name sys_clk_pin [get_ports clk]
 
 ## Switches
 #set_property PACKAGE_PIN V17 [get_ports {sw[0]}]

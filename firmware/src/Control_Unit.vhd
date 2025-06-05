@@ -51,6 +51,13 @@ architecture Structural of Control_Unit is
     signal adc_rdy          : std_logic;
     signal adc_off          : std_logic;
     
+    component clk_divider
+        Port(
+            clk             : in std_logic;
+            clk_div         : out std_logic
+        );
+    end component;
+    
     -- components for I2C communication
     component MCP4728_payload_generator
         Port ( 
@@ -153,10 +160,16 @@ architecture Structural of Control_Unit is
     end component;
     
 begin
+    div : clk_divider
+        Port map(
+            clk             => clk,
+            clk_div         => clk_div
+        );
+        
     -- uart communication block
     transceiver : UART_transceiver
         Port map(
-            clk             => clk,
+            clk             => clk_div,
             reset           => reset,
             ADC_read        => SOA_current_dig,
             uart_rx         => uart_rx,
@@ -172,7 +185,7 @@ begin
     -- modulation and control block
     modulator_block : modulator
         Port map (
-            clk             => clk,
+            clk             => clk_div,
             overtemp_alarm  => overtemp_alarm,
             undertemp_alarm => undertemp_alarm,
             duty_cycle      => duty_cycle,
@@ -186,7 +199,7 @@ begin
 
     display_block : Display
         Port map(
-            clk             => clk,
+            clk             => clk_div,
             mode            => mod_mode,
             status          => status,
             seg             => seg,
@@ -204,7 +217,7 @@ begin
         
     i2cmaster : I2C_Master
         Port map (
-            clk             => clk,
+            clk             => clk_div,
             reset           => reset,
             I2C_payload     => payload,
             sda             => sda,
@@ -214,7 +227,7 @@ begin
     
     ADC : xadc_wiz_0
         Port map(
-            dclk_in         => clk,
+            dclk_in         => clk_div,
             reset_in        => reset,
             daddr_in        => (others => '0'),
             den_in          => adc_eoc,

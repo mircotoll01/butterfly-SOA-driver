@@ -14,7 +14,7 @@ end UART_receiver;
 
 architecture Behavioral of UART_receiver is
     constant BAUD_RATE      : integer := 9600;                                  -- Baud rate 
-    constant CLOCK_FREQ     : integer := 100000000;                               -- System clock frequency (10 MHz)
+    constant CLOCK_FREQ     : integer := 10000000;                               -- System clock frequency (10 MHz)
     constant BAUD_DIVISOR   : integer := CLOCK_FREQ / BAUD_RATE;                -- This is the number of clock per bit
 
     signal rx_reg           : std_logic_vector(7 downto 0) := (others => '0');  -- received byte

@@ -59,7 +59,14 @@ while True:
     
 ```
 
-The basys3 will return the same command that was sent for debug purposes.
+#### Update
+Now this repo provides a python script that gives a console to the user to send commands and see current parameters. The requirements for the python script are the following: 
+
+- curses
+- threading
+- pyserial
+- time
+- re
 
 ### Command list
 
@@ -121,6 +128,9 @@ The SET command will accept the following attributes:
         <td>None</td>
     </tr>
 </table>
+
+#### Update Note
+The commands are not case sensitive anymore
 
 ### Examples
 
