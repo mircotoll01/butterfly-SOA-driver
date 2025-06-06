@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0.246070000 ms"></ZoomStartTime>
-      <ZoomEndTime time="330.746070001 ms"></ZoomEndTime>
-      <Cursor1Time time="146.246070000 ms"></Cursor1Time>
+      <ZoomStartTime time="0.000000000 ms"></ZoomStartTime>
+      <ZoomEndTime time="422.658653848 ms"></ZoomEndTime>
+      <Cursor1Time time="188.242095000 ms"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="183"></NameColumnWidth>
-      <ValueColumnWidth column_width="115"></ValueColumnWidth>
+      <ValueColumnWidth column_width="111"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="22" />
+   <WVObjectSize size="23" />
    <wvobject type="logic" fp_name="/control_unit_testbench/clk">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -105,10 +105,14 @@
       <obj_property name="ObjectShortName">CLOCK_FREQ</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/control_unit_testbench/input">
-      <obj_property name="ElementShortName">input[0:89]</obj_property>
-      <obj_property name="ObjectShortName">input[0:89]</obj_property>
+      <obj_property name="ElementShortName">input[0:243]</obj_property>
+      <obj_property name="ObjectShortName">input[0:243]</obj_property>
    </wvobject>
    <wvobject type="other" fp_name="/control_unit_testbench/CU/i2cmaster/state">
+      <obj_property name="ElementShortName">state</obj_property>
+      <obj_property name="ObjectShortName">state</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/control_unit_testbench/CU/transceiver/receiver/state">
       <obj_property name="ElementShortName">state</obj_property>
       <obj_property name="ObjectShortName">state</obj_property>
    </wvobject>

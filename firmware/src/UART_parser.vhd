@@ -28,34 +28,38 @@ architecture Behavioral of UART_parser is
     signal attribute_ASCII      : std_logic_vector(31 downto 0) := (others => '0');
     signal pwm_value_ASCII      : std_logic_vector(23 downto 0) := (others => '0');
     signal ctl_value_ASCII      : std_logic_vector(31 downto 0) := (others => '0');
+    signal data_ready_prev      : std_logic := '0';
 begin
-    process(data_ready_in)
+    process(clk)
     begin
-        if data_ready_in = '1' then
-            command_buffer(char_index)      <= uart_byte_in;
-            char_index                      <= char_index + 1;
-        end if;
-        if uart_byte_in = x"0A" then                                       -- When \n is given (line feed is number 10 in ascii code), analyze the command
-            char_index                      <= 0;
-            command_parsed                  <= command_buffer(0) & 
-                                                command_buffer(1) &
-                                                command_buffer(2);
-                               
-            pwm_value_ASCII                 <= command_buffer(4) &
-                                                command_buffer(5) &
-                                                command_buffer(6);   
+        if rising_edge(clk) then
+            data_ready_prev     <= data_ready_in;
+            if (data_ready_in = '1' and data_ready_prev = '0') then
+                command_buffer(char_index)      <= uart_byte_in;
+                char_index                      <= char_index + 1;
+                if uart_byte_in = x"0A" then                                       -- When \n is given (line feed is number 10 in ascii code), analyze the command
+                    char_index                      <= 0;
+                    command_parsed                  <= command_buffer(0) & 
+                                                        command_buffer(1) &
+                                                        command_buffer(2);
                                        
-            attribute_ASCII                 <= command_buffer(4) &
-                                                command_buffer(5) &
-                                                command_buffer(6) &
-                                                command_buffer(7);  
-                                       
-            ctl_value_ASCII                 <= command_buffer(9) &
-                                                command_buffer(10) &
-                                                command_buffer(11) &
-                                                command_buffer(12);
-                                                
-            command_buffer                  <= (others => (others => '0'));
+                    pwm_value_ASCII                 <= command_buffer(4) &
+                                                        command_buffer(5) &
+                                                        command_buffer(6);   
+                                               
+                    attribute_ASCII                 <= command_buffer(4) &
+                                                        command_buffer(5) &
+                                                        command_buffer(6) &
+                                                        command_buffer(7);  
+                                               
+                    ctl_value_ASCII                 <= command_buffer(9) &
+                                                        command_buffer(10) &
+                                                        command_buffer(11) &
+                                                        command_buffer(12);
+                                                        
+                    command_buffer                  <= (others => (others => '0'));
+                end if;
+            end if;
         end if;
     end process;
     

@@ -30,11 +30,11 @@ architecture Behavioral of modulator is
     signal off_time         : integer range 0 to 100 := 0;
 begin
     process(clk)
-    variable clock_divider : integer range 0 to 49 := 0;
+    variable clock_divider : integer range 0 to 99 := 0;
     begin
         if rising_edge(clk) then
             clock_divider       := clock_divider + 1;
-            if clock_divider = 49 then
+            if clock_divider = 99 then
                 clk_div         <= not(clk_div);
                 clock_divider   := 0;
             end if;

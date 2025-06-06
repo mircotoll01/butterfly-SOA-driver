@@ -120,7 +120,7 @@ begin
     transmitter: UART_transmitter
         Port map(
             clk                 => clk,
-            enable              => enable_sig,                 -- Always enabled for now
+            enable              => enable_sig,                
             uart_payload        => payload_sig,
             uart_tx             => uart_tx  
         );

@@ -19,8 +19,8 @@ architecture Behavioral of UART_transmitter is
     
     -- Constants
     constant BAUD_RATE      : integer := 9600;                                  -- Baud rate 
-    constant CLOCK_FREQ     : integer := 10000000;                               -- System clock frequency (10 MHz)
-    constant BAUD_DIVISOR   : integer := CLOCK_FREQ / BAUD_RATE;                 -- This is the number of clock per bit
+    constant CLOCK_FREQ     : integer := 10000000;                              -- Input clock frequency (10 MHz)
+    constant BAUD_DIVISOR   : integer := CLOCK_FREQ / BAUD_RATE;            -- This is the number of clock per bit
     
     -- Signals
     signal state            : state_type := IDLE;

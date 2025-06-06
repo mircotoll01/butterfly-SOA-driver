@@ -14,25 +14,25 @@ end UART_receiver;
 
 architecture Behavioral of UART_receiver is
     constant BAUD_RATE      : integer := 9600;                                  -- Baud rate 
-    constant CLOCK_FREQ     : integer := 10000000;                               -- System clock frequency (10 MHz)
-    constant BAUD_DIVISOR   : integer := CLOCK_FREQ / BAUD_RATE;                -- This is the number of clock per bit
+    constant CLOCK_FREQ     : integer := 10000000;                              -- Input clock frequency (10 MHz)
+    constant BAUD_DIVISOR   : integer := CLOCK_FREQ / BAUD_RATE;            -- This is the number of clock per bit
 
-    signal rx_reg           : std_logic_vector(7 downto 0) := (others => '0');  -- received byte
-    signal bit_index        : integer range 0 to 7 := 0;                        -- Indice dei bit (start, dati, stop)
+    signal rx_reg           : std_logic_vector(7 downto 0) := (others => '0');  -- received byte                      
     signal dr_reg           : std_logic := '0';
 
     type state_type is (IDLE, START_BIT, DATA_BITS, STOP_BIT, CLEANUP);
-    signal state : state_type := CLEANUP;
+    signal state : state_type := IDLE;
 begin 
     -- Receiver FSM
     process(clk)
         variable baud_counter     : integer range 0 to BAUD_DIVISOR - 1 := 0;
+        variable bit_index        : integer range 0 to 7 := 0;
     begin
         if rising_edge(clk) then
         
             if reset = '1' then
                 state                   <= IDLE;
-                bit_index               <= 0;
+                bit_index               := 0;
                 rx_reg                  <= (others => '0');
             end if;
             
@@ -40,7 +40,7 @@ begin
                 when CLEANUP =>
                     rx_reg              <= (others => '0');
                     dr_reg              <= '0';
-                    bit_index           <= 0;
+                    bit_index           := 0;
                     baud_counter        := 0;
                     state               <= IDLE;  
                 
@@ -74,9 +74,9 @@ begin
                         if bit_index = 7 then
                             state           <= STOP_BIT;           -- After eighth bit there's a stop
                             dr_reg          <= '1';
-                            bit_index       <= 0;
+                            bit_index       := 0;
                         else
-                            bit_index       <= bit_index + 1;
+                            bit_index       := bit_index + 1;
                             state           <= DATA_BITS;
                         end if;
                     end if;
@@ -92,7 +92,7 @@ begin
                         end if;
                     end if;
                 when others =>
-                    state <= CLEANUP;
+                    state <= IDLE;
             end case;
         end if;
     end process;
