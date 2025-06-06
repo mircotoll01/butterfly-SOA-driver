@@ -4,13 +4,13 @@ use IEEE.STD_LOGIC_1164.ALL;
 -- clk divider from 100 to 10 MHz
 entity clk_divider is
     Port ( 
-        clk         : in std_logic;
-        clk_div     : out std_logic
+        clk             : in std_logic;
+        clk_div         : out std_logic
     );
 end clk_divider;
 
 architecture Behavioral of clk_divider is
-    signal tmp      : std_logic := '0';
+    signal tmp          : std_logic := '0';
 begin
     process(clk)
     variable counter    : integer range 0 to 4 := 0;

@@ -17,18 +17,27 @@ end I2C_Master;
 architecture Behavioral of I2C_master is
     -- States definition
     type state_type is (IDLE, START, DATA_BITS, WAITACK, STOP);
-    signal state        : state_type := IDLE;
+    signal state                : state_type := IDLE;
 
     -- Clock divider to generate SCL
-    signal scl_div      : integer range 0 to 49 := 0;
+    signal scl_div              : integer range 0 to 49 := 0;
 
     -- controls and data
-    signal bit_counter  : integer range 0 to 7 := 0;
-    signal sda_reg      : std_logic := '1';
-    signal ack          : std_logic := '0';
-    signal scl_reg      : std_logic := '1';
+    signal bit_counter          : integer range 0 to 7 := 0;
+    signal sda_reg              : std_logic := '1';
+    signal ack                  : std_logic := '0';
+    signal scl_reg              : std_logic := '1';
+    signal ready                : std_logic := '1';
+    signal I2C_payload_queued   : std_logic_vector(47 downto 0);
     
 begin
+    process(ready, I2C_payload)
+    begin
+        if ready = '1' then
+            I2C_payload_queued      <= I2C_payload;
+        end if;
+    end process;
+
     -- Clock divider for SCL
     process(clk)
     begin
@@ -42,30 +51,33 @@ begin
         end if;
     end process;
 
-    scl <= scl_reg;
-
     -- FSM for I2C
-    process(clk)      
+    process(clk, reset)      
     begin
-        if rising_edge(clk) then
-            if reset = '1' then
+        if reset = '1' then
                 state       <= IDLE;
                 sda_reg     <= '1';
                 bit_counter <= 0;
                 n_ldac      <= '1';
                 ack         <= '0';
-            end if;
+        end if;    
+        
+        if rising_edge(clk) then
             case state is
                 when IDLE =>
-                        state <= START;
-
+                    if ready = '1' then
+                        state   <= START;
+                        ready   <= '0';
+                    else
+                        state   <= IDLE;
+                    end if;
                 when START =>
                     sda_reg <= '0';             -- START condition: SDA goes low when SCL high
                     n_ldac  <= '0';
                     state   <= DATA_BITS;
 
                 when DATA_BITS =>
-                    if bit_counter < 7 then
+                    if bit_counter < 47 then
                         sda_reg     <= I2C_payload(47 - bit_counter);
                         bit_counter <= bit_counter + 1;
                     else
@@ -87,6 +99,7 @@ begin
                         sda_reg     <= '1';     -- STOP condition: SDA goes high with SCL high
                         state       <= IDLE;
                         n_ldac      <= '1';
+                        ready       <= '1';
                     end if;
 
                 when others =>
@@ -94,6 +107,7 @@ begin
             end case;
         end if;
     end process;
+    
+    scl <= scl_reg;
     sda <= sda_reg;
-
 end Behavioral;

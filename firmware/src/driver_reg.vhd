@@ -38,7 +38,6 @@ begin
         end if;
         
         if rising_edge(clk) then
-            mod_mode_reg    <= mod_sel_in;
             case address is    
                 when "000" =>
                     if write_flag = '1' then
@@ -59,6 +58,7 @@ begin
                 when "100" =>
                     if write_flag = '1' then
                         duty_cycle_reg  <= data_in;
+                        mod_mode_reg    <= mod_sel_in;
                     end if;
                 when "111" =>
                     mod_mode_reg    <= "00";

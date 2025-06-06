@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="control_unit_testbench_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="control_unit_testbench" />
+            <top_module name="utils_pkg" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.246070000 ms"></ZoomStartTime>
+      <ZoomEndTime time="330.746070001 ms"></ZoomEndTime>
+      <Cursor1Time time="146.246070000 ms"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="183"></NameColumnWidth>
+      <ValueColumnWidth column_width="115"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="22" />
+   <wvobject type="logic" fp_name="/control_unit_testbench/clk">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/control_unit_testbench/CU/uart_rx">
+      <obj_property name="ElementShortName">uart_rx</obj_property>
+      <obj_property name="ObjectShortName">uart_rx</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/control_unit_testbench/uart_tx">
+      <obj_property name="ElementShortName">uart_tx</obj_property>
+      <obj_property name="ObjectShortName">uart_tx</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/control_unit_testbench/CU/transceiver/transmitter/uart_payload_queued">
+      <obj_property name="ElementShortName">uart_payload_queued[695:0]</obj_property>
+      <obj_property name="ObjectShortName">uart_payload_queued[695:0]</obj_property>
+      <obj_property name="Radix">ASCIIRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/control_unit_testbench/CU/transceiver/parser/command_parsed_out">
+      <obj_property name="ElementShortName">command_parsed_out[23:0]</obj_property>
+      <obj_property name="ObjectShortName">command_parsed_out[23:0]</obj_property>
+      <obj_property name="Radix">ASCIIRADIX</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/control_unit_testbench/CU/transceiver/reg/duty_cycle_reg">
+      <obj_property name="ElementShortName">duty_cycle_reg</obj_property>
+      <obj_property name="ObjectShortName">duty_cycle_reg</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/control_unit_testbench/CU/transceiver/reg/mod_mode_reg">
+      <obj_property name="ElementShortName">mod_mode_reg[1:0]</obj_property>
+      <obj_property name="ObjectShortName">mod_mode_reg[1:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/control_unit_testbench/CU/modulator_block/mod_sel">
+      <obj_property name="ElementShortName">mod_sel[1:0]</obj_property>
+      <obj_property name="ObjectShortName">mod_sel[1:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/control_unit_testbench/reset">
+      <obj_property name="ElementShortName">reset</obj_property>
+      <obj_property name="ObjectShortName">reset</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/control_unit_testbench/sda">
+      <obj_property name="ElementShortName">sda</obj_property>
+      <obj_property name="ObjectShortName">sda</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/control_unit_testbench/scl">
+      <obj_property name="ElementShortName">scl</obj_property>
+      <obj_property name="ObjectShortName">scl</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/control_unit_testbench/n_ldac">
+      <obj_property name="ElementShortName">n_ldac</obj_property>
+      <obj_property name="ObjectShortName">n_ldac</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/control_unit_testbench/ctrl_sel_pwm">
+      <obj_property name="ElementShortName">ctrl_sel_pwm</obj_property>
+      <obj_property name="ObjectShortName">ctrl_sel_pwm</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/control_unit_testbench/soa_pwm">
+      <obj_property name="ElementShortName">soa_pwm</obj_property>
+      <obj_property name="ObjectShortName">soa_pwm</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/control_unit_testbench/soa_en">
+      <obj_property name="ElementShortName">soa_en</obj_property>
+      <obj_property name="ObjectShortName">soa_en</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/control_unit_testbench/tec_en">
+      <obj_property name="ElementShortName">tec_en</obj_property>
+      <obj_property name="ObjectShortName">tec_en</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/control_unit_testbench/seg">
+      <obj_property name="ElementShortName">seg[5:0]</obj_property>
+      <obj_property name="ObjectShortName">seg[5:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/control_unit_testbench/an">
+      <obj_property name="ElementShortName">an[3:0]</obj_property>
+      <obj_property name="ObjectShortName">an[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/control_unit_testbench/BAUD_RATE">
+      <obj_property name="ElementShortName">BAUD_RATE</obj_property>
+      <obj_property name="ObjectShortName">BAUD_RATE</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/control_unit_testbench/CLOCK_FREQ">
+      <obj_property name="ElementShortName">CLOCK_FREQ</obj_property>
+      <obj_property name="ObjectShortName">CLOCK_FREQ</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/control_unit_testbench/input">
+      <obj_property name="ElementShortName">input[0:89]</obj_property>
+      <obj_property name="ObjectShortName">input[0:89]</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/control_unit_testbench/CU/i2cmaster/state">
+      <obj_property name="ElementShortName">state</obj_property>
+      <obj_property name="ObjectShortName">state</obj_property>
+   </wvobject>
+</wave_config>
