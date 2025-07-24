@@ -13,7 +13,9 @@ entity UART_parser is
         address_select      : out std_logic_vector(2 downto 0);
         register_enable     : out std_logic;
         data_out            : out integer;                           
-        mod_select_out      : out std_logic_vector(1 downto 0);
+        tec_status_out      : out std_logic;
+        soa_status_out      : out std_logic;
+        mode_status_out     : out std_logic_vector(1 downto 0);
         command_parsed_out  : out std_logic_vector(23 downto 0);
         attribute_ASCII_out : out std_logic_vector(31 downto 0);
         ctl_value_ASCII_out : out std_logic_vector(31 downto 0)
@@ -41,11 +43,7 @@ begin
                     char_index                      <= 0;
                     command_parsed                  <= command_buffer(0) & 
                                                         command_buffer(1) &
-                                                        command_buffer(2);
-                                       
-                    pwm_value_ASCII                 <= command_buffer(4) &
-                                                        command_buffer(5) &
-                                                        command_buffer(6);   
+                                                        command_buffer(2); 
                                                
                     attribute_ASCII                 <= command_buffer(4) &
                                                         command_buffer(5) &
@@ -65,42 +63,57 @@ begin
     
     process(command_parsed)
     begin        
-        mod_select_out          <= "00";
+        mode_status_out          <= "00";
+        register_enable         <= '1';
         case command_parsed is
             when x"4F4646" | x"6F6666" => -- ASCII code for OFF
                 register_enable         <= '0';
                 address_select          <= "111";
                 data_out                <= 0;
             when x"50574D" | x"70776D" => -- ASCII coded for PWM This command expects an integer value for duty cycle from 0 to 99
-                register_enable         <= '1';
                 address_select          <= "100";
-                mod_select_out          <= "01";
-                if ascii_to_integer(pwm_value_ASCII) > 100 then
+                mode_status_out         <= "01";
+                if ascii_to_integer(attribute_ASCII(31 downto 8)) > 100 then
                     data_out            <= 100;
                 else
-                    data_out            <= ascii_to_integer(pwm_value_ASCII);
+                    data_out            <= ascii_to_integer(attribute_ASCII(31 downto 8));
                 end if;
             when x"44424C" | x"64626C" => -- ASCII coded for DBL This command expects two integer values for dac from 0 to 2048
-                register_enable         <= '1';
-                mod_select_out          <= "10";
+                mode_status_out         <= "10";
                 address_select          <= "100";
-                if ascii_to_integer(pwm_value_ASCII) > 100 then
+                if ascii_to_integer(attribute_ASCII(31 downto 8)) > 100 then
                     data_out            <= 100;
                 else
-                    data_out            <= ascii_to_integer(pwm_value_ASCII);
+                    data_out            <= ascii_to_integer(attribute_ASCII(31 downto 8));
                 end if;
+            when x"544543" | x"746563" => -- ASCII code for TEC
+                if attribute_ASCII(31 downto 16) = x"4F4E" or attribute_ASCII(31 downto 16) = x"6F6E" then -- ON
+                    address_select      <= "101";
+                    tec_status_out      <= '1';
+                elsif attribute_ASCII(31 downto 8) = x"4F4646"  or attribute_ASCII(31 downto 8) = x"6F6666" then -- OFF
+                    address_select      <= "101";
+                    tec_status_out      <= '0';
+                end if;
+                
+            when x"534F41" | x"736F61" => -- ASCII code for SOA
+                if attribute_ASCII(31 downto 16) = x"4F4E" or attribute_ASCII(31 downto 16) = x"6F6E" then -- ON
+                    address_select      <= "110";
+                    soa_status_out      <= '1';
+                elsif attribute_ASCII(31 downto 8) = x"4F4646"  or attribute_ASCII(31 downto 8) = x"6F6666" then -- OFF
+                    address_select      <= "110";
+                    soa_status_out      <= '0';
+                end if;
+                
             when x"534554" | x"736574" => -- ASCII coded for SET
                 case attribute_ASCII is 
                     when x"43544C4C" | x"63746C6C" => -- CTLL changes CTRL_L
-                        register_enable         <= '1';
                         address_select          <= "000";                           
-                        if four_bytes_ascii_to_integer(ctl_value_ASCII) >= 1500 then
+                        if four_bytes_ascii_to_integer(ctl_value_ASCII) >= 1500 then -- CTRL range 0 to 1.5V
                             data_out            <= 1500;
                         else
                             data_out            <= four_bytes_ascii_to_integer(ctl_value_ASCII);
                         end if;
                     when x"43544C48" | x"63746C68" => -- CTLH changes CTRL_H
-                        register_enable         <= '1';
                         address_select          <= "001";
                         if four_bytes_ascii_to_integer(ctl_value_ASCII) > 1500 then
                             data_out            <= 1500;
@@ -108,24 +121,24 @@ begin
                             data_out            <= four_bytes_ascii_to_integer(ctl_value_ASCII);
                         end if;
                     when x"4D415856" | x"6D617876" => -- MAXV changes maximum tec voltage
-                        register_enable         <= '1';
                         address_select          <= "010";
-                        if four_bytes_ascii_to_integer(ctl_value_ASCII) > 2048 then
-                            data_out            <= 2048;
+                        if four_bytes_ascii_to_integer(ctl_value_ASCII) > 5000 then   -- TEC voltage is 4*VMAXV, hence maximum voltage has to be 1,25V to achieve 0-5V range
+                            data_out            <= 5000;                              -- for this reason the value will be divided by 4 later
                         else
                             data_out            <= four_bytes_ascii_to_integer(ctl_value_ASCII);
                         end if;
                     when x"54534554" | x"74736574" => -- TSET changes temperature setpoint for TEC controller
-                        register_enable         <= '1';
                         address_select          <= "011";
-                        if four_bytes_ascii_to_integer(ctl_value_ASCII) > 1500 then
+                        if four_bytes_ascii_to_integer(ctl_value_ASCII) > 1500 then -- NTC is in a 1.5V VCC voltage divider
                             data_out            <= 1500;
                         else
                             data_out            <= four_bytes_ascii_to_integer(ctl_value_ASCII);
                         end if;
                     when others =>
+                        register_enable         <= '0';
                 end case;
             when others =>
+                register_enable         <= '0';
         end case;
     end process;
                    

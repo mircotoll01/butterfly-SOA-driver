@@ -3,28 +3,32 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity driver_reg is
     Port (
-        clk         : in std_logic;
-        reset       : in std_logic;
-        write_flag  : in std_logic;
-        address     : in std_logic_vector(2 downto 0);
-        mod_sel_in  : in std_logic_vector(1 downto 0);
-        data_in     : in integer;
-        ctrl_l      : out integer;
-        ctrl_h      : out integer;
-        tec_maxv    : out integer;
-        setpoint    : out integer;
-        duty_cycle  : out integer;
-        mod_mode    : out std_logic_vector(1 downto 0)
+        clk             : in std_logic;
+        reset           : in std_logic;
+        write_flag      : in std_logic;
+        address         : in std_logic_vector(2 downto 0);
+        mode_status_in  : in std_logic_vector(1 downto 0);
+        tec_status_sel  : in std_logic;
+        soa_status_sel  : in std_logic;
+        data_in         : in integer;
+        ctrl_l          : out integer;
+        ctrl_h          : out integer;
+        tec_maxv        : out integer;
+        setpoint        : out integer;
+        duty_cycle      : out integer;
+        mod_status_out  : out std_logic_vector(1 downto 0);
+        soa_tec_status  : out std_logic_vector(1 downto 0)
      );
 end driver_reg;
 
 architecture Behavioral of driver_reg is
-    signal ctrl_l_reg      : integer := 0;
-    signal ctrl_h_reg      : integer := 0;
-    signal tec_maxv_reg    : integer := 0;
-    signal setpoint_reg    : integer := 0;
-    signal duty_cycle_reg  : integer := 0;
-    signal mod_mode_reg    : std_logic_vector(1 downto 0);
+    signal ctrl_l_reg       : integer := 0;
+    signal ctrl_h_reg       : integer := 0;
+    signal tec_maxv_reg     : integer := 0;
+    signal setpoint_reg     : integer := 0;
+    signal duty_cycle_reg   : integer := 0;
+    signal mod_status_reg   : std_logic_vector(1 downto 0) := "00";
+    signal soa_tec_status_reg: std_logic_vector(1 downto 0) := "00";
 begin
     process(clk,reset)
     begin
@@ -34,7 +38,8 @@ begin
                 tec_maxv_reg    <= 0; 
                 setpoint_reg    <= 0;
                 duty_cycle_reg  <= 0;
-                mod_mode_reg    <= "00";
+                mod_status_reg  <= "00";
+                soa_tec_status_reg <= "00";
         end if;
         
         if rising_edge(clk) then
@@ -58,10 +63,19 @@ begin
                 when "100" =>
                     if write_flag = '1' then
                         duty_cycle_reg  <= data_in;
-                        mod_mode_reg    <= mod_sel_in;
+                        mod_status_reg  <= mode_status_in;
+                    end if;
+                when "101" =>
+                    if write_flag = '1' then
+                        soa_tec_status_reg(0) <= tec_status_sel;
+                    end if;
+                when "110" =>
+                    if write_flag = '1' then
+                        soa_tec_status_reg(1) <= soa_status_sel;
                     end if;
                 when "111" =>
-                    mod_mode_reg    <= "00";
+                    mod_status_reg       <= "00";
+                    soa_tec_status_reg   <= "00";
                 when others =>
             end case; 
         end if;
@@ -72,6 +86,7 @@ begin
     tec_maxv        <= tec_maxv_reg; 
     setpoint        <= setpoint_reg;
     duty_cycle      <= duty_cycle_reg; 
-    mod_mode        <= mod_mode_reg;
+    mod_status_out  <= mod_status_reg;
+    soa_tec_status  <= soa_tec_status_reg;
 
 end Behavioral;

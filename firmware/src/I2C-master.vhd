@@ -1,113 +1,192 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_ARITH.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 entity I2C_Master is
     Port (
         clk         : in  std_logic;
         reset       : in  std_logic;
-        I2C_payload : in  std_logic_vector(47 downto 0);  
+        I2C_payload : in  std_logic_vector(71 downto 0);  
         sda         : inout std_logic;
-        scl         : out std_logic;
-        n_ldac      : out std_logic
+        scl         : inout std_logic;
+        n_ldac      : out std_logic;
+        led         : out std_logic_vector(15 downto 0)
     );
 end I2C_Master;
 
-architecture Behavioral of I2C_master is
-    -- States definition
-    type state_type is (IDLE, START, DATA_BITS, WAITACK, STOP);
-    signal state                : state_type := IDLE;
-
-    -- Clock divider to generate SCL
-    signal scl_div              : integer range 0 to 49 := 0;
-
-    -- controls and data
-    signal bit_counter          : integer range 0 to 7 := 0;
-    signal sda_reg              : std_logic := '1';
-    signal ack                  : std_logic := '0';
-    signal scl_reg              : std_logic := '1';
-    signal ready                : std_logic := '1';
-    signal I2C_payload_queued   : std_logic_vector(47 downto 0);
+architecture Behavioral of I2C_Master is
+    constant CLK_FREQ       : integer := 10000000; -- 10MHz
+    constant SCL_FREQ       : integer := 100000;
+    constant CLK_DIVIDER    : integer := (CLK_FREQ/SCL_FREQ)/4;
     
+    -- States
+    type state_type is (IDLE, ACK_RECEIVED, WAIT_CLOCK_CYCLE, START, DATA_BITS, WAIT_ACK, STOP);
+    signal state : state_type := IDLE;
+
+    -- SCL generation
+    signal scl_counter : integer range 1 to CLK_DIVIDER*4 := 1;
+    signal scl_reg     : std_logic := '1';
+    signal scl_enable  : std_logic := '1';
+    signal scl_pull    : std_logic := '0'; 
+
+    -- Internal data handling
+    signal bit_index   : integer range 0 to 71 := 0;
+    signal payload_buf : std_logic_vector(71 downto 0) := (others => '0');
+    signal sda_out     : std_logic := '1';
+    signal sda_enable  : std_logic := '0';  -- 1 = drive SDA, 0 = release SDA
+    signal ack         : std_logic := '0';
+    signal ready       : std_logic := '1';
+    signal stretch     : std_logic := '0';  -- if slave holds the clock
+    signal sda_tick    : std_logic := '0';  -- when to prepare the output bit
+    signal sda_tick_prv: std_logic := '0';
 begin
-    process(ready, I2C_payload)
-    begin
-        if ready = '1' then
-            I2C_payload_queued      <= I2C_payload;
-        end if;
-    end process;
-
-    -- Clock divider for SCL
-    process(clk)
+  
+    process(clk) -- SCL clock generation (100kHz from 10MHz clock)
     begin
         if rising_edge(clk) then
-            if scl_div = 49 then           -- 100 kHz divider (with a clock of 10 MHz)
-                scl_div <= 0;
-                scl_reg <= not scl_reg;
-            else
-                scl_div <= scl_div + 1;
+            sda_tick_prv <= sda_tick;                       --store previous value of data clock
+            if(scl_counter = CLK_DIVIDER*4) then            --end of timing cycle
+                scl_counter <= 1;                       
+            elsif(stretch = '0') then                       --clock stretching from slave not detected
+                scl_counter <= scl_counter + 1;             --continue clock generation timing
             end if;
-        end if;
-    end process;
-
-    -- FSM for I2C
-    process(clk, reset)      
-    begin
-        if reset = '1' then
-                state       <= IDLE;
-                sda_reg     <= '1';
-                bit_counter <= 0;
-                n_ldac      <= '1';
-                ack         <= '0';
-        end if;    
-        
-        if rising_edge(clk) then
-            case state is
-                when IDLE =>
-                    if ready = '1' then
-                        state   <= START;
-                        ready   <= '0';
+            case scl_counter is
+                when 1 to CLK_DIVIDER-1 =>                    --first 1/4 cycle of clocking
+                    scl_reg     <= '0';
+                    sda_tick    <= '0';
+                when CLK_DIVIDER to CLK_DIVIDER*2-1 =>        --second 1/4 cycle of clocking
+                    scl_reg     <= '0';
+                    sda_tick    <= '1';
+                when CLK_DIVIDER*2 TO CLK_DIVIDER*3 =>      --third 1/4 cycle of clocking
+                    scl_reg     <= '1';                     --release scl
+                    if scl = '0' and scl_enable = '1' and scl_pull = '0' then                       --detect if slave is stretching clock
+                        stretch     <= '1';
                     else
-                        state   <= IDLE;
+                        stretch     <= '0';
                     end if;
-                when START =>
-                    sda_reg <= '0';             -- START condition: SDA goes low when SCL high
-                    n_ldac  <= '0';
-                    state   <= DATA_BITS;
-
-                when DATA_BITS =>
-                    if bit_counter < 47 then
-                        sda_reg     <= I2C_payload(47 - bit_counter);
-                        bit_counter <= bit_counter + 1;
-                    else
-                        bit_counter <= 0;
-                        state       <= WAITACK;
-                    end if;
-
-                when WAITACK =>
-                    sda_reg     <= 'Z';         -- Release SDA to let the slave give ACK
-                    ack         <= sda_reg;     -- read ACK
-                    if ack = '1' then
-                        state   <= STOP; 
-                        ack     <= '0';
-                    end if;
-
-                when STOP =>
-                    sda_reg <= '0';             -- SDA goes low before SCL
-                    if scl_reg = '1' then
-                        sda_reg     <= '1';     -- STOP condition: SDA goes high with SCL high
-                        state       <= IDLE;
-                        n_ldac      <= '1';
-                        ready       <= '1';
-                    end if;
-
-                when others =>
-                    state <= IDLE;
+                    sda_tick    <= '1';
+                when others =>                              --last 1/4 cycle of clocking
+                    scl_reg     <= '1';
+                    sda_tick    <= '0';
             end case;
         end if;
     end process;
     
-    scl <= scl_reg;
-    sda <= sda_reg;
+    -- I2C FSM
+    process(clk)
+    begin
+        if rising_edge(clk) then
+            if sda_tick_prv = '1' and sda_tick = '0' then
+                case state is
+    
+                    when IDLE =>
+                        if ready = '1' then
+                            led(0)      <= '0';
+                            n_ldac      <= '0';
+                            state       <= START;
+                            ready       <= '0';
+                        end if;
+    
+                    when START =>  --at the 3/4 of clock cycle, when SCL is high pull SDA low
+                        led(1)      <= '0';
+                        sda_out     <= '0';
+                        scl_enable  <= '1';
+                        state       <= DATA_BITS;
+                        
+                    when ACK_RECEIVED =>
+                        led(4)      <= '0';
+                        sda_out     <= '0';
+                        state       <= WAIT_CLOCK_CYCLE;
+                        
+                    when WAIT_CLOCK_CYCLE =>
+                        state       <= DATA_BITS;
+                        
+                    when DATA_BITS =>
+                        if bit_index mod 8 = 7 then
+                            led(2)      <= '0';
+                            state       <= WAIT_ACK;
+                        end if;
+                        bit_index   <= bit_index + 1;
+    
+                    when WAIT_ACK =>
+                        if sda = '0' then
+                            if bit_index < 71 then
+                                led(3)      <= '0';
+                                state       <= ACK_RECEIVED;
+                                sda_enable  <= '1';
+                            else
+                                led(3)      <= '0';
+                                sda_enable  <= '1';
+                                bit_index   <= 0;
+                                state       <= STOP;
+                            end if;
+                        else
+                            led(3)      <= '0';
+                            led(6)      <= '1';
+                            bit_index   <= 0;
+                            sda_enable  <= '1';
+                            state       <= STOP;
+                        end if;
+                        
+                    when STOP =>
+                        scl_enable  <= '0';
+                        led(5)      <= '0';
+                        led(6)      <= '0';
+                        sda_out     <= '1'; -- SDA goes high while SCL high (STOP) 
+                        n_ldac      <= '1';
+                        state       <= IDLE;
+    
+                    when others =>
+                        state <= IDLE;
+    
+                end case;
+            elsif sda_tick_prv = '0' and sda_tick = '1' then
+                case state is
+    
+                    when IDLE =>
+                        led(0)      <= '1';
+                        sda_out     <= '1';
+                        if true then --(payload_buf /= I2C_payload) then
+                            payload_buf <= I2C_payload;
+                            ready       <= '1';
+                        end if;
+                        
+                    when START =>
+                        led(1)      <= '1';
+                        
+                    when ACK_RECEIVED =>
+                        led(4)      <= '1';
+                        sda_out     <= '1';
+                        scl_pull    <= '1';
+                        
+                    when WAIT_CLOCK_CYCLE =>
+    
+                    when DATA_BITS =>
+                        scl_pull    <= '0';
+                        led(2)      <= '1';
+                        sda_out     <= payload_buf(71 - bit_index);
+                        
+                        
+                    when WAIT_ACK =>
+                        led(3)      <= '1';
+                        sda_enable  <= '0'; -- Release SDA
+                        
+                    when STOP =>
+                        led(5)      <= '1';
+                        state       <= STOP;
+    
+                    when others =>
+                        state <= IDLE;
+    
+                end case;
+            end if;
+        end if;
+    end process;
+    
+    sda <= sda_out when sda_enable = '1' else 'Z';
+    scl <= scl_reg when scl_enable = '1' and scl_pull = '0'
+            else '1' when state = STOP or state = IDLE or state = START
+            else '0' when scl_pull = '1' 
+            else 'Z';
+    
 end Behavioral;

@@ -16,7 +16,7 @@ entity Control_Unit is
                 
         --Outputs
         sda                 : inout std_logic;
-        scl                 : out std_logic;
+        scl                 : inout std_logic;
         n_ldac              : out std_logic;
         ctrl_sel_pwm        : out std_logic;
         soa_pwm             : out std_logic;
@@ -24,7 +24,7 @@ entity Control_Unit is
         tec_en              : out std_logic;
         seg                 : out std_logic_vector(5 downto 0);
         an                  : out std_logic_vector(3 downto 0);
-        
+        led                 : out std_logic_vector(15 downto 0);
         uart_tx             : out std_logic
     );
 end Control_Unit;
@@ -32,12 +32,12 @@ end Control_Unit;
 architecture Structural of Control_Unit is
 
     -- signals to interconnect i2c master and paload generation
-    signal payload          : std_logic_vector(47 downto 0);
+    signal payload          : std_logic_vector(71 downto 0);
     signal clk_div          : std_logic;        
     
     -- signals for mudulation and controls
-    signal mod_mode         : std_logic_vector(1 downto 0);
-    signal status           : std_logic_vector(1 downto 0);
+    signal mod_status       : std_logic_vector(1 downto 0);
+    signal soa_tec_status   : std_logic_vector(1 downto 0);
     signal ctrl_l           : integer;
     signal ctrl_h           : integer;
     signal setpoint         : integer;
@@ -65,7 +65,7 @@ architecture Structural of Control_Unit is
             ctrl_l          : in integer;
             tec_maxv        : in integer;
             setpoint        : in integer;
-            I2C_payload     : out std_logic_vector(47 downto 0)
+            I2C_payload     : out std_logic_vector(71 downto 0)
         );
     end component;
     
@@ -73,10 +73,11 @@ architecture Structural of Control_Unit is
         Port (
             clk             : in std_logic;
             reset           : in  std_logic;
-            I2C_payload     : in  std_logic_vector(47 downto 0);  
+            I2C_payload     : in  std_logic_vector(71 downto 0);  
             sda             : inout std_logic;
-            scl             : out std_logic;
-            n_ldac          : out std_logic
+            scl             : inout std_logic;
+            n_ldac          : out std_logic;
+            led             : out std_logic_vector(15 downto 0)
         );
     end component;
     
@@ -99,8 +100,8 @@ architecture Structural of Control_Unit is
             overtemp_alarm  : in std_logic;
             undertemp_alarm : in std_logic;
             duty_cycle      : in integer;
-            mod_sel         : in std_logic_vector(1 downto 0);
-            status          : out std_logic_vector(1 downto 0);
+            mod_status_in   : in std_logic_vector(1 downto 0);
+            soa_tec_status  : in std_logic_vector(1 downto 0);
             soa_en          : out std_logic;
             tec_en          : out std_logic;
             ctrl_sel        : out std_logic;
@@ -132,7 +133,8 @@ architecture Structural of Control_Unit is
             ctrl_h          : out integer; 
             tec_maxv        : out integer;  
             setpoint        : out integer;                      
-            mod_mode        : out std_logic_vector(1 downto 0)
+            mod_status      : out std_logic_vector(1 downto 0);
+            soa_tec_status  : out std_logic_vector(1 downto 0)
         );               
     end component;
     
@@ -179,7 +181,8 @@ begin
             ctrl_h          => ctrl_h,
             tec_maxv        => tec_maxv,
             setpoint        => setpoint,                                  
-            mod_mode        => mod_mode
+            mod_status      => mod_status,
+            soa_tec_status  => soa_tec_status
         );
         
     -- modulation and control block
@@ -189,10 +192,10 @@ begin
             overtemp_alarm  => overtemp_alarm,
             undertemp_alarm => undertemp_alarm,
             duty_cycle      => duty_cycle,
-            mod_sel         => mod_mode,
+            mod_status_in   => mod_status,
             soa_en          => soa_en,
             tec_en          => tec_en,
-            status          => status, 
+            soa_tec_status  => soa_tec_status, 
             ctrl_sel        => ctrl_sel_pwm,
             pwm             => soa_pwm
         );
@@ -200,8 +203,8 @@ begin
     display_block : Display
         Port map(
             clk             => clk_div,
-            mode            => mod_mode,
-            status          => status,
+            mode            => mod_status,
+            status          => soa_tec_status,
             seg             => seg,
             an              => an
         );
@@ -222,15 +225,16 @@ begin
             I2C_payload     => payload,
             sda             => sda,
             scl             => scl,
-            n_ldac          => n_ldac
+            n_ldac          => n_ldac,
+            led             => led
         );
     
     ADC : xadc_wiz_0
         Port map(
             dclk_in         => clk_div,
             reset_in        => reset,
-            daddr_in        => (others => '0'),
-            den_in          => adc_eoc,
+            daddr_in        => "0011111",
+            den_in          => '1',
             di_in           => (others => '0'),
             dwe_in          => '0',
             vauxp15         => vauxp15,                      
@@ -240,9 +244,9 @@ begin
             
             drdy_out        => adc_rdy,
             eoc_out         => adc_eoc,
-            eos_out         => adc_off,
-            busy_out        => adc_off,
-            alarm_out       => adc_off,                    
+            eos_out         => open,
+            busy_out        => open,
+            alarm_out       => open,                    
             do_out          => SOA_current_dig,
             channel_out     => channel_out
         );

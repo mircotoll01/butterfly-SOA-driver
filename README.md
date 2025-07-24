@@ -99,6 +99,16 @@ The SET command will accept the following attributes:
         <td>None</td>
     </tr>
     <tr>
+        <td>SOA</td>
+        <td>ON/OFF</td>
+        <td>None</td>
+    </tr>
+    <tr>
+        <td>TEC</td>
+        <td>ON/OFF</td>
+        <td>None</td>
+    </tr>
+    <tr>
         <td rowspan="4">SET</td>
         <td>CTLL</td>
         <td rowspan="2">Integer from 0 to 1500, which corresponds to a voltage output from the DAC that goes from 0 to 1.5V. This voltage sets the inductor current which charges its corresponding output capacitor.
@@ -114,8 +124,8 @@ The SET command will accept the following attributes:
     </tr>
     <tr>
         <td>MAXV</td>
-        <td>Integer from 0 to 2048, which corresponds to a voltage output from the DAC that goes from 0 to 2.048V.
-        Maximum TEC voltage will be set to 4*MAXV</td>
+        <td>Integer from 0 to 5000. The program scales it down to reach a voltage output from the DAC that goes from 0 to 1.250V. 
+        Since TEC voltage is set to 4*MAXV the range 0-5V range can be achieved.</td>
     </tr>
     <tr>
         <td>PWM</td>
@@ -124,7 +134,7 @@ The SET command will accept the following attributes:
     </tr>
     <tr>
         <td>DBL</td>
-        <td>None</td>
+        <td>Integer encoded in three ciphers from 000 to 100</td>
         <td>None</td>
     </tr>
 </table>
@@ -137,13 +147,20 @@ The commands are not case sensitive anymore
 Turn on a SOA or an LD:
 
 ```
-SET CTLL XXXX
+SOA ON
 PWM 100
 ```
 
 Enable PWM modulation
 
 ```
-SET CTLL XXXX
+SOA ON
 PWM XXX
+```
+
+Enable double threshold modulation
+
+```
+SOA ON
+DBL XXX
 ```
