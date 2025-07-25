@@ -8,7 +8,8 @@ entity UART_payload_gen is
         command_parsed_in   : in std_logic_vector(23 downto 0);
         attribute_ASCII_in  : in std_logic_vector(31 downto 0);
         ctl_value_ASCII_in  : in std_logic_vector(31 downto 0);
-        SOA_current_dig_in  : in std_logic_vector(15 downto 0);
+        soa_current_dig_in  : in std_logic_vector(15 downto 0);
+        adc_rdy             : in std_logic;
         ctrl_l              : in integer;
         ctrl_h              : in integer;
         tec_maxv            : in integer; 
@@ -30,7 +31,7 @@ architecture Behavioral of UART_payload_gen is
     signal ascii_isoa      : std_logic_vector(39 downto 0);
 begin
 
-    process(command_parsed_in, attribute_ASCII_in, ctl_value_ASCII_in, SOA_current_dig_in, ctrl_l, ctrl_h, tec_maxv, setpoint, duty_cycle, mod_mode)
+    process(all)
     begin
         -- Conversion of integers to ASCII
         ascii_ctrl_l   <= int_to_ascii(ctrl_l);
@@ -40,7 +41,7 @@ begin
         ascii_duty     <= int_to_ascii(duty_cycle);
         
         -- conversion of adc ouput to ASCII
-        ascii_isoa     <= adc_to_ascii(SOA_current_dig_in);
+        ascii_isoa     <= adc_to_ascii(SOA_current_dig_in(12 downto 0)) when adc_rdy = '1' else ascii_isoa;
 
         -- Encoding modulation mode as two ASCII chars
         case mod_mode is

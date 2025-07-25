@@ -81,18 +81,6 @@ architecture Structural of Control_Unit is
         );
     end component;
     
-    -- components for current monitoring
-    component Reader
-        Port (
-            clk             : in std_logic;                      
-            reset           : in std_logic;                      
-            JXADC           : in std_logic_vector(1 downto 0);   
-            digital_out     : out std_logic_vector(15 downto 0); 
-            eoc             : out std_logic;                        
-            eos             : out std_logic
-        );
-    end component;
-    
     -- components for SOA drive
     component modulator
         Port (
@@ -124,7 +112,8 @@ architecture Structural of Control_Unit is
         Port (
             clk             : in std_logic;
             reset           : in std_logic;
-            ADC_read        : in std_logic_vector(15 downto 0);
+            adc_read        : in std_logic_vector(15 downto 0);
+            adc_rdy         : in std_logic;
             uart_rx         : in std_logic;
             
             uart_tx         : out std_logic;
@@ -173,7 +162,8 @@ begin
         Port map(
             clk             => clk_div,
             reset           => reset,
-            ADC_read        => SOA_current_dig,
+            adc_read        => SOA_current_dig,
+            adc_rdy         => adc_eoc and adc_rdy,
             uart_rx         => uart_rx,
             uart_tx         => uart_tx,
             duty_cycle      => duty_cycle,  
@@ -248,6 +238,6 @@ begin
             busy_out        => open,
             alarm_out       => open,                    
             do_out          => SOA_current_dig,
-            channel_out     => channel_out
+            channel_out     => open
         );
 end Structural;

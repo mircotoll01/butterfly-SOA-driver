@@ -131,11 +131,9 @@ set_property PULLTYPE PULLDOWN [get_ports reset]
 ##Sch name = JA1
 set_property PACKAGE_PIN J1 [get_ports overtemp_alarm]
 set_property IOSTANDARD LVCMOS33 [get_ports overtemp_alarm]
-set_property PULLTYPE PULLDOWN [get_ports overtemp_alarm]
 ##Sch name = JA2
 set_property PACKAGE_PIN L2 [get_ports undertemp_alarm]
 set_property IOSTANDARD LVCMOS33 [get_ports undertemp_alarm]
-set_property PULLTYPE PULLDOWN [get_ports undertemp_alarm]
 ##Sch name = JA3
 set_property PACKAGE_PIN J2 [get_ports soa_en]
 set_property IOSTANDARD LVCMOS33 [get_ports soa_en]

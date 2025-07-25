@@ -7,7 +7,9 @@ entity UART_transceiver is
     Port (
         clk             : in std_logic;                               -- System clock
         reset           : in std_logic;                               -- System reset
-        ADC_read        : in std_logic_vector(15 downto 0);           -- Input from ADC representing measured current
+        adc_read        : in std_logic_vector(15 downto 0);           -- Input from ADC representing measured current
+        adc_rdy         : in std_logic;
+        
         uart_rx         : in std_logic;                               -- UART receive line
         
         uart_tx         : out std_logic;                              -- UART transmit line
@@ -113,7 +115,8 @@ architecture Structural of UART_transceiver is
             command_parsed_in   : in std_logic_vector(23 downto 0);
             attribute_ASCII_in  : in std_logic_vector(31 downto 0);
             ctl_value_ASCII_in  : in std_logic_vector(31 downto 0);
-            SOA_current_dig_in  : in std_logic_vector(15 downto 0);
+            soa_current_dig_in  : in std_logic_vector(15 downto 0);
+            adc_rdy             : in std_logic;
             ctrl_l              : in integer;
             ctrl_h              : in integer;
             tec_maxv            : in integer;
@@ -179,7 +182,8 @@ begin
             command_parsed_in   => command_parsed_sig,
             attribute_ASCII_in  => attribute_ASCII_sig,
             ctl_value_ASCII_in  => ctl_value_ASCII_sig,
-            SOA_current_dig_in  => ADC_read,
+            soa_current_dig_in  => ADC_read,
+            adc_rdy             => adc_rdy,
             ctrl_l              => ctrl_l_sig,
             ctrl_h              => ctrl_h_sig,
             tec_maxv            => tec_maxv_sig,
