@@ -146,6 +146,7 @@ set_property IOSTANDARD LVCMOS33 [get_ports soa_pwm]
 ##Sch name = JA8
 set_property PACKAGE_PIN K2 [get_ports tec_en]
 set_property IOSTANDARD LVCMOS33 [get_ports tec_en]
+set_property PULLTYPE PULLDOWN [get_ports n_ldac]
 ##Sch name = JA9
 set_property PACKAGE_PIN H2 [get_ports sda]
 set_property IOSTANDARD LVCMOS33 [get_ports sda]

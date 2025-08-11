@@ -27,9 +27,6 @@ end UART_transceiver;
 architecture Structural of UART_transceiver is
 
     -- Internal signals for interconnection between components
-    signal reg_in               : integer;                         -- Value to be written to register
-    signal register_enable      : std_logic;                       -- Flag to enable writing to registers
-    signal reg_address          : std_logic_vector(2 downto 0);    -- Register address selector
     signal data_ready_signal    : std_logic;                       -- Signal indicating new UART byte received
     signal rx_data              : std_logic_vector(7 downto 0);    -- Received UART byte
     signal state_sel            : std_logic_vector(1 downto 0);    -- Input modulation mode or enabling states from parser
@@ -48,32 +45,10 @@ architecture Structural of UART_transceiver is
     signal tec_status_sig       : std_logic;
     signal soa_status_sig       : std_logic;
 
-    -- Driver component: stores control values and generates system outputs
-    component driver_reg is
-        Port(
-            clk             : in std_logic;
-            reset           : in std_logic;
-            write_flag      : in std_logic;
-            address         : in std_logic_vector(2 downto 0);
-            mode_status_in  : in std_logic_vector(1 downto 0);
-            tec_status_sel  : in std_logic;
-            soa_status_sel  : in std_logic;
-            data_in         : in integer;
-            ctrl_l          : out integer;
-            ctrl_h          : out integer;
-            tec_maxv        : out integer;
-            setpoint        : out integer;
-            duty_cycle      : out integer;
-            mod_status_out  : out std_logic_vector(1 downto 0);
-            soa_tec_status  : out std_logic_vector(1 downto 0)
-        );
-    end component;
-
     -- UART Receiver: receives serial data and indicates when a byte is ready
     component UART_receiver is 
         Port(
             clk                 : in std_logic;
-            reset               : in std_logic;
             rx_bit              : in std_logic;
             rx_data             : out std_logic_vector(7 downto 0);
             data_ready          : out std_logic     
@@ -84,18 +59,18 @@ architecture Structural of UART_transceiver is
     component UART_parser is 
         Port(
             clk                 : in std_logic;
-            reset               : in std_logic;
             data_ready_in       : in std_logic;
             uart_byte_in        : in std_logic_vector(7 downto 0);
-            address_select      : out std_logic_vector(2 downto 0);
-            register_enable     : out std_logic;
-            data_out            : out integer;                           
-            tec_status_out      : out std_logic;
-            soa_status_out      : out std_logic;
-            mode_status_out     : out std_logic_vector(1 downto 0);
             command_parsed_out  : out std_logic_vector(23 downto 0);
             attribute_ASCII_out : out std_logic_vector(31 downto 0);
-            ctl_value_ASCII_out : out std_logic_vector(31 downto 0)
+            ctl_value_ASCII_out : out std_logic_vector(31 downto 0);
+            ctrl_l              : out integer;
+            ctrl_h              : out integer;
+            tec_maxv            : out integer;
+            setpoint            : out integer;
+            duty_cycle          : out integer;
+            mod_status_out      : out std_logic_vector(1 downto 0);
+            soa_tec_status      : out std_logic_vector(1 downto 0)
         );
     end component;
 
@@ -132,7 +107,6 @@ begin
     receiver: UART_receiver
         Port Map(
             clk                 => clk,
-            reset               => reset,
             rx_bit              => uart_rx,
             rx_data             => rx_data,
             data_ready          => data_ready_signal
@@ -142,39 +116,19 @@ begin
     parser : UART_parser
         Port map(
             clk                 => clk,
-            reset               => reset,
             data_ready_in       => data_ready_signal,
             uart_byte_in        => rx_data,
-            address_select      => reg_address,
-            register_enable     => register_enable,
-            data_out            => reg_in,
-            tec_status_out      => tec_status_sig,
-            soa_status_out      => soa_status_sig,
-            mode_status_out     => mode_status_sig,
-            command_parsed_out  => command_parsed_sig,
-            attribute_ASCII_out => attribute_ASCII_sig,
-            ctl_value_ASCII_out => ctl_value_ASCII_sig
-        );
-    
-    -- Instantiate Register Driver
-    reg : driver_reg
-        Port map(
-            clk                 => clk,
-            reset               => reset,
-            write_flag          => register_enable,
-            address             => reg_address,
-            mode_status_in      => mode_status_sig,
-            tec_status_sel      => tec_status_sig,
-            soa_status_sel      => soa_status_sig,
-            data_in             => reg_in,
             ctrl_l              => ctrl_l_sig,
             ctrl_h              => ctrl_h_sig,
             tec_maxv            => tec_maxv_sig,
             setpoint            => setpoint_sig,
             duty_cycle          => duty_cycle_sig,
             mod_status_out      => mod_status_out,
-            soa_tec_status      => soa_tec_status
-        );  
+            soa_tec_status      => soa_tec_status,
+            command_parsed_out  => command_parsed_sig,
+            attribute_ASCII_out => attribute_ASCII_sig,
+            ctl_value_ASCII_out => ctl_value_ASCII_sig
+        );
         
     -- Instantiate Payload Generator
     UART_pl : UART_payload_gen

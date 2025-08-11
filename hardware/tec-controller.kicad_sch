@@ -4132,7 +4132,7 @@
 			)
 		)
 	)
-	(global_label "TEC_~{SHD}"
+	(global_label "TEC_ENABLE"
 		(shape input)
 		(at 36.83 54.61 180)
 		(fields_autoplaced yes)
@@ -4144,7 +4144,7 @@
 		)
 		(uuid "43ddbeeb-4ec8-4f26-ad7b-6525c94530e4")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 25.6806 54.61 0)
+			(at 22.4754 54.61 0)
 			(effects
 				(font
 					(size 1.27 1.27)

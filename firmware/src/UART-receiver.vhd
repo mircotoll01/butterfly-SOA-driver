@@ -5,7 +5,6 @@ use IEEE.NUMERIC_STD.ALL;
 entity UART_receiver is
     Port ( 
         clk                 : in  std_logic;                       
-        reset               : in  std_logic;                       
         rx_bit              : in  std_logic;                                    -- Incoming bit (RX)
         rx_data             : out std_logic_vector(7 downto 0);                 -- Received data
         data_ready          : out std_logic                                     -- Flag for data ready to be read
@@ -20,7 +19,7 @@ architecture Behavioral of UART_receiver is
     signal rx_reg           : std_logic_vector(7 downto 0) := (others => '0');  -- received byte                      
     signal dr_reg           : std_logic := '0';
 
-    type state_type is (IDLE, START_BIT, DATA_BITS, STOP_BIT, CLEANUP);
+    type state_type is (IDLE, START_BIT, DATA_BITS, STOP_BIT);
     signal state : state_type := IDLE;
 begin 
     -- Receiver FSM
@@ -29,26 +28,11 @@ begin
         variable bit_index        : integer range 0 to 7 := 0;
     begin
         if rising_edge(clk) then
-        
-            if reset = '1' then
-                state                   <= IDLE;
-                bit_index               := 0;
-                rx_reg                  <= (others => '0');
-            end if;
-            
             case state is
-                when CLEANUP =>
-                    rx_reg              <= (others => '0');
-                    dr_reg              <= '0';
-                    bit_index           := 0;
-                    baud_counter        := 0;
-                    state               <= IDLE;  
-                
                 when IDLE =>
                     if rx_bit = '0' then                            -- Detect start bit 
                         state           <= START_BIT;
                     end if;
-                    
 
                 when START_BIT =>
                     if baud_counter = (BAUD_DIVISOR - 1)/2 then
@@ -88,7 +72,11 @@ begin
                     else
                         baud_counter        := 0;
                         if rx_bit = '1' then                    -- Validate stop bit
-                            state           <= CLEANUP;         -- clean up
+                            rx_reg              <= (others => '0');
+                            dr_reg              <= '0';
+                            bit_index           := 0;
+                            baud_counter        := 0;
+                            state               <= IDLE;  
                         end if;
                     end if;
                 when others =>

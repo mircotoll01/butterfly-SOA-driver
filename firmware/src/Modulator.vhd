@@ -29,7 +29,7 @@ architecture Behavioral of modulator is
     signal off_time         : integer range 0 to 100 := 0;
 begin
     process(clk)
-    variable clock_divider : integer range 0 to 9 := 0; -- 500 kHz divider
+    variable clock_divider : integer range 0 to 99 := 0; -- 500 kHz divider
     begin
         if rising_edge(clk) then
             clock_divider       := clock_divider + 1;
@@ -46,9 +46,11 @@ begin
             if overtemp_alarm = '1' then
                 soa_en_reg          <= '0';  
                 tec_en_reg          <= '0';
-                ctrl_sel_reg        <= '0';
-                pwm_reg             <= '0';
             else
+                on_time         <= duty_cycle;
+                off_time        <= 100 - on_time;
+                
+    
                 if soa_tec_status(0) = '1' then
                     tec_en_reg          <= '1';
                 else 
@@ -72,11 +74,11 @@ begin
                             on_counter      <= on_counter + 1;
                             pwm_reg         <= '1';
                         
-                        elsif on_counter = on_time and off_counter < off_time then
+                        elsif on_counter >= on_time and off_counter < off_time then
                             off_counter     <= off_counter + 1;
                             pwm_reg         <= '0';
 
-                        elsif on_counter = on_time and off_counter = off_time then
+                        elsif on_counter >= on_time and off_counter >= off_time then
                             on_counter      <= 0;
                             off_counter     <= 0;
                         end if;
@@ -86,23 +88,20 @@ begin
                         if on_counter < on_time then
                             on_counter      <= on_counter + 1;
                             ctrl_sel_reg    <= '1';
-                        elsif on_counter = on_time and off_counter < off_time then
+                        elsif on_counter >= on_time and off_counter < off_time then
                             off_counter     <= off_counter + 1;
                             ctrl_sel_reg    <= '0';
-                        elsif on_counter = on_time and off_counter = off_time then
+                        elsif on_counter >= on_time and off_counter >= off_time then
                             on_counter      <= 0;
                             off_counter     <= 0;
                         end if;      
                     when others =>
-                        pwm_reg             <= '0';
-                        ctrl_sel_reg        <= '0';
                 end case;
             end if;
         end if;
     end process;
     
-    off_time        <= 100 - on_time;
-    on_time         <= duty_cycle;
+    
     soa_en          <= soa_en_reg;
     pwm             <= pwm_reg;
     tec_en          <= tec_en_reg;

@@ -1,6 +1,6 @@
 # Overview
-This is an experimental slave module used to drive a SOA with a butterfly package and integrated TEC. The driver can be operated from the header connector on the side.
-The board was initially thought as a Laser Diode driver encased in butterfly packages, which usually integrate both the LD and a Peltier cell. Since SOAs are packaged in the same way, this board can be used for those as well.
+This is an experimental slave module used to drive a optical devices with a butterfly package and integrated TEC. The driver can be operated from the header connector on the side.
+The board was initially thought as a Laser Diode driver encased in butterfly packages, which usually integrate both the LD and a Peltier cell.
 Since there is no standard pinouts in butterfly-type packages, this board routes all its power outputs and inputs to a row of headers, and all butterfly pins are routed to open headers as well, so that it is possible to route different parts of the board to different butterfly pins, whose position is numbered and indicated on silkscreen. 
 
 ![](images/driver_jumpers.png)
@@ -11,7 +11,7 @@ Since there is no standard pinouts in butterfly-type packages, this board routes
 
 |PIN|USAGE|INFO|
 |-|-|-|
-|1|3V3|Logic power supply, mandatory for the DAC that sets the SOA (or LD) voltage|
+|1|3V3|Logic power supply, mandatory for the DAC that sets the optical device voltage|
 |2|SCL|I2C clock pin for the DAC|
 |3|SDA|I2C data pin for the DAC|
 |4|$\overline{LDAC}$|Enable DAC register write mode|
@@ -20,7 +20,7 @@ Since there is no standard pinouts in butterfly-type packages, this board routes
 |7|TEC_EN|Enabling input for TEC|
 |8|LD_MOD|LT3743's PWM input, when this signal is set to low all switching is disabled. Pull high if you don't plan to use it|
 |9|CTRL_SEL|LT3743's switch for output voltage selection. The board has a double output capacitor topology that can be used to switch between two voltages. Useful if there is the need to keep an LD under the lasing threshold and periodically switch to a higher voltage.|
-|10|ILD_MON|SOA (or LD) current monitor|
+|10|ILD_MON|optical device current monitor|
 |11|LD_EN|LT3743's enable pin|
 |12|UNDRTMP_ALM|Sets if the temperature gets lower than a certain setpoint|
 |13|OVRTMP_ALM|Sets if the temperature gets higher than a certain setpoint|
@@ -73,7 +73,9 @@ Now this repo provides a python script that gives a console to the user to send 
 |COMMAND|INFO|
 |-|-|
 |OFF|Pulls LD_EN to low, disables all switching functions. Any other command will set LD_EN back to high|
-|PWM|Sets PWM mode with a certain duty cycle, set CTLL voltage first to operate the SOA in this mode|
+|CCC|Activates the part of the circuit that supplies costant current to the optical component|
+|TEC|Activates the Thermo-Electric Controller|
+|PWM|Sets PWM mode with a certain duty cycle, set CTLL voltage first to operate the optical device in this mode|
 |SET|Sets the selected register of the DAC to a set value|
 |DBL|Sets double output voltage mode, the low and high thresholds have to be set first|
 
@@ -99,7 +101,7 @@ The SET command will accept the following attributes:
         <td>None</td>
     </tr>
     <tr>
-        <td>SOA</td>
+        <td>CCC</td>
         <td>ON/OFF</td>
         <td>None</td>
     </tr>
@@ -147,20 +149,20 @@ The commands are not case sensitive anymore
 Turn on a SOA or an LD:
 
 ```
-SOA ON
+CCC ON
 PWM 100
 ```
 
 Enable PWM modulation
 
 ```
-SOA ON
+CCC ON
 PWM XXX
 ```
 
 Enable double threshold modulation
 
 ```
-SOA ON
+CCC ON
 DBL XXX
 ```

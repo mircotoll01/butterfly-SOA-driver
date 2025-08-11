@@ -4591,6 +4591,10 @@
 		(uuid "f631b048-2fb0-4b1e-9412-0e0a36f145bd")
 	)
 	(no_connect
+		(at 77.47 78.74)
+		(uuid "10321bb4-acbc-4b84-8d4a-1800959e6235")
+	)
+	(no_connect
 		(at 35.56 177.8)
 		(uuid "6a4bc287-c41b-4c1d-9460-f775a1a514e6")
 	)
@@ -6534,7 +6538,7 @@
 		)
 		(uuid "fef462f6-02cf-4ed5-8dee-820d4f20f2fd")
 	)
-	(label "LD"
+	(label "VOUT"
 		(at 29.21 160.02 0)
 		(effects
 			(font
@@ -6684,7 +6688,7 @@
 		)
 		(uuid "61b999b7-ef93-4a5a-ae65-b2eb75599cb3")
 	)
-	(label "LD"
+	(label "VOUT"
 		(at 243.84 69.85 180)
 		(effects
 			(font
@@ -6724,7 +6728,7 @@
 		)
 		(uuid "78d034cc-6d46-470f-b869-42daf7388d86")
 	)
-	(label "LD"
+	(label "VOUT"
 		(at 185.42 152.4 0)
 		(effects
 			(font
@@ -6904,7 +6908,7 @@
 		)
 		(uuid "d040e101-1505-4fc5-a0b4-ea6003e48a44")
 	)
-	(label "LD"
+	(label "VOUT"
 		(at 137.16 90.17 180)
 		(effects
 			(font
@@ -7034,29 +7038,7 @@
 		)
 		(uuid "ffe88546-c278-4e74-9e2c-ea37b3641614")
 	)
-	(global_label "LD_EN"
-		(shape input)
-		(at 77.47 78.74 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "01fd25e1-2b19-4579-83b6-ed1dbd019d70")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 68.7396 78.74 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "LD_EN"
+	(global_label "DRIVER_ENABLE"
 		(shape input)
 		(at 77.47 53.34 180)
 		(fields_autoplaced yes)
@@ -7068,7 +7050,7 @@
 		)
 		(uuid "46ad8734-8e06-4e91-a3ef-7ac5720f9184")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 68.7396 53.34 0)
+			(at 59.8496 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7078,7 +7060,7 @@
 			)
 		)
 	)
-	(global_label "LD_MODULATION"
+	(global_label "MODULATION_WAVE"
 		(shape input)
 		(at 77.47 55.88 180)
 		(fields_autoplaced yes)
@@ -7090,7 +7072,7 @@
 		)
 		(uuid "5fc13146-8ea9-46e2-aef9-c94f79d7c3d2")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 59.4866 55.88 0)
+			(at 57.0071 55.88 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8618,7 +8600,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "2k2"
+		(property "Value" "560k"
 			(at 121.158 94.996 0)
 			(effects
 				(font
@@ -10110,7 +10092,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "1k"
+		(property "Value" "560k"
 			(at 135.89 95.2499 0)
 			(effects
 				(font
@@ -10376,7 +10358,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "1k"
+		(property "Value" "10k"
 			(at 139.7 103.378 0)
 			(effects
 				(font
