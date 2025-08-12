@@ -40,6 +40,7 @@ architecture Behavioral of UART_parser is
     signal mod_status_reg       : std_logic_vector(1 downto 0) := "00";
     signal soa_tec_status_reg   : std_logic_vector(1 downto 0) := "00";
 begin
+    
     process(clk)
     begin
         if rising_edge(clk) then
@@ -66,75 +67,72 @@ begin
                     command_buffer                  <= (others => (others => '0'));
                 end if;
             end if;
+            
+            case command_parsed is
+                when x"4F4646" | x"6F6666" => -- ASCII code for OFF
+                    mod_status_reg       <= "00";
+                    soa_tec_status_reg   <= "00";
+                when x"50574D" | x"70776D" => -- ASCII coded for PWM This command expects an integer value for duty cycle from 0 to 99
+                    mod_status_reg          <= "01";
+                    if ascii_to_integer(attribute_ASCII(31 downto 8)) > 100 then
+                        duty_cycle_reg      <= 100;
+                    else
+                        duty_cycle_reg      <= ascii_to_integer(attribute_ASCII(31 downto 8));
+                    end if;
+                when x"44424C" | x"64626C" => -- ASCII coded for DBL This command expects two integer values for dac from 0 to 2048
+                    mod_status_reg         <= "10";
+                    if ascii_to_integer(attribute_ASCII(31 downto 8)) > 100 then
+                        duty_cycle_reg      <= 100;
+                    else
+                        duty_cycle_reg      <= ascii_to_integer(attribute_ASCII(31 downto 8));
+                    end if;
+                when x"544543" | x"746563" => -- ASCII code for TEC
+                    if attribute_ASCII(31 downto 16) = x"4F4E" or attribute_ASCII(31 downto 16) = x"6F6E" then -- ON
+                        soa_tec_status_reg(0)      <= '1';
+                    elsif attribute_ASCII(31 downto 8) = x"4F4646"  or attribute_ASCII(31 downto 8) = x"6F6666" then -- OFF
+                        soa_tec_status_reg(0)      <= '0';
+                    end if;
+                    
+                when x"434343" | x"636363" => -- ASCII code for CCC (Constant Current Control)
+                    if attribute_ASCII(31 downto 16) = x"4F4E" or attribute_ASCII(31 downto 16) = x"6F6E" then -- ON
+                        soa_tec_status_reg(1)      <= '1';
+                    elsif attribute_ASCII(31 downto 8) = x"4F4646"  or attribute_ASCII(31 downto 8) = x"6F6666" then -- OFF
+                        soa_tec_status_reg(1)      <= '0';
+                    end if;
+                    
+                when x"534554" | x"736574" => -- ASCII coded for SET
+                    case attribute_ASCII is 
+                        when x"43544C4C" | x"63746C6C" => -- CTLL changes CTRL_L
+                            if four_bytes_ascii_to_integer(ctl_value_ASCII) >= 1500 then -- CTRL range 0 to 1.5V
+                                ctrl_l_reg          <= 1500;
+                            else
+                                ctrl_l_reg          <= four_bytes_ascii_to_integer(ctl_value_ASCII);
+                            end if;
+                        when x"43544C48" | x"63746C68" => -- CTLH changes CTRL_H
+                            if four_bytes_ascii_to_integer(ctl_value_ASCII) > 1500 then
+                                ctrl_h_reg          <= 1500;
+                            else
+                                ctrl_h_reg          <= four_bytes_ascii_to_integer(ctl_value_ASCII);
+                            end if;
+                        when x"4D415856" | x"6D617876" => -- MAXV changes maximum tec voltage
+                            if four_bytes_ascii_to_integer(ctl_value_ASCII) > 5000 then   -- TEC voltage is 4*VMAXV, hence maximum voltage has to be 1,25V to achieve 0-5V range
+                                tec_maxv_reg        <= 5000;                              -- for this reason the value will be divided by 4 later
+                            else
+                                tec_maxv_reg        <= four_bytes_ascii_to_integer(ctl_value_ASCII);
+                            end if;
+                        when x"54534554" | x"74736574" => -- TSET changes temperature setpoint for TEC controller
+                            if four_bytes_ascii_to_integer(ctl_value_ASCII) > 1500 then -- NTC is in a 1.5V VCC voltage divider
+                                setpoint_reg        <= 1500;
+                            else
+                                setpoint_reg        <= four_bytes_ascii_to_integer(ctl_value_ASCII);
+                            end if;
+                        when others =>
+                    end case;
+                when others =>
+            end case;
         end if;
     end process;
     
-    process(command_parsed)
-    begin
-        case command_parsed is
-            when x"4F4646" | x"6F6666" => -- ASCII code for OFF
-                mod_status_reg       <= "00"; --
-                soa_tec_status_reg   <= "00";
-            when x"50574D" | x"70776D" => -- ASCII coded for PWM This command expects an integer value for duty cycle from 0 to 99
-                mod_status_reg          <= "01";
-                if ascii_to_integer(attribute_ASCII(31 downto 8)) > 100 then
-                    duty_cycle_reg      <= 100;
-                else
-                    duty_cycle_reg      <= ascii_to_integer(attribute_ASCII(31 downto 8));
-                end if;
-            when x"44424C" | x"64626C" => -- ASCII coded for DBL This command expects two integer values for dac from 0 to 2048
-                mod_status_reg         <= "10";
-                if ascii_to_integer(attribute_ASCII(31 downto 8)) > 100 then
-                    duty_cycle_reg      <= 100;
-                else
-                    duty_cycle_reg      <= ascii_to_integer(attribute_ASCII(31 downto 8));
-                end if;
-            when x"544543" | x"746563" => -- ASCII code for TEC
-                if attribute_ASCII(31 downto 16) = x"4F4E" or attribute_ASCII(31 downto 16) = x"6F6E" then -- ON
-                    soa_tec_status_reg(0)      <= '1';
-                elsif attribute_ASCII(31 downto 8) = x"4F4646"  or attribute_ASCII(31 downto 8) = x"6F6666" then -- OFF
-                    soa_tec_status_reg(0)      <= '0';
-                end if;
-                
-            when x"434343" | x"636363" => -- ASCII code for CCC (Constant Current Control)
-                if attribute_ASCII(31 downto 16) = x"4F4E" or attribute_ASCII(31 downto 16) = x"6F6E" then -- ON
-                    soa_tec_status_reg(1)      <= '1';
-                elsif attribute_ASCII(31 downto 8) = x"4F4646"  or attribute_ASCII(31 downto 8) = x"6F6666" then -- OFF
-                    soa_tec_status_reg(1)      <= '0';
-                end if;
-                
-            when x"534554" | x"736574" => -- ASCII coded for SET
-                case attribute_ASCII is 
-                    when x"43544C4C" | x"63746C6C" => -- CTLL changes CTRL_L
-                        if four_bytes_ascii_to_integer(ctl_value_ASCII) >= 1500 then -- CTRL range 0 to 1.5V
-                            ctrl_l_reg          <= 1500;
-                        else
-                            ctrl_l_reg          <= four_bytes_ascii_to_integer(ctl_value_ASCII);
-                        end if;
-                    when x"43544C48" | x"63746C68" => -- CTLH changes CTRL_H
-                        if four_bytes_ascii_to_integer(ctl_value_ASCII) > 1500 then
-                            ctrl_h_reg          <= 1500;
-                        else
-                            ctrl_h_reg          <= four_bytes_ascii_to_integer(ctl_value_ASCII);
-                        end if;
-                    when x"4D415856" | x"6D617876" => -- MAXV changes maximum tec voltage
-                        if four_bytes_ascii_to_integer(ctl_value_ASCII) > 5000 then   -- TEC voltage is 4*VMAXV, hence maximum voltage has to be 1,25V to achieve 0-5V range
-                            tec_maxv_reg        <= 5000;                              -- for this reason the value will be divided by 4 later
-                        else
-                            tec_maxv_reg        <= four_bytes_ascii_to_integer(ctl_value_ASCII);
-                        end if;
-                    when x"54534554" | x"74736574" => -- TSET changes temperature setpoint for TEC controller
-                        if four_bytes_ascii_to_integer(ctl_value_ASCII) > 1500 then -- NTC is in a 1.5V VCC voltage divider
-                            setpoint_reg        <= 1500;
-                        else
-                            setpoint_reg        <= four_bytes_ascii_to_integer(ctl_value_ASCII);
-                        end if;
-                    when others =>
-                end case;
-            when others =>
-        end case;
-    end process;
-                   
     command_parsed_out      <= command_parsed;
     attribute_ASCII_out     <= attribute_ASCII;
     ctl_value_ASCII_out     <= ctl_value_ASCII;

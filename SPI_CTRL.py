@@ -12,7 +12,7 @@ MAX_LOG_LINES = 20
 # regex pattern per ciascuna riga
 patterns = {
     'last':  re.compile(r'LC:\s*(.*)$'),
-    'soa':   re.compile(r'ISOA:\s*(.*)$'),
+    'current':   re.compile(r'ICTL:\s*(.*)$'),
     'ctll':  re.compile(r'CTLL:\s*(.*)$'),
     'ctlh':  re.compile(r'CTLH:\s*(.*)$'),
     'mode':  re.compile(r'MODE:\s*(.*)$'),

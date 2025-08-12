@@ -57,8 +57,8 @@ begin
             -- "LC: " + command (3 bytes) + space + attribute (4 bytes) + "\n"
             x"4C43" & x"3A20" & command_parsed_in & x"20" & attribute_ASCII_in & x"0A" &
 
-            -- "ISOA: " + measured current (5 bytes) + "\n"
-            x"49534F41" & x"3A20" & ascii_isoa & x"0A" &
+            -- "ICTL: " + measured current (5 bytes) + "\n"
+            x"4943544C" & x"3A20" & ascii_isoa & x"0A" &
 
             -- "CTLL: " + ctrl_l (5 bytes) + "\n"
             x"43544C4C" & x"3A20" & ascii_ctrl_l & x"0A" &

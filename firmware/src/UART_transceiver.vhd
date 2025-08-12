@@ -42,8 +42,6 @@ architecture Structural of UART_transceiver is
     signal mod_status_out       : std_logic_vector(1 downto 0);    -- Internal signal for modulation mode
     signal enable_sig           : std_logic := '0';
     signal mode_status_sig      : std_logic_vector(1 downto 0);
-    signal tec_status_sig       : std_logic;
-    signal soa_status_sig       : std_logic;
 
     -- UART Receiver: receives serial data and indicates when a byte is ready
     component UART_receiver is 

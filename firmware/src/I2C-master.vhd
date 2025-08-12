@@ -9,8 +9,7 @@ entity I2C_Master is
         I2C_payload : in  std_logic_vector(71 downto 0);  
         sda         : inout std_logic;
         scl         : inout std_logic;
-        n_ldac      : out std_logic;
-        led         : out std_logic_vector(15 downto 0)
+        n_ldac      : out std_logic
     );
 end I2C_Master;
 
@@ -81,29 +80,22 @@ begin
     
                     when IDLE =>
                         if ready = '1' then
-                            led(0)      <= '0';
                             n_ldac      <= '0';
                             state       <= START;
                             ready       <= '0';
                         end if;
     
                     when START =>  --at the 3/4 of clock cycle, when SCL is high pull SDA low
-                        led(1)      <= '0';
                         sda_out     <= '0';
                         scl_enable  <= '1';
                         state       <= DATA_BITS;
                         
                     when ACK_RECEIVED =>
-                        led(4)      <= '0';
                         sda_out     <= '0';
-                        state       <= WAIT_CLOCK_CYCLE;
-                        
-                    when WAIT_CLOCK_CYCLE =>
                         state       <= DATA_BITS;
                         
                     when DATA_BITS =>
                         if bit_index mod 8 = 7 then
-                            led(2)      <= '0';
                             state       <= WAIT_ACK;
                         end if;
                         bit_index   <= bit_index + 1;
@@ -111,18 +103,14 @@ begin
                     when WAIT_ACK =>
                         if sda = '0' then
                             if bit_index < 71 then
-                                led(3)      <= '0';
                                 state       <= ACK_RECEIVED;
                                 sda_enable  <= '1';
                             else
-                                led(3)      <= '0';
                                 sda_enable  <= '1';
                                 bit_index   <= 0;
                                 state       <= STOP;
                             end if;
                         else
-                            led(3)      <= '0';
-                            led(6)      <= '1';
                             bit_index   <= 0;
                             sda_enable  <= '1';
                             state       <= STOP;
@@ -130,8 +118,6 @@ begin
                         
                     when STOP =>
                         scl_enable  <= '0';
-                        led(5)      <= '0';
-                        led(6)      <= '0';
                         sda_out     <= '1'; -- SDA goes high while SCL high (STOP) 
                         n_ldac      <= '1';
                         state       <= IDLE;
@@ -144,35 +130,25 @@ begin
                 case state is
     
                     when IDLE =>
-                        led(0)      <= '1';
                         sda_out     <= '1';
-                        if true then --(payload_buf /= I2C_payload) then
-                            payload_buf <= I2C_payload;
-                            ready       <= '1';
-                        end if;
+                        payload_buf <= I2C_payload;
+                        ready       <= '1';
                         
                     when START =>
-                        led(1)      <= '1';
                         
                     when ACK_RECEIVED =>
-                        led(4)      <= '1';
                         sda_out     <= '1';
                         scl_pull    <= '1';
-                        
-                    when WAIT_CLOCK_CYCLE =>
-    
+                            
                     when DATA_BITS =>
                         scl_pull    <= '0';
-                        led(2)      <= '1';
                         sda_out     <= payload_buf(71 - bit_index);
                         
                         
                     when WAIT_ACK =>
-                        led(3)      <= '1';
                         sda_enable  <= '0'; -- Release SDA
                         
                     when STOP =>
-                        led(5)      <= '1';
                         state       <= STOP;
     
                     when others =>

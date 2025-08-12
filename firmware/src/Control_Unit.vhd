@@ -24,7 +24,6 @@ entity Control_Unit is
         tec_en              : out std_logic;
         seg                 : out std_logic_vector(5 downto 0);
         an                  : out std_logic_vector(3 downto 0);
-        led                 : out std_logic_vector(15 downto 0);
         uart_tx             : out std_logic
     );
 end Control_Unit;
@@ -76,8 +75,7 @@ architecture Structural of Control_Unit is
             I2C_payload     : in  std_logic_vector(71 downto 0);  
             sda             : inout std_logic;
             scl             : inout std_logic;
-            n_ldac          : out std_logic;
-            led             : out std_logic_vector(15 downto 0)
+            n_ldac          : out std_logic
         );
     end component;
     
@@ -215,8 +213,7 @@ begin
             I2C_payload     => payload,
             sda             => sda,
             scl             => scl,
-            n_ldac          => n_ldac,
-            led             => led
+            n_ldac          => n_ldac
         );
     
     ADC : xadc_wiz_0
